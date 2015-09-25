@@ -8,7 +8,7 @@
 
 (ns
   ^{:author "Ruediger Gad",
-    :doc "In this namespace a simple example for using cli4clj is given.
+    :doc "This is a simple example for using cli4clj.
           The example can be run via \"lein run\"."}    
   cli4clj.example
   (:use cli4clj.cli)
