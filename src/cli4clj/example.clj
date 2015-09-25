@@ -51,5 +51,6 @@
                          :help :test
                         }
                  }]
+;;;  Last but not least, the CLI is started using the options defined above.
     (start-cli cli-opts)))
 
