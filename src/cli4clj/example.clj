@@ -52,5 +52,6 @@
                         }
                  }]
 ;;;  Last but not least, the CLI is started using the options defined above.
+;;;  Please note that this call will block as long as the CLI is executed.
     (start-cli cli-opts)))
 
