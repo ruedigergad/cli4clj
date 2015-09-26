@@ -11,18 +11,21 @@ The given example can be run via "lein run".
 Below is an example output that shows running the usage example:
 
     [rc@localhost cli4clj]$ lein run
-    cli# help 
+    cli# xyz 
+    Invalid command: "[xyz]". Please type "help" to get an overview of commands.
+    cli# help
     ?       See: help
     a       See: add
-    add
+    add     Add two values.
+    d       See: divide
+    divide  Divide two values.
+        The first argument will be divided by the second argument.
     e       See: exit
     exit    Exit the CLI.
         Terminate and close the command line interface.
     h       See: test
     help    Show help.
         Display a help text that lists all available commands including further detailed information about these commands.
-    m       See: multiply
-    multiply
     q       See: exit
     quit    See: exit
     t       See: test
@@ -32,12 +35,16 @@ Below is an example output that shows running the usage example:
     This is a test.
     cli# t
     This is a test.
-    cli# add 2 3
-    5
-    cli# a 2 3
-    5
-    cli# m 2 3
-    6
+    cli# add 1 2
+    3
+    cli# ; Example of error due to wrong number of arguments.
+    cli# add 1 2 3
+    ArityException Wrong number of args (3) passed to: example/-main/fn--65  clojure.lang.AFn.throwArity (AFn.java:429)
+    cli# ; Example of error due to exception in function.
+    cli# divide 1 0
+    ArithmeticException Divide by zero  clojure.lang.Numbers.divide (Numbers.java:158)
+    cli# d 4 2
+    2
     cli# q
     [rc@localhost cli4clj]$
 
