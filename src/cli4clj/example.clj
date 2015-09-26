@@ -48,7 +48,7 @@
                                   :long-info "The first argument will be divided by the second argument."}
                          :d :divide
 ;;;                      "h" is already a pre-defined command but it can be overridden.
-;;;                      This is shown by using the definition of an alias for test as example.
+;;;                      This is shown by using the definition of an alias to test as example.
                          :h :test
 ;;;                      The pre-defined "help" command, however, cannot be overridden.
 ;;;                      Please note that "help" and "exit" cannot be overridden by any user defined command.
