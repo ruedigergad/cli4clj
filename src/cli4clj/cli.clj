@@ -37,7 +37,7 @@
              (do
                (skip-if-eol *in*)
                input)
-             (if (= :line-start (skip-if-eol *in*))
+             (if (= :line-start (skip-whitespace *in*))
                (conj v input)
                (recur (conj v input))))))))
 
