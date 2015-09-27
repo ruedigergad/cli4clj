@@ -31,6 +31,7 @@ Below is an example output that shows running the usage example:
     t       See: test
     test    Test Command
         Prints a test message to stdout.
+    to-csv  Seq to CSV
     cli# test
     This is a test.
     cli# t
@@ -45,6 +46,12 @@ Below is an example output that shows running the usage example:
     ArithmeticException Divide by zero  clojure.lang.Numbers.divide (Numbers.java:158)
     cli# d 4 2
     2
+    cli# ; Example to show the use of complexer data types, here, a vector and a list.
+    cli# to-csv [1 7 0 1]
+    "1,7,0,1"
+    cli# ; Note that the list is not quoted.
+    cli# to-csv (1 8 6 4)
+    "1,8,6,4"
     cli# q
     [rc@localhost cli4clj]$
 
