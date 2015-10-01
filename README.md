@@ -2,6 +2,8 @@
 
 Create simple interactive CLIs for Clojure applications.
 
+[![Clojars Project](http://clojars.org/cli4clj/latest-version.svg)](http://clojars.org/cli4clj)
+
 ## Usage
 
 See https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/example.clj for a usage example.
