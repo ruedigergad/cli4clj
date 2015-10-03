@@ -101,7 +101,7 @@
 
 (defn start-cli
   [user-options]
-  (let [merged-opts (merge-with merge cli-default-options user-options cli-mandatory-default-options)
+  (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
         options (assoc-in merged-opts
                   [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))]
     (repl
