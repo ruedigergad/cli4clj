@@ -46,3 +46,7 @@
         expected {:prompt :xyz}]
     (is (= expected (merge-options defaults user-options mandatory-defaults)))))
 
+(deftest simple-cli-interaction-test
+  (let [out-string (with-in-str "xyz\n" "quit\n" (with-out-str (start-cli)))]
+    (println out-string)))
+

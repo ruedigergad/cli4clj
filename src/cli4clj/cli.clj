@@ -49,7 +49,7 @@
     input-cmd))
 
 (defn create-cli-eval-fn
-  [cmds allow-eval]
+  [cmds allow-eval print-err]
   (fn [arg]
 ;    (println "Eval arg:" arg)
     (if (and (vector? arg) (contains? cmds (keyword (first arg))))
@@ -59,10 +59,10 @@
             (get-in cmds [cmd :fn])
             (rest arg))
           (catch Exception e
-            (println-err (.getMessage e)))))
+            (print-err (.getMessage e)))))
       (if allow-eval
         (eval arg)
-        (println-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
+        (print-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
 
 (defn create-cli-help-fn
   [cmds]
@@ -83,6 +83,12 @@
           :help {:short-info "Show help."
                  :long-info "Display a help text that lists all available commands including further detailed information about these commands."}}})
 
+(defmulti print-err-fn (fn [arg] (= (type arg) Exception)))
+(defmethod print-err-fn true [arg]
+  (println-err (.getMessage arg)))
+(defmethod print-err-fn false [arg]
+  (println-err (str arg)))
+
 (def cli-default-options
   {:allow-eval false
    :cmds {:e :exit
@@ -93,6 +99,7 @@
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
    :print cli-repl-print
+   :print-err print-err-fn
    :prompt cli-repl-prompt
    :read cli-repl-read})
 
@@ -111,7 +118,7 @@
           options (assoc-in merged-opts
                     [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))]
       (repl
-        :eval ((options :eval-factory) (options :cmds) (options :allow-eval))
+        :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
         :prompt (options :prompt)
         :read (options :read)))))
