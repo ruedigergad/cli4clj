@@ -60,7 +60,8 @@
 ;;;                      The following simple example command is used to illustrate that arbitrary Clojure data types can be used.
 ;;;                      The command is intended to take a seq (e.g., a list or vector) which it converts into a CSV string.
                          :to-csv {:fn (fn [data] (reduce (fn [s d] (str s "," d)) (str (first data)) (rest data)))
-                                  :short-info "Seq to CSV"}
+                                  :short-info "Seq to CSV"
+                                  :long-info "E.g.: \"to-csv [1 2 3]\"}
                         }
                  }]
 ;;;  Last but not least, the CLI is started using the options defined above.
