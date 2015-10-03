@@ -92,6 +92,10 @@
    :prompt cli-repl-prompt
    :read cli-repl-read})
 
+(defn merge-options
+  [defaults user-options mandatory-defaults]
+  (merge-with merge defaults user-options mandatory-defaults))
+
 (defn start-cli
   [user-options]
   (let [merged-opts (merge-with merge cli-default-options user-options cli-mandatory-default-options)
