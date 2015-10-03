@@ -8,16 +8,33 @@
 
 (ns
   ^{:author "Ruediger Gad",
-    :doc "cli4clj allows to create simple interactive command line interfaces for Clojure applications.
-          For an example usage scenario please see the namespace cli4clj.example."}    
+    :doc "Tests for cli4clj"}    
   cli4clj.test.cli
   (:use clojure.test
         cli4clj.cli))
 
-(deftest test-simple-options-merging
+(deftest simple-options-merging-test
   (let [user-options {:cmds {:foo {:fn 123}}}
         defaults {:cmds {:bar {:fn 456}}}
         mandatory-defaults {}
+        expected {:cmds {:bar {:fn 456}
+                         :foo {:fn 123}}}]
+    (is (= expected (merge-options defaults user-options mandatory-defaults)))))
+
+(deftest simple-options-override-test
+  (let [user-options {:cmds {:foo {:fn 123}
+                             :bar {:fn 789}}}
+        defaults {:cmds {:bar {:fn 456}}}
+        mandatory-defaults {}
+        expected {:cmds {:bar {:fn 789}
+                         :foo {:fn 123}}}]
+    (is (= expected (merge-options defaults user-options mandatory-defaults)))))
+
+(deftest simple-mandatory-options-override-test
+  (let [user-options {:cmds {:foo {:fn 123}
+                             :bar {:fn 789}}}
+        defaults {}
+        mandatory-defaults {:cmds {:bar {:fn 456}}}
         expected {:cmds {:bar {:fn 456}
                          :foo {:fn 123}}}]
     (is (= expected (merge-options defaults user-options mandatory-defaults)))))
