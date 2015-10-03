@@ -23,11 +23,11 @@
 ;;; In the simplest scenario only the commands have to be defined.
 ;;; In the following, an example using a simple scenario along with some explanations is provided:
 ;;;     cli4clj is configured via an "options" map.
-;;;     !         Commands are stored in a nested map using the key :cmds in the options map.
-;;;     !         !      As first simple example command, we define a command called "test".
-;;;     !         !      !      The function to be called for the command is defined via :fn.
-;;;     !         !      !      !  In this example we use an anonymous function.
-;;;     !         !      !      !  However, arbitrary functions can be used.
+;;;     |         Commands are stored in a nested map using the key :cmds in the options map.
+;;;     |         |      As first simple example command, we define a command called "test".
+;;;     |         |      |      The function to be called for the command is defined via :fn.
+;;;     |         |      |      |  In this example we use an anonymous function.
+;;;     |         |      |      |  However, arbitrary functions can be used.
   (let [cli-opts {:cmds {:test {:fn #(println "This is a test.")
 ;;;                             Optionally a short information text can be given.
                                 :short-info "Test Command"
