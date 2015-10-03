@@ -94,7 +94,10 @@
 
 (defn merge-options
   [defaults user-options mandatory-defaults]
-  (merge-with merge defaults user-options mandatory-defaults))
+  (merge-with (fn [a b] (if (and (map? a) (map? b))
+                          (merge a b)
+                          b))
+              defaults user-options mandatory-defaults))
 
 (defn start-cli
   [user-options]

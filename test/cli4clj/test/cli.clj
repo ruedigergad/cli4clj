@@ -39,3 +39,10 @@
                          :foo {:fn 123}}}]
     (is (= expected (merge-options defaults user-options mandatory-defaults)))))
 
+(deftest user-options-override-non-nested-test
+  (let [user-options {:prompt :xyz}
+        defaults {:prompt :abc}
+        mandatory-defaults {}
+        expected {:prompt :xyz}]
+    (is (= expected (merge-options defaults user-options mandatory-defaults)))))
+
