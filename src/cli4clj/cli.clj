@@ -11,7 +11,8 @@
     :doc "cli4clj allows to create simple interactive command line interfaces for Clojure applications.
           For an example usage scenario please see the namespace cli4clj.example."}    
   cli4clj.cli
-  (:use [clojure.main :only [repl skip-if-eol skip-whitespace]]))
+  (:use [clojure.main :only [repl skip-if-eol skip-whitespace]]
+        clj-assorted-utils.util))
 
 (defn cli-repl-print
   [arg]
@@ -53,12 +54,15 @@
 ;    (println "Eval arg:" arg)
     (if (and (vector? arg) (contains? cmds (keyword (first arg))))
       (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
-        (apply
-          (get-in cmds [cmd :fn])
-          (rest arg)))
+        (try
+          (apply
+            (get-in cmds [cmd :fn])
+            (rest arg))
+          (catch Exception e
+            (println-err (.getMessage e)))))
       (if allow-eval
         (eval arg)
-        (println (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
+        (println-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
 
 (defn create-cli-help-fn
   [cmds]
@@ -100,13 +104,15 @@
               defaults user-options mandatory-defaults))
 
 (defn start-cli
-  [user-options]
-  (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
-        options (assoc-in merged-opts
-                  [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))]
-    (repl
-      :eval ((options :eval-factory) (options :cmds) (options :allow-eval))
-      :print (options :print)
-      :prompt (options :prompt)
-      :read (options :read))))
+  ([]
+    (start-cli {}))
+  ([user-options]
+    (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
+          options (assoc-in merged-opts
+                    [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))]
+      (repl
+        :eval ((options :eval-factory) (options :cmds) (options :allow-eval))
+        :print (options :print)
+        :prompt (options :prompt)
+        :read (options :read)))))
 

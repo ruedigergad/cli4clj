@@ -4,5 +4,6 @@
   :url "https://github.com/ruedigergad/cli4clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.7.0"]]
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                  [clj-assorted-utils "1.9.1"]]
   :main cli4clj.example)
