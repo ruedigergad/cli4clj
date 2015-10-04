@@ -54,11 +54,18 @@
         cmd-vec ["foo" "bar"]]
     (is (= expected (cmd-vector-to-test-input-string cmd-vec)))))
 
+(deftest get-prompt-string-test
+  (is (= "cli# " (get-prompt-string {}))))
+
 (deftest simple-test-cli-interaction-stdout-test
   (let [out-string (test-cli-stdout {} [])]
-    (is (= "cli# " out-string))))
+    (is (= "" out-string))))
 
 (deftest simple-test-cli-interaction-stderr-test
   (let [err-string (test-cli-stderr {} ["xyz"])]
     (is (.startsWith err-string "Invalid command: \"[xyz]\"."))))
+
+(deftest add-cmd-cli-interaction-stdout-test
+  (let [out-string (test-cli-stdout {:cmds {:add {:fn #(+ %1 %2)}}} ["add 1 2"])]
+    (is (= "3\n" out-string))))
 

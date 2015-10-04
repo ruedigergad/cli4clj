@@ -110,13 +110,16 @@
                           b))
               defaults user-options mandatory-defaults))
 
+(defn get-cli-opts
+  [user-options]
+  (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)]
+    (assoc-in merged-opts [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))))
+
 (defn start-cli
   ([]
     (start-cli {}))
   ([user-options]
-    (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
-          options (assoc-in merged-opts
-                    [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))]
+    (let [options (get-cli-opts user-options)]
       (repl
         :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
@@ -126,14 +129,19 @@
 
 
 (defn cmd-vector-to-test-input-string
-  [cmds]
-  (reduce (fn [s c] (str s c "\n")) "" cmds))
+  [cmd-vec]
+  (reduce (fn [s c] (str s c "\n")) "" cmd-vec))
+
+(defn get-prompt-string
+  [cli-opts]
+  (with-out-str (((get-cli-opts cli-opts) :prompt))))
 
 (defn test-cli-stdout
-  [cli-opts cmds]
-  (with-out-str (with-in-str (cmd-vector-to-test-input-string cmds) (start-cli cli-opts))))
+  [cli-opts in-cmds]
+  (let [out-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts)))]
+    (.replaceAll out-str (get-prompt-string cli-opts) "")))
 
 (defn test-cli-stderr
-  [cli-opts cmds]
-  (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string cmds) (start-cli cli-opts)))))
+  [cli-opts in-cmds]
+  (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts)))))
 
