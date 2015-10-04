@@ -67,5 +67,5 @@
 
 (deftest add-cmd-cli-interaction-stdout-test
   (let [out-string (test-cli-stdout {:cmds {:add {:fn #(+ %1 %2)}}} ["add 1 2"])]
-    (is (= "3\n" out-string))))
+    (is (= "3" out-string))))
 
