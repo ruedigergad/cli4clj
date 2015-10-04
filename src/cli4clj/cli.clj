@@ -123,3 +123,17 @@
         :prompt (options :prompt)
         :read (options :read)))))
 
+
+
+(defn cmd-vector-to-test-input-string
+  [cmds]
+  (reduce (fn [s c] (str s c "\n")) "" cmds))
+
+(defn test-cli-stdout
+  [cli-opts cmds]
+  (with-out-str (with-in-str (cmd-vector-to-test-input-string cmds) (start-cli cli-opts))))
+
+(defn test-cli-stderr
+  [cli-opts cmds]
+  (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string cmds) (start-cli cli-opts)))))
+

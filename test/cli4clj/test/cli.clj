@@ -11,7 +11,8 @@
     :doc "Tests for cli4clj"}    
   cli4clj.test.cli
   (:use clojure.test
-        cli4clj.cli))
+        cli4clj.cli
+        clj-assorted-utils.util))
 
 (deftest simple-options-merging-test
   (let [user-options {:cmds {:foo {:fn 123}}}
@@ -46,7 +47,18 @@
         expected {:prompt :xyz}]
     (is (= expected (merge-options defaults user-options mandatory-defaults)))))
 
-(deftest simple-cli-interaction-test
-  (let [out-string (with-in-str "xyz\n" "quit\n" (with-out-str (start-cli)))]
-    (println out-string)))
+
+
+(deftest cmd-vector-to-cmd-test-input-string-test
+  (let [expected "foo\nbar\n"
+        cmd-vec ["foo" "bar"]]
+    (is (= expected (cmd-vector-to-test-input-string cmd-vec)))))
+
+(deftest simple-test-cli-interaction-stdout-test
+  (let [out-string (test-cli-stdout {} [])]
+    (is (= "cli# " out-string))))
+
+(deftest simple-test-cli-interaction-stderr-test
+  (let [err-string (test-cli-stderr {} ["xyz"])]
+    (is (.startsWith err-string "Invalid command: \"[xyz]\"."))))
 
