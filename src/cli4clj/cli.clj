@@ -57,6 +57,16 @@
       (binding [*in* (PushbackReader. (StringReader. (str (.readLine in-rdr) "\n")))]
         (rdr-fn request-prompt request-exit)))))
 
+(defn get-cmd-aliases
+  [cmds]
+  (reduce
+    (fn [m e]
+      (if (keyword? (val e))
+        (assoc m (val e) (key e))
+        m))
+    {}
+    cmds))
+
 (defn resolve-cmd-alias
   [input-cmd cmds]
   (if (keyword? (cmds input-cmd))

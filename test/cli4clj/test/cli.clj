@@ -69,3 +69,17 @@
   (let [out-string (test-cli-stdout {:cmds {:add {:fn #(+ %1 %2)}}} ["add 1 2"])]
     (is (= "3" out-string))))
 
+
+
+(deftest get-cmd-aliases-test
+  (let [cmds {:a {}
+              :b :a
+              :c :a
+              :d {}
+              :foo :a
+              :x :d
+              :y :d}
+        expected {:a #{:b :c :foo}
+                  :d #{:x :y}}]
+    (is (= expected (get-cmd-aliases cmds)))))
+
