@@ -80,10 +80,10 @@
 
 (defn create-cli-help-fn
   [options]
-  (fn []
-    (let [cmds (:cmds options)
-          command-names (sort (keys cmds))
-          cmd-entry-delimiter (:help-cmd-entry-delimiter options)]
+  (let [cmds (:cmds options)
+        command-names (sort (keys cmds))
+        cmd-entry-delimiter (:help-cmd-entry-delimiter options)]
+    (fn []
       (doseq [c command-names]
         (if (map? (cmds c))
           (do
