@@ -104,8 +104,9 @@
     (fn []
       (doseq [c command-names]
         (when (map? (cmds c))
-          (println (str (name c) " " (vec (map #(symbol (name %)) (c cmd-aliases))) "\n"
-                        "\t" (get-in cmds [c :short-info])))
+          (println (str (name c) " " (vec (map #(symbol (name %)) (c cmd-aliases)))))
+          (when-let [si (get-in cmds [c :short-info])]
+            (println (str "\t" si)))
           (when-let [li (get-in cmds [c :long-info])]
             (println (str "\t" li)))
           (print cmd-entry-delimiter))))))
