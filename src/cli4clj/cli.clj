@@ -23,24 +23,25 @@
   []
   (print "cli# "))
 
-(defn cli-repl-read
-  "This function is largely based on the exisiting repl read function:
+(defn create-cli-repl-read-fn
+  []
+  "The created read function is largely based on the exisiting repl read function:
    http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
    The main difference is that if the first argument on a line is a keyword,
    all elements on that line will be forwarded in a vector instead of being
    forwarded seperately."
-  [request-prompt request-exit]
-  (or ({:line-start request-prompt :stream-end request-exit}
-       (skip-whitespace *in*))
-      (loop [v []]
-        (let [input (read {:read-cond :allow} *in*)]
-          (if (and (not (symbol? input)) (empty? v))
-            (do
-              (skip-if-eol *in*)
-              input)
-            (if (= :line-start (skip-whitespace *in*))
-              (conj v input)
-              (recur (conj v input))))))))
+  (fn [request-prompt request-exit]
+    (or ({:line-start request-prompt :stream-end request-exit}
+         (skip-whitespace *in*))
+        (loop [v []]
+          (let [input (read {:read-cond :allow} *in*)]
+            (if (and (not (symbol? input)) (empty? v))
+              (do
+                (skip-if-eol *in*)
+                input)
+              (if (= :line-start (skip-whitespace *in*))
+                (conj v input)
+                (recur (conj v input)))))))))
 
 (defn resolve-cmd-alias
   [input-cmd cmds]
@@ -101,7 +102,7 @@
    :print cli-repl-print
    :print-err print-err-fn
    :prompt cli-repl-prompt
-   :read cli-repl-read})
+   :read-factory create-cli-repl-read-fn})
 
 (defn merge-options
   [defaults user-options mandatory-defaults]
@@ -124,7 +125,7 @@
         :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
         :prompt (options :prompt)
-        :read (options :read)))))
+        :read ((options :read-factory))))))
 
 
 
