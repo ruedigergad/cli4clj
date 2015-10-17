@@ -11,10 +11,13 @@
     :doc "cli4clj allows to create simple interactive command line interfaces for Clojure applications.
           For an example usage scenario please see the namespace cli4clj.example."}    
   cli4clj.cli
-  (:use [clojure.main :only [repl skip-if-eol skip-whitespace]]
-        [clojure.string :only [blank? split]]
-        clj-assorted-utils.util)
-  (:import (jline.console ConsoleReader)))
+  (:use
+    [clojure.main :only [repl skip-if-eol skip-whitespace]]
+    [clojure.string :only [blank? split]]
+    clj-assorted-utils.util)
+  (:import
+    (java.io PushbackReader StringReader)
+    (jline.console ConsoleReader)))
 
 (defn cli-repl-print
   [arg]
@@ -24,17 +27,6 @@
 (defn cli-repl-prompt
   []
   (print "cli# "))
-
-(defn create-jline-read-fn
-  []
-  (let [rdr (doto (ConsoleReader.))]
-    (fn [request-prompt request-exit]
-      (let [in-line (.readLine rdr)]
-        (if (not (blank? in-line))
-          (reduce (fn [v in-part] (conj v (read-string in-part)))
-                  []
-                  (split in-line #"\s")))))))
-
 
 (defn create-repl-read-fn
   []
@@ -55,6 +47,14 @@
               (if (= :line-start (skip-whitespace *in*))
                 (conj v input)
                 (recur (conj v input)))))))))
+
+(defn create-jline-read-fn
+  []
+  (let [in-rdr (doto (ConsoleReader.))
+        rdr-fn (create-repl-read-fn)]
+    (fn [request-prompt request-exit]
+      (binding [*in* (PushbackReader. (StringReader. (str (.readLine in-rdr) "\n")))]
+        (rdr-fn request-prompt request-exit)))))
 
 (defn resolve-cmd-alias
   [input-cmd cmds]
