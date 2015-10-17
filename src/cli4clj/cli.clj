@@ -104,7 +104,7 @@
     (fn []
       (doseq [c command-names]
         (when (map? (cmds c))
-          (print (str (name c)))
+          (print (name c))
           (if (not (nil? (c cmd-aliases)))
             (println "" (vec (map #(symbol (name %)) (c cmd-aliases))))
             (println ""))
