@@ -149,12 +149,16 @@
   [cli-opts]
   (with-out-str (((get-cli-opts cli-opts) :prompt))))
 
+(defn start-test-cli
+  [opts]
+  (start-cli (assoc-in opts [:read-factory] create-repl-read-fn)))
+
 (defn test-cli-stdout
   [cli-opts in-cmds]
-  (let [out-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts)))]
+  (let [out-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))]
     (.trim (.replaceAll out-str (get-prompt-string cli-opts) ""))))
 
 (defn test-cli-stderr
   [cli-opts in-cmds]
-  (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts)))))
+  (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))))
 
