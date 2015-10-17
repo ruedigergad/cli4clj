@@ -79,16 +79,19 @@
         (print-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
 
 (defn create-cli-help-fn
-  [cmds]
+  [options]
   (fn []
-    (let [command-names (sort (keys cmds))]
+    (let [cmds (:cmds options)
+          command-names (sort (keys cmds))
+          cmd-entry-delimiter (:help-cmd-entry-delimiter options)]
       (doseq [c command-names]
         (if (map? (cmds c))
           (do
             (println (str (name c) "\t" (get-in cmds [c :short-info])))
             (when-let [li (get-in cmds [c :long-info])]
-              (println (str "\t" (get-in cmds [c :long-info])))))
-          (println (str (name c) "\tSee: " (name (cmds c)))))))))
+              (println (str "\t" li)))
+            (print cmd-entry-delimiter))
+          (println (str (name c) "\tSee: " (name (cmds c)) cmd-entry-delimiter)))))))
 
 (def cli-mandatory-default-options
   {:cmds {:exit {:fn (fn [] (System/exit 0))
@@ -112,6 +115,7 @@
           :q :exit}
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
+   :help-cmd-entry-delimiter "\n"
    :print cli-repl-print
    :print-err print-err-fn
    :prompt cli-repl-prompt
@@ -127,7 +131,7 @@
 (defn get-cli-opts
   [user-options]
   (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)]
-    (assoc-in merged-opts [:cmds :help :fn] ((merged-opts :help-factory) (merged-opts :cmds)))))
+    (assoc-in merged-opts [:cmds :help :fn] ((merged-opts :help-factory) merged-opts))))
 
 (defn start-cli
   ([]
