@@ -29,12 +29,12 @@
   []
   (let [rdr (doto (ConsoleReader.))]
     (fn [request-prompt request-exit]
-      (let [in (.readLine rdr)]
-        (if (not (blank? in))
-          (let [split-in (split in #"\s")]
+      (let [in-line (.readLine rdr)]
+        (if (not (blank? in-line))
+          (let [split-in (split in-line #"\s")]
             (if (symbol? (read-string (first split-in)))
               (reduce (fn [v in-part] (conj v (read-string in-part))) [] split-in)
-              (read-string in))))))))
+              (read-string in-line))))))))
 
 ;  "The created read function is largely based on the exisiting repl read function:
 ;   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
