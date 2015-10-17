@@ -32,15 +32,15 @@
   [request-prompt request-exit]
   (or ({:line-start request-prompt :stream-end request-exit}
        (skip-whitespace *in*))
-       (loop [v []]
-         (let [input (read {:read-cond :allow} *in*)]
-           (if (and (not (symbol? input)) (empty? v))
-             (do
-               (skip-if-eol *in*)
-               input)
-             (if (= :line-start (skip-whitespace *in*))
-               (conj v input)
-               (recur (conj v input))))))))
+      (loop [v []]
+        (let [input (read {:read-cond :allow} *in*)]
+          (if (and (not (symbol? input)) (empty? v))
+            (do
+              (skip-if-eol *in*)
+              input)
+            (if (= :line-start (skip-whitespace *in*))
+              (conj v input)
+              (recur (conj v input))))))))
 
 (defn resolve-cmd-alias
   [input-cmd cmds]
