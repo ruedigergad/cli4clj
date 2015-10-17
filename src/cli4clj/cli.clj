@@ -25,34 +25,36 @@
   []
   (print "cli# "))
 
-(defn create-cli-repl-read-fn
+(defn create-jline-read-fn
   []
   (let [rdr (doto (ConsoleReader.))]
     (fn [request-prompt request-exit]
       (let [in-line (.readLine rdr)]
         (if (not (blank? in-line))
-          (let [split-in (split in-line #"\s")]
-            (if (symbol? (read-string (first split-in)))
-              (reduce (fn [v in-part] (conj v (read-string in-part))) [] split-in)
-              (read-string in-line))))))))
+          (reduce (fn [v in-part] (conj v (read-string in-part)))
+                  []
+                  (split in-line #"\s")))))))
 
-;  "The created read function is largely based on the exisiting repl read function:
-;   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
-;   The main difference is that if the first argument on a line is a keyword,
-;   all elements on that line will be forwarded in a vector instead of being
-;   forwarded seperately."
-;  (fn [request-prompt request-exit]
-;    (or ({:line-start request-prompt :stream-end request-exit}
-;         (skip-whitespace *in*))
-;        (loop [v []]
-;          (let [input (read {:read-cond :allow} *in*)]
-;            (if (and (not (symbol? input)) (empty? v))
-;              (do
-;                (skip-if-eol *in*)
-;                input)
-;              (if (= :line-start (skip-whitespace *in*))
-;                (conj v input)
-;                (recur (conj v input)))))))))
+
+(defn create-repl-read-fn
+  []
+  "The created read function is largely based on the exisiting repl read function:
+   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
+   The main difference is that if the first argument on a line is a keyword,
+   all elements on that line will be forwarded in a vector instead of being
+   forwarded seperately."
+  (fn [request-prompt request-exit]
+    (or ({:line-start request-prompt :stream-end request-exit}
+         (skip-whitespace *in*))
+        (loop [v []]
+          (let [input (read {:read-cond :allow} *in*)]
+            (if (and (not (symbol? input)) (empty? v))
+              (do
+                (skip-if-eol *in*)
+                input)
+              (if (= :line-start (skip-whitespace *in*))
+                (conj v input)
+                (recur (conj v input)))))))))
 
 (defn resolve-cmd-alias
   [input-cmd cmds]
@@ -63,7 +65,6 @@
 (defn create-cli-eval-fn
   [cmds allow-eval print-err]
   (fn [arg]
-;    (println "Eval arg:" arg)
     (if (and (vector? arg) (contains? cmds (keyword (first arg))))
       (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
         (try
@@ -113,7 +114,7 @@
    :print cli-repl-print
    :print-err print-err-fn
    :prompt cli-repl-prompt
-   :read-factory create-cli-repl-read-fn})
+   :read-factory create-jline-read-fn})
 
 (defn merge-options
   [defaults user-options mandatory-defaults]
