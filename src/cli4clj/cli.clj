@@ -12,7 +12,9 @@
           For an example usage scenario please see the namespace cli4clj.example."}    
   cli4clj.cli
   (:use [clojure.main :only [repl skip-if-eol skip-whitespace]]
-        clj-assorted-utils.util))
+        [clojure.string :only [blank? split]]
+        clj-assorted-utils.util)
+  (:import (jline.console ConsoleReader)))
 
 (defn cli-repl-print
   [arg]
@@ -25,23 +27,32 @@
 
 (defn create-cli-repl-read-fn
   []
-  "The created read function is largely based on the exisiting repl read function:
-   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
-   The main difference is that if the first argument on a line is a keyword,
-   all elements on that line will be forwarded in a vector instead of being
-   forwarded seperately."
-  (fn [request-prompt request-exit]
-    (or ({:line-start request-prompt :stream-end request-exit}
-         (skip-whitespace *in*))
-        (loop [v []]
-          (let [input (read {:read-cond :allow} *in*)]
-            (if (and (not (symbol? input)) (empty? v))
-              (do
-                (skip-if-eol *in*)
-                input)
-              (if (= :line-start (skip-whitespace *in*))
-                (conj v input)
-                (recur (conj v input)))))))))
+  (let [rdr (doto (ConsoleReader.))]
+    (fn [request-prompt request-exit]
+      (let [in (.readLine rdr)]
+        (if (not (blank? in))
+          (let [split-in (split in #"\s")]
+            (if (symbol? (read-string (first split-in)))
+              (reduce (fn [v in-part] (conj v (read-string in-part))) [] split-in)
+              (read-string in))))))))
+
+;  "The created read function is largely based on the exisiting repl read function:
+;   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
+;   The main difference is that if the first argument on a line is a keyword,
+;   all elements on that line will be forwarded in a vector instead of being
+;   forwarded seperately."
+;  (fn [request-prompt request-exit]
+;    (or ({:line-start request-prompt :stream-end request-exit}
+;         (skip-whitespace *in*))
+;        (loop [v []]
+;          (let [input (read {:read-cond :allow} *in*)]
+;            (if (and (not (symbol? input)) (empty? v))
+;              (do
+;                (skip-if-eol *in*)
+;                input)
+;              (if (= :line-start (skip-whitespace *in*))
+;                (conj v input)
+;                (recur (conj v input)))))))))
 
 (defn resolve-cmd-alias
   [input-cmd cmds]
