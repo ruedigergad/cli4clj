@@ -77,8 +77,8 @@
               :c :a
               :d {}
               :foo :a
-              :x :d
-              :y :d}
+              :y :d
+              :x :d}
         expected {:a #{:b :c :foo}
                   :d #{:x :y}}]
     (is (= expected (get-cmd-aliases cmds)))))

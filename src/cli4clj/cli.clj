@@ -61,9 +61,16 @@
   [cmds]
   (reduce
     (fn [m e]
-      (if (keyword? (val e))
-        (assoc m (val e) (key e))
-        m))
+      (let [k (key e)
+            v (val e)]
+      (if (keyword? v)
+        (let [aliases (m v)]
+          (assoc m
+                 v
+                 (if (set? aliases)
+                   (conj aliases k)
+                   (sorted-set k))))
+        m)))
     {}
     cmds))
 
