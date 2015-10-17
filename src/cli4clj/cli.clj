@@ -67,9 +67,9 @@
         (let [aliases (m v)]
           (assoc m
                  v
-                 (if (set? aliases)
-                   (conj aliases k)
-                   (sorted-set k))))
+                 (if (vector? aliases)
+                   (vec (sort (conj aliases k)))
+                   [k])))
         m)))
     {}
     cmds))
