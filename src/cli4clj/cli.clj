@@ -17,7 +17,8 @@
     clj-assorted-utils.util)
   (:import
     (java.io PushbackReader StringReader)
-    (jline.console ConsoleReader)))
+    (jline.console ConsoleReader)
+    (jline.console.completer StringsCompleter)))
 
 (defn cli-repl-print
   [arg]
@@ -29,7 +30,7 @@
   (print "cli# "))
 
 (defn create-repl-read-fn
-  []
+  [cmds]
   "The created read function is largely based on the exisiting repl read function:
    http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
    The main difference is that if the first argument on a line is a keyword,
@@ -49,9 +50,9 @@
                 (recur (conj v input)))))))))
 
 (defn create-jline-read-fn
-  []
-  (let [in-rdr (doto (ConsoleReader.))
-        rdr-fn (create-repl-read-fn)]
+  [cmds]
+  (let [in-rdr (doto (ConsoleReader.) (.addCompleter (StringsCompleter. (map name (keys cmds)))))
+        rdr-fn (create-repl-read-fn cmds)]
     (fn [request-prompt request-exit]
       (binding [*in* (PushbackReader. (StringReader. (str (.readLine in-rdr) "\n")))]
         (rdr-fn request-prompt request-exit)))))
@@ -137,7 +138,7 @@
         :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
         :prompt (options :prompt)
-        :read ((options :read-factory))))))
+        :read ((options :read-factory) (options :cmds))))))
 
 
 
