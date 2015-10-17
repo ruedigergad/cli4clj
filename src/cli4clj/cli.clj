@@ -98,17 +98,17 @@
 (defn create-cli-help-fn
   [options]
   (let [cmds (:cmds options)
+        cmd-aliases (get-cmd-aliases cmds)
         command-names (sort (keys cmds))
         cmd-entry-delimiter (:help-cmd-entry-delimiter options)]
     (fn []
       (doseq [c command-names]
-        (if (map? (cmds c))
-          (do
-            (println (str (name c) "\t" (get-in cmds [c :short-info])))
-            (when-let [li (get-in cmds [c :long-info])]
-              (println (str "\t" li)))
-            (print cmd-entry-delimiter))
-          (println (str (name c) "\tSee: " (name (cmds c)) cmd-entry-delimiter)))))))
+        (when (map? (cmds c))
+          (println (str (name c) "\t" (vec (map name (c cmd-aliases))) "\n"
+                        "\t" (get-in cmds [c :short-info])))
+          (when-let [li (get-in cmds [c :long-info])]
+            (println (str "\t" li)))
+          (print cmd-entry-delimiter))))))
 
 (def cli-mandatory-default-options
   {:cmds {:exit {:fn (fn [] (System/exit 0))
