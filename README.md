@@ -14,50 +14,55 @@ The given example can be run via "lein run".
 
 Below is an example output that shows running the usage example:
 
-    [rc@localhost cli4clj]$ lein run
-    cli# xyz 
+    ~/r/p/c/cli4clj (master=) lein run
+    cli# xyz
     Invalid command: "[xyz]". Please type "help" to get an overview of commands.
     cli# help
-    ?       See: help
-    a       See: add
-    add     Add two values.
-    d       See: divide
-    divide  Divide two values.
+    add [a]
+        Add two values.
+
+    divide [d]
+        Divide two values.
         The first argument will be divided by the second argument.
-    e       See: exit
-    exit    Exit the CLI.
+
+    exit [e q quit]
+        Exit the CLI.
         Terminate and close the command line interface.
-    h       See: test
-    help    Show help.
+
+    help [?]
+        Show help.
         Display a help text that lists all available commands including further detailed information about these commands.
-    q       See: exit
-    quit    See: exit
-    t       See: test
-    test    Test Command
+
+    test [h t]
+        Test Command
         Prints a test message to stdout.
-    to-csv  Seq to CSV
+
+    to-csv
+        Seq to CSV
+        E.g.: "to-csv [1 2 3]"
+
     cli# test
     This is a test.
     cli# t
     This is a test.
     cli# add 1 2
     3
-    cli# ; Example of error due to wrong number of arguments.
+    ; Example for an error due to wrong number of arguments.
     cli# add 1 2 3
-    ArityException Wrong number of args (3) passed to: example/-main/fn--65  clojure.lang.AFn.throwArity (AFn.java:429)
-    cli# ; Example of error due to exception in function.
+    Wrong number of args (3) passed to: example/-main/fn--110
+    ; Example for an error due to exception in function.
     cli# divide 1 0
-    ArithmeticException Divide by zero  clojure.lang.Numbers.divide (Numbers.java:158)
+    Divide by zero
     cli# d 4 2
     2
-    cli# ; Example to show the use of complexer data types, here, a vector and a list.
+    ; Example to show the use of complexer data types, here, a vector and a list.
     cli# to-csv [1 7 0 1]
     "1,7,0,1"
-    cli# ; Note that the list is not quoted.
+    ; Note that the list is not quoted.
     cli# to-csv (1 8 6 4)
     "1,8,6,4"
     cli# q
-    [rc@localhost cli4clj]$
+    ~/r/p/c/cli4clj (master=)
 
 ## License
 
