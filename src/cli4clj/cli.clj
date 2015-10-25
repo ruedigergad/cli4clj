@@ -54,8 +54,13 @@
   (let [in-rdr (doto (ConsoleReader.) (.addCompleter (StringsCompleter. (map name (keys cmds)))))
         rdr-fn (create-repl-read-fn cmds)]
     (fn [request-prompt request-exit]
-      (binding [*in* (PushbackReader. (StringReader. (str (.readLine in-rdr) "\n")))]
-        (rdr-fn request-prompt request-exit)))))
+      (let [line (.readLine in-rdr)]
+        (if (and (not (nil? line))
+                 (not (.isEmpty line))
+                 (not (-> line (.trim) (.startsWith ";"))))
+          (binding [*in* (PushbackReader. (StringReader. (str line "\n")))]
+            (rdr-fn request-prompt request-exit))
+          request-prompt)))))
 
 (defn get-cmd-aliases
   [cmds]
