@@ -25,10 +25,6 @@
   (if (not (nil? arg))
     (prn arg)))
 
-(defn cli-repl-prompt
-  []
-  (print "cli# "))
-
 (defn create-repl-read-fn
   [cmds]
   "The created read function is largely based on the exisiting repl read function:
@@ -50,8 +46,10 @@
                 (recur (conj v input)))))))))
 
 (defn create-jline-read-fn
-  [cmds]
-  (let [in-rdr (doto (ConsoleReader.) (.addCompleter (StringsCompleter. (map name (keys cmds)))))
+  [cmds prompt-string]
+  (let [in-rdr (doto (ConsoleReader.)
+                 (.addCompleter (StringsCompleter. (map name (keys cmds))))
+                 (.setPrompt prompt-string))
         rdr-fn (create-repl-read-fn cmds)]
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr)]
@@ -144,7 +142,7 @@
    :help-cmd-entry-delimiter "\n"
    :print cli-repl-print
    :print-err print-err-fn
-   :prompt cli-repl-prompt
+   :prompt-string "cli# "
    :read-factory create-jline-read-fn})
 
 (defn merge-options
@@ -167,8 +165,8 @@
       (repl
         :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
-        :prompt (options :prompt)
-        :read ((options :read-factory) (options :cmds))))))
+        :prompt (fn [])
+        :read ((options :read-factory) (options :cmds) (options :prompt-string))))))
 
 
 
@@ -176,18 +174,17 @@
   [cmd-vec]
   (reduce (fn [s c] (str s c "\n")) "" cmd-vec))
 
-(defn get-prompt-string
-  [cli-opts]
-  (with-out-str (((get-cli-opts cli-opts) :prompt))))
+(defn create-repl-read-test-fn
+  [cmds prompt-string]
+  (create-repl-read-fn cmds))
 
 (defn start-test-cli
   [opts]
-  (start-cli (assoc-in opts [:read-factory] create-repl-read-fn)))
+  (start-cli (assoc-in opts [:read-factory] create-repl-read-test-fn)))
 
 (defn test-cli-stdout
   [cli-opts in-cmds]
-  (let [out-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))]
-    (.trim (.replaceAll out-str (get-prompt-string cli-opts) ""))))
+  (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))))
 
 (defn test-cli-stderr
   [cli-opts in-cmds]
