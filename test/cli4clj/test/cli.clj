@@ -55,29 +55,29 @@
     (is (= expected (cmd-vector-to-test-input-string cmd-vec)))))
 
 (deftest simple-test-cli-interaction-stdout-test
-  (let [out-string (test-cli-stdout {} [])]
+  (let [out-string (test-cli-stdout #(start-cli {}) [])]
     (is (= "" out-string))))
 
 (deftest simple-test-cli-interaction-stderr-test
-  (let [err-string (test-cli-stderr {} ["xyz"])]
+  (let [err-string (test-cli-stderr #(start-cli {}) ["xyz"])]
     (is (.startsWith err-string "Invalid command: \"[xyz]\"."))))
 
 (deftest add-cmd-cli-interaction-stdout-test
   (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)}}}
         test-cmd-input ["add 1 2"]
-        out-string (test-cli-stdout cli-opts test-cmd-input)]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
     (is (= "3" out-string))))
 
 (deftest add-cmd-cli-interaction-stdout-multiline-test
   (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)}}}
         test-cmd-input ["add 1 2" "add 3 4" "add 5 6"]
-        out-string (test-cli-stdout cli-opts test-cmd-input)]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
     (is (= (expected-string ["3" "7" "11"]) out-string))))
 
 (deftest add-cmd-cli-interaction-cmd-error-test
   (let [cli-opts {:cmds {:div {:fn #(/ %1 %2)}}}
         test-cmd-input ["div 1 0"]
-        out-string (test-cli-stderr cli-opts test-cmd-input)]
+        out-string (test-cli-stderr #(start-cli cli-opts) test-cmd-input)]
     (is (= "Divide by zero" out-string))))
 
 

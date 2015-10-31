@@ -182,14 +182,14 @@
   (create-repl-read-fn cmds))
 
 (defn test-cli-stdout
-  [cli-opts in-cmds]
+  [tested-fn in-cmds]
   (binding [*read-factory* create-repl-read-test-fn]
-    (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts))))))
+    (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (tested-fn))))))
 
 (defn test-cli-stderr
-  [cli-opts in-cmds]
+  [tested-fn in-cmds]
   (binding [*read-factory* create-repl-read-test-fn]
-    (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts)))))))
+    (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (tested-fn)))))))
 
 (defn expected-string
   ([expected-lines]
