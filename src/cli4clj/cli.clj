@@ -142,6 +142,7 @@
    :help-cmd-entry-delimiter "\n"
    :print cli-repl-print
    :print-err print-err-fn
+   :prompt-fn (fn [])
    :prompt-string "cli# "
    :read-factory create-jline-read-fn})
 
@@ -165,7 +166,7 @@
       (repl
         :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
-        :prompt (fn [])
+        :prompt (options :prompt-fn)
         :read ((options :read-factory) (options :cmds) (options :prompt-string))))))
 
 
