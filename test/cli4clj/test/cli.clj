@@ -8,7 +8,7 @@
 
 (ns
   ^{:author "Ruediger Gad",
-    :doc "Tests for cli4clj"}    
+    :doc "Tests for cli4clj"}
   cli4clj.test.cli
   (:use clojure.test
         cli4clj.cli
