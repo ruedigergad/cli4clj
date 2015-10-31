@@ -34,11 +34,9 @@
 
 (deftest advanced-main-method-error-example-test
   (let [test-cmd-input ["xyz"
-                        "d 4 0"
-                        "a 1 2 3"]
+                        "d 4 0"]
         out-string (test-cli-stderr #(-main "") test-cmd-input)]
     (is (= (expected-string ["Invalid command: \"[xyz]\". Please type \"help\" to get an overview of commands."
-                             "Divide by zero"
-                             "Wrong number of args (3) passed to: example/-main/fn--117"])
+                             "Divide by zero"])
            out-string))))
 
