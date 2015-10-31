@@ -63,7 +63,9 @@
     (is (.startsWith err-string "Invalid command: \"[xyz]\"."))))
 
 (deftest add-cmd-cli-interaction-stdout-test
-  (let [out-string (test-cli-stdout {:cmds {:add {:fn #(+ %1 %2)}}} ["add 1 2"])]
+  (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)}}}
+        test-cmd-input ["add 1 2"]
+        out-string (test-cli-stdout cli-opts test-cmd-input)]
     (is (= "3" out-string))))
 
 
