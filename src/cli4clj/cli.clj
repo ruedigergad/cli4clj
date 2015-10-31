@@ -143,8 +143,7 @@
    :print cli-repl-print
    :print-err print-err-fn
    :prompt-fn (fn [])
-   :prompt-string "cli# "
-   :read-factory create-jline-read-fn})
+   :prompt-string "cli# "})
 
 (defn merge-options
   [defaults user-options mandatory-defaults]
@@ -159,6 +158,8 @@
   (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)]
     (assoc-in merged-opts [:cmds :help :fn] ((merged-opts :help-factory) merged-opts))))
 
+(def ^:dynamic *read-factory* create-jline-read-fn)
+
 (defn start-cli
   ([]
     (start-cli {}))
@@ -168,7 +169,7 @@
         :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
         :print (options :print)
         :prompt (options :prompt-fn)
-        :read ((options :read-factory) (options :cmds) (options :prompt-string))))))
+        :read (*read-factory* (options :cmds) (options :prompt-string))))))
 
 
 
@@ -180,17 +181,15 @@
   [cmds prompt-string]
   (create-repl-read-fn cmds))
 
-(defn start-test-cli
-  [opts]
-  (start-cli (assoc-in opts [:read-factory] create-repl-read-test-fn)))
-
 (defn test-cli-stdout
   [cli-opts in-cmds]
-  (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))))
+  (binding [*read-factory* create-repl-read-test-fn]
+    (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts))))))
 
 (defn test-cli-stderr
   [cli-opts in-cmds]
-  (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts))))))
+  (binding [*read-factory* create-repl-read-test-fn]
+    (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-cli cli-opts)))))))
 
 (defn expected-string
   ([expected-lines]
