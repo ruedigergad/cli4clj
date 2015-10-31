@@ -68,6 +68,22 @@
         out-string (test-cli-stdout cli-opts test-cmd-input)]
     (is (= "3" out-string))))
 
+(deftest expected-string-creation-single-line-test
+  (let [in ["a"]
+        out (expected-string in)]
+    (is (= "a" out))))
+
+(deftest expected-string-creation-multi-line-test
+  (let [in ["a" "b" "c"]
+        out (expected-string in)
+        line-sep (System/getProperty "line.separator")]
+    (is (= (str "a" line-sep "b" line-sep "c") out))))
+
+(deftest expected-string-creation-custom-separator-test
+  (let [in ["a" "b" "c"]
+        out (expected-string in "foo")
+        line-sep "foo"]
+    (is (= (str "a" line-sep "b" line-sep "c") out))))
 
 
 (deftest get-cmd-aliases-test

@@ -192,3 +192,12 @@
   [cli-opts in-cmds]
   (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))))
 
+(defn expected-string
+  ([expected-lines]
+    (expected-string expected-lines (System/getProperty "line.separator")))
+  ([expected-lines separator]
+    (reduce
+      (fn [s e] (str s separator e))
+      (first expected-lines)
+      (rest expected-lines))))
+
