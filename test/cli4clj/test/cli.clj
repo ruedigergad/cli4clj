@@ -68,6 +68,20 @@
         out-string (test-cli-stdout cli-opts test-cmd-input)]
     (is (= "3" out-string))))
 
+(deftest add-cmd-cli-interaction-stdout-multiline-test
+  (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)}}}
+        test-cmd-input ["add 1 2" "add 3 4" "add 5 6"]
+        out-string (test-cli-stdout cli-opts test-cmd-input)]
+    (is (= (expected-string ["3" "7" "11"]) out-string))))
+
+(deftest add-cmd-cli-interaction-cmd-error-test
+  (let [cli-opts {:cmds {:div {:fn #(/ %1 %2)}}}
+        test-cmd-input ["div 1 0"]
+        out-string (test-cli-stderr cli-opts test-cmd-input)]
+    (is (= "Divide by zero" out-string))))
+
+
+
 (deftest expected-string-creation-single-line-test
   (let [in ["a"]
         out (expected-string in)]
@@ -84,6 +98,7 @@
         out (expected-string in "foo")
         line-sep "foo"]
     (is (= (str "a" line-sep "b" line-sep "c") out))))
+
 
 
 (deftest get-cmd-aliases-test

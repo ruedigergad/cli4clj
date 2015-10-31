@@ -190,7 +190,7 @@
 
 (defn test-cli-stderr
   [cli-opts in-cmds]
-  (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts)))))
+  (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (start-test-cli cli-opts))))))
 
 (defn expected-string
   ([expected-lines]
