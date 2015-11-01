@@ -155,8 +155,9 @@
 
 (defn get-cli-opts
   [user-options]
-  (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)]
-    (assoc-in merged-opts [:cmds :help :fn] ((merged-opts :help-factory) merged-opts))))
+  (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
+        help-fn ((merged-opts :help-factory) merged-opts)]
+    (assoc-in merged-opts [:cmds :help :fn] help-fn)))
 
 (def ^:dynamic *read-factory* create-jline-read-fn)
 
