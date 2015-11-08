@@ -161,16 +161,16 @@
 
 (def ^:dynamic *read-factory* create-jline-read-fn)
 
-(defn start-cli
+(defmacro start-cli
   ([]
     (start-cli {}))
   ([user-options]
-    (let [options (get-cli-opts user-options)]
-      (repl
-        :eval ((options :eval-factory) (options :cmds) (options :allow-eval) (options :print-err))
-        :print (options :print)
-        :prompt (options :prompt-fn)
-        :read (*read-factory* (options :cmds) (options :prompt-string))))))
+    `(let [options# (get-cli-opts ~user-options)]
+       (repl
+         :eval ((options# :eval-factory) (options# :cmds) (options# :allow-eval) (options# :print-err))
+         :print (options# :print)
+         :prompt (options# :prompt-fn)
+         :read (*read-factory* (options# :cmds) (options# :prompt-string))))))
 
 
 
