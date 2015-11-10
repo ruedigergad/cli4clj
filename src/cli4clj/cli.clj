@@ -108,11 +108,14 @@
       (doseq [c command-names]
         (when (map? (cmds c))
           (print (name c))
-          (if (not (nil? (c cmd-aliases)))
-            (println "" (vec (map #(symbol (name %)) (c cmd-aliases))))
-            (println ""))
+          (when-let [al (c cmd-aliases)]
+            (print "" (vec (map #(symbol (name %)) al))))
+          (println "")
           (when-let [si (get-in cmds [c :short-info])]
-            (println (str "\t" si)))
+            (print (str "\t" si)))
+          (when-let [args (get-in cmds [c :fn-args])]
+            (print "\t" "Arguments:" args))
+          (println "")
           (when-let [li (get-in cmds [c :long-info])]
             (println (str "\t" li)))
           (print cmd-entry-delimiter))))))
@@ -185,7 +188,7 @@
   ([]
     (start-cli {}))
   ([user-options]
-    (let [options-with-args-info user-options]
+    (let [options-with-args-info (add-args-info user-options)]
      `(let [options# (get-cli-opts ~options-with-args-info)]
         (repl
           :eval ((options# :eval-factory) (options# :cmds) (options# :allow-eval) (options# :print-err))
