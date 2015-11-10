@@ -166,13 +166,20 @@
   (println opts)
   (reduce
     (fn [m k]
-      (let [f (get-in opts [:cmds k :fn])]
+      (let [f (get-in opts [:cmds k :fn])
+            args (cond
+                   (fn? f) nil
+                   (and (list? f)
+                        (= 'fn (first f))) (:args (get-fn-arglists f))
+                   :default nil)]
         (println k f)
-        m))
+        (if (not (nil? args))
+          (assoc-in m [:cmds k :fn-args] args)
+          m)))
     opts
     (-> opts :cmds keys)))
 
-(defmacro add-args-info-macro
+(defmacro add-args-info-m
   [opts]
   (add-args-info opts))
 

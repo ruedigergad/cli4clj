@@ -5,6 +5,6 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
-                 [clj-assorted-utils "1.10.0"]
+                 [clj-assorted-utils "1.11.0-SNAPSHOT"]
                  [jline/jline "2.14-SNAPSHOT"]]
   :main cli4clj.example)
