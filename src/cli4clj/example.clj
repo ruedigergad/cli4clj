@@ -15,8 +15,8 @@
   (:gen-class))
 
 ;;; This function is just used for providing an example below.
-(defn divide [x y]
-  (/ x y))
+(defn divide [numer denom]
+  (/ numer denom))
 
 (defn -main [& args]
 ;;; Simple cli4clj usage example:
@@ -41,7 +41,7 @@
 ;;;           All Clojure data types are supported as arguments.
 ;;;           However, no sanity checks, e.g., with respect to the number of arguments or the argument type(s), are performed.
 ;;;           If things go wrong, exceptions will be thrown and printed.
-              :add  {:fn (fn [a b] (+ a b))
+              :add  {:fn (fn [summand1 summand2] (+ summand1 summand2))
                      :short-info "Add two values."}
                      :a :add
 ;;;           The following example shows the use of a named function.
