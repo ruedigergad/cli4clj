@@ -125,3 +125,18 @@
   (let [result (add-args-info-m {:cmds {:a {:fn (fn ([a] (inc a)) ([a b] (+ a b)) ([a b c] (+ a b c)))}}})]
     (is (= '[[a] [a b] [a b c]] (get-in result [:cmds :a :fn-args])))))
 
+(defn test-fn-single-arity
+  [summand1 summand2]
+  (+ summand1 summand2))
+
+(defn test-fn-multi-arity
+  ([a] (inc a))
+  ([a b] (+ a b))
+  ([a b c] (+ a b c)))
+
+(deftest get-args-info-defns-test
+  (let [result (add-args-info-m {:cmds {:a {:fn test-fn-multi-arity}
+                                        :b {:fn test-fn-single-arity}}})]
+    (is (= '[[a] [a b] [a b c]] (get-in result [:cmds :a :fn-args])))
+    (is (= '[[summand1 summand2]] (get-in result [:cmds :b :fn-args])))))
+

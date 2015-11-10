@@ -168,7 +168,7 @@
     (fn [m k]
       (let [f (get-in opts [:cmds k :fn])
             args (cond
-                   (fn? f) nil
+                   (fn? f) (:args (get-defn-arglists f))
                    (and (list? f)
                         (= 'fn (first f))) (:args (get-fn-arglists f))
                    :default nil)]
