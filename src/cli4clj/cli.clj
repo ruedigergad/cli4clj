@@ -161,9 +161,14 @@
 
 (def ^:dynamic *read-factory* create-jline-read-fn)
 
+(defn add-args-info
+  [opts]
+  (println opts)
+  opts)
+
 (defmacro add-args-info-macro
   [opts]
-  opts)
+  (add-args-info opts))
 
 (defmacro start-cli
   ([]
