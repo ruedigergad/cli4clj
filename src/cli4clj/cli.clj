@@ -164,7 +164,13 @@
 (defn add-args-info
   [opts]
   (println opts)
-  opts)
+  (reduce
+    (fn [m k]
+      (let [f (get-in opts [:cmds k :fn])]
+        (println k f)
+        m))
+    opts
+    (-> opts :cmds keys)))
 
 (defmacro add-args-info-macro
   [opts]
