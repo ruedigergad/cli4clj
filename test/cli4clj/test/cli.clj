@@ -113,3 +113,13 @@
                   :d [:x :y]}]
     (is (= expected (get-cmd-aliases cmds)))))
 
+
+
+(deftest get-args-info-test
+  (let [expected {:cmds {:a {:fn (fn [arg] (inc arg))
+                             :fn-args '[[arg]]}
+                         :b {:fn (fn [summand1 summand2] (+ summand1 summand2))
+                             :fn-args '[[summand1 summand2]]}}}]
+    (is (= expected (add-args-info-macro {:cmds {:a {:fn (fn [arg] (inc arg))}
+                                                 :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))))
+
