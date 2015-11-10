@@ -163,16 +163,14 @@
 
 (defn add-args-info
   [opts]
-  (println opts)
   (reduce
     (fn [m k]
       (let [f (get-in opts [:cmds k :fn])
             args (cond
-                   (fn? f) (:args (get-defn-arglists f))
+                   (symbol? f) (map-quote-vec (get-defn-arglists (eval `(var ~f))))
                    (and (list? f)
                         (= 'fn (first f))) (:args (get-fn-arglists f))
                    :default nil)]
-        (println k f)
         (if (not (nil? args))
           (assoc-in m [:cmds k :fn-args] args)
           m)))
