@@ -116,10 +116,8 @@
 
 
 (deftest get-args-info-test
-  (let [expected {:cmds {:a {:fn (fn [arg] (inc arg))
-                             :fn-args '[[arg]]}
-                         :b {:fn (fn [summand1 summand2] (+ summand1 summand2))
-                             :fn-args '[[summand1 summand2]]}}}]
-    (is (= expected (add-args-info-macro {:cmds {:a {:fn (fn [arg] (inc arg))}
-                                                 :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))))
+  (let [result (add-args-info-macro {:cmds {:a {:fn (fn [arg] (inc arg))}
+                                            :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})]
+    (is (= '[[arg]] (get-in result [:cmds :a :fn-args])))
+    (is (= '[[summand1 summand2]] (get-in result [:cmds :b :fn-args])))))
 
