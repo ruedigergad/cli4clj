@@ -174,7 +174,9 @@
                    (and (list? f)
                         (= 'fn (first f))) (:args (get-fn-arglists f))
                    :default nil)]
-        (if (not (nil? args))
+        (if (and
+              (not (nil? args))
+              (nil? (get-in m [:cmds k :fn-args])))
           (assoc-in m [:cmds k :fn-args] args)
           m)))
     opts

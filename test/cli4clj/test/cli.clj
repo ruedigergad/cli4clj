@@ -140,3 +140,10 @@
     (is (= '[[a] [a b] [a b c]] (get-in result [:cmds :a :fn-args])))
     (is (= '[[summand1 summand2]] (get-in result [:cmds :b :fn-args])))))
 
+(deftest get-args-info-override-test
+  (let [result (add-args-info-m {:cmds {:a {:fn (fn [arg] (inc arg))
+                                            :fn-args "My Custom Argument Description"}
+                                        :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})]
+    (is (= "My Custom Argument Description" (get-in result [:cmds :a :fn-args])))
+    (is (= '[[summand1 summand2]] (get-in result [:cmds :b :fn-args])))))
+
