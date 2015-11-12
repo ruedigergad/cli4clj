@@ -81,7 +81,7 @@
                                                (if (not (nil? completion-hint))
                                                  "\n"))))
                        (if (not (nil? completion-hint))
-                         (.add candidates completion-hint))
+                         (.add candidates (str completion-hint)))
                        (.add candidates "")
                        0))]))
           v)))
