@@ -69,7 +69,7 @@
       (let [fn-args (get-in cmds [k :fn-args])
             completion-hint (get-in cmds [k :completion-hint])]
         (if (or (not (nil? fn-args))
-                (not (nil? completion-hint)))
+                  (not (nil? completion-hint)))
           (conj v
                 (ArgumentCompleter.
                   [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
@@ -83,9 +83,10 @@
                        (if (not (nil? completion-hint))
                          (.add candidates completion-hint))
                        (.add candidates "")
-                       0))])))))
+                       0))]))
+          v)))
     []
-    (keys cmd-aliases)))
+    (keys cmds)))
 
 (defn create-jline-read-fn
   [cmds prompt-string]
