@@ -71,14 +71,17 @@
         arg-completers (reduce 
                          (fn [v k]
                            (let [fn-args (get-in cmds [k :fn-args])
-                                 completion-hint (get-in cmds [k :completion-hint])]
+                                 completion-hint (get-in cmds [k :completion-hint])
+                                 hint-completion-vec [(str "Arguments: " fn-args "\n")]]
                              (if (or (not (nil? fn-args))
                                      (not (nil? completion-hint)))
                                (conj v
                                      (ArgumentCompleter.
                                        [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
-                                        (StringsCompleter. [(str "Arguments: " fn-args "\n")
-                                                            (str "Hint: " completion-hint)])])))))
+                                        (StringsCompleter. (if (not (nil? completion-hint))
+                                                             (conj hint-completion-vec
+                                                               (str "Hint: " completion-hint))
+                                                             hint-completion-vec))])))))
                          []
                          (keys cmd-aliases))
         _ (doseq [arg-compl arg-completers]
