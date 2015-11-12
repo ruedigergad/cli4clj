@@ -70,8 +70,13 @@
                  (.setPrompt prompt-string))
         arg-completers (reduce 
                          (fn [v k]
-                           (conj v (ArgumentCompleter. [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
-                                                        (StringsCompleter. [(str (get-in cmds [k :fn-args]))])])))
+                           (if (or (not (nil? (get-in cmds [k :fn-args])))
+                                   (not (nil? (get-in cmds [k :completion-hint]))))
+                             (conj v
+                                   (ArgumentCompleter.
+                                     [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
+                                      (StringsCompleter. [(str "Arguments: " (get-in cmds [k :fn-args]) "\n")
+                                                          (str "Hint: " (get-in cmds [k :completion-hint]))])]))))
                          []
                          (keys cmd-aliases))
         _ (doseq [arg-compl arg-completers]
