@@ -18,7 +18,7 @@
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
-    (jline.console.completer StringsCompleter)))
+    (jline.console.completer ArgumentCompleter StringsCompleter)))
 
 (defn cli-repl-print
   [arg]
@@ -45,21 +45,6 @@
                 (conj v input)
                 (recur (conj v input)))))))))
 
-(defn create-jline-read-fn
-  [cmds prompt-string]
-  (let [in-rdr (doto (ConsoleReader.)
-                 (.addCompleter (StringsCompleter. (map name (keys cmds))))
-                 (.setPrompt prompt-string))
-        rdr-fn (create-repl-read-fn cmds)]
-    (fn [request-prompt request-exit]
-      (let [line (.readLine in-rdr)]
-        (if (and (not (nil? line))
-                 (not (.isEmpty line))
-                 (not (-> line (.trim) (.startsWith ";"))))
-          (binding [*in* (PushbackReader. (StringReader. (str line "\n")))]
-            (rdr-fn request-prompt request-exit))
-          request-prompt)))))
-
 (defn get-cmd-aliases
   [cmds]
   (reduce
@@ -76,6 +61,30 @@
         m)))
     {}
     cmds))
+
+(defn create-jline-read-fn
+  [cmds prompt-string]
+  (let [cmd-aliases (get-cmd-aliases cmds)
+        in-rdr (doto (ConsoleReader.)
+                 (.addCompleter (StringsCompleter. (map name (keys cmds))))
+                 (.setPrompt prompt-string))
+        arg-completers (reduce 
+                         (fn [v k]
+                           (conj v (ArgumentCompleter. [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
+                                                        (StringsCompleter. ["foo" "bar" "baz"])])))
+                         []
+                         (keys cmd-aliases))
+        _ (doseq [arg-compl arg-completers]
+            (.addCompleter in-rdr arg-compl))
+        rdr-fn (create-repl-read-fn cmds)]
+    (fn [request-prompt request-exit]
+      (let [line (.readLine in-rdr)]
+        (if (and (not (nil? line))
+                 (not (.isEmpty line))
+                 (not (-> line (.trim) (.startsWith ";"))))
+          (binding [*in* (PushbackReader. (StringReader. (str line "\n")))]
+            (rdr-fn request-prompt request-exit))
+          request-prompt)))))
 
 (defn resolve-cmd-alias
   [input-cmd cmds]
