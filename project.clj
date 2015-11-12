@@ -6,5 +6,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-assorted-utils "1.10.990"]
-                 [jline/jline "2.14-SNAPSHOT"]]
+                 [jline/jline "2.13"]]
   :main cli4clj.example)
