@@ -69,20 +69,19 @@
       (let [fn-args (get-in cmds [k :fn-args])
             completion-hint (get-in cmds [k :completion-hint])]
         (if (or (not (nil? fn-args))
-                  (not (nil? completion-hint)))
+                (not (nil? completion-hint)))
           (conj v
                 (ArgumentCompleter.
                   [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
                    (proxy [Completer] []
                      (complete [buffer cursor candidates]
                        (if (not (nil? fn-args))
-                         (.add candidates (str "Arguments: "
-                                               fn-args
-                                               (if (not (nil? completion-hint))
-                                                 "\n"))))
+                         (.add candidates (str "Arguments: " fn-args)))
                        (if (not (nil? completion-hint))
                          (.add candidates (str completion-hint)))
-                       (.add candidates "")
+                       (if (or (not (nil? fn-args))
+                               (not (nil? completion-hint)))
+                         (.add candidates ""))
                        0))]))
           v)))
     []
