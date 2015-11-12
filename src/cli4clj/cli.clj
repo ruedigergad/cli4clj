@@ -71,7 +71,7 @@
         arg-completers (reduce 
                          (fn [v k]
                            (conj v (ArgumentCompleter. [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
-                                                        (StringsCompleter. ["foo" "bar" "baz"])])))
+                                                        (StringsCompleter. [(str (get-in cmds [k :fn-args]))])])))
                          []
                          (keys cmd-aliases))
         _ (doseq [arg-compl arg-completers]
