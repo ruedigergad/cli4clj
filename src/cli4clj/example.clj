@@ -47,6 +47,7 @@
 ;;;                  The following example shows the use of a named function.
 ;;;                  The divide function is also used to illustrate the behavior on errors during processing (e.g., try to divide by 0).
                      :divide {:fn divide
+                              :completion-hint :short-info
                               :short-info "Divide two values."
                               :long-info "The first argument will be divided by the second argument."}
                      :d :divide

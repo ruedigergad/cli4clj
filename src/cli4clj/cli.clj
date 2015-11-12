@@ -68,7 +68,10 @@
     (reduce
       (fn [v k]
         (let [fn-args (get-in cmds [k :fn-args])
-              completion-hint (get-in cmds [k :completion-hint])]
+              completion-val (get-in cmds [k :completion-hint])
+              completion-hint (if (keyword? completion-val)
+                                (get-in cmds [k completion-val])
+                                completion-val)]
           (if (or (not (nil? fn-args))
                   (not (nil? completion-hint)))
             (conj v
