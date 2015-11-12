@@ -63,37 +63,37 @@
     cmds))
 
 (defn create-arg-hint-completers
-  [cmds cmd-aliases]
-  (reduce
-    (fn [v k]
-      (let [fn-args (get-in cmds [k :fn-args])
-            completion-hint (get-in cmds [k :completion-hint])]
-        (if (or (not (nil? fn-args))
-                (not (nil? completion-hint)))
-          (conj v
-                (ArgumentCompleter.
-                  [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
-                   (proxy [Completer] []
-                     (complete [buffer cursor candidates]
-                       (if (not (nil? fn-args))
-                         (.add candidates (str "Arguments: " fn-args)))
-                       (if (not (nil? completion-hint))
-                         (.add candidates (str completion-hint)))
-                       (if (or (not (nil? fn-args))
-                               (not (nil? completion-hint)))
-                         (.add candidates ""))
-                       0))]))
-          v)))
-    []
-    (keys cmds)))
+  [cmds]
+  (let [cmd-aliases (get-cmd-aliases cmds)]
+    (reduce
+      (fn [v k]
+        (let [fn-args (get-in cmds [k :fn-args])
+              completion-hint (get-in cmds [k :completion-hint])]
+          (if (or (not (nil? fn-args))
+                  (not (nil? completion-hint)))
+            (conj v
+                  (ArgumentCompleter.
+                    [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
+                     (proxy [Completer] []
+                       (complete [buffer cursor candidates]
+                         (if (not (nil? fn-args))
+                           (.add candidates (str "Arguments: " fn-args)))
+                         (if (not (nil? completion-hint))
+                           (.add candidates (str completion-hint)))
+                         (if (or (not (nil? fn-args))
+                                 (not (nil? completion-hint)))
+                           (.add candidates ""))
+                         0))]))
+            v)))
+      []
+      (keys cmds))))
 
 (defn create-jline-read-fn
   [cmds prompt-string]
-  (let [cmd-aliases (get-cmd-aliases cmds)
-        in-rdr (doto (ConsoleReader.)
+  (let [in-rdr (doto (ConsoleReader.)
                  (.addCompleter (StringsCompleter. (map name (keys cmds))))
                  (.setPrompt prompt-string))
-        arg-hint-completers (create-arg-hint-completers cmds cmd-aliases)
+        arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn cmds)]
