@@ -6,6 +6,26 @@ Create simple interactive CLIs for Clojure applications.
 
 [![Build Status](https://travis-ci.org/ruedigergad/cli4clj.svg?branch=master)](https://travis-ci.org/ruedigergad/cli4clj)
 
+
+## Overview
+
+The aim of cli4clj is to allow the quick and effortless creation of interactive command line interfaces (CLIs).
+Features of cli4clj are:
+
+* Simple configuration via maps
+* Command line history
+* Command line editing
+* Tab-completion
+  * For command names
+  * Hints for selected commands: based on function arguments and custom hints
+* Aliases can be used to define alternative command names, e.g., for shortcuts.
+* Clojure data types, e.g., vector, list, map, etc., can be used as command arguments.
+* Build-in help
+* Customizable, similar to the Clojure REPL
+* Functionality for testing CLIs via unit tests
+
+
+
 ## Usage
 
 See https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/example.clj for a usage example.
@@ -68,5 +88,5 @@ Below is an example output that shows running the usage example:
 
 Copyright © 2015 Ruediger Gad
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
+
