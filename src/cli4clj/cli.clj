@@ -140,7 +140,7 @@
             (get-in cmds [cmd :fn])
             (rest arg))
           (catch Exception e
-            (print-err (.getMessage e)))))
+            (print-err e))))
       (if allow-eval
         (eval arg)
         (print-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
@@ -176,7 +176,7 @@
           :help {:short-info "Show help."
                  :long-info "Display a help text that lists all available commands including further detailed information about these commands."}}})
 
-(defmulti print-err-fn (fn [arg] (= (type arg) Exception)))
+(defmulti print-err-fn (fn [arg] (instance? Exception arg)))
 (defmethod print-err-fn true [arg]
   (println-err (.getMessage arg)))
 (defmethod print-err-fn false [arg]
