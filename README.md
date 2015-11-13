@@ -37,14 +37,13 @@ The given example can be run via "lein run".
 Below is an example output that shows running the usage example:
 
     ~/r/p/c/cli4clj (master=) lein run
-    cli# xyz
     Invalid command: "[xyz]". Please type "help" to get an overview of commands.
     cli# help
     add [a]
-        Add two values.
+        Add two values.	 Arguments: [[summand1 summand2]]
 
     divide [d]
-        Divide two values.
+        Divide two values.	 Arguments: [[numer denom]]
         The first argument will be divided by the second argument.
 
     exit [e q quit]
@@ -60,7 +59,7 @@ Below is an example output that shows running the usage example:
         Prints a test message to stdout.
 
     to-csv
-        Seq to CSV
+        Seq to CSV	 Arguments: [[data]]
         E.g.: "to-csv [1 2 3]"
 
     cli# test
@@ -69,22 +68,47 @@ Below is an example output that shows running the usage example:
     This is a test.
     cli# add 1 2
     3
-    ; Example for an error due to wrong number of arguments.
+    cli# ; Example for an error due to wrong number of arguments.
     cli# add 1 2 3
-    Wrong number of args (3) passed to: example/-main/fn--110
-    ; Example for an error due to exception in function.
+    Wrong number of args (3) passed to: example/-main/fn--168
+    cli# ; Example for an error due to exception in function.
     cli# divide 1 0
     Divide by zero
     cli# d 4 2
     2
-    ; Example to show the use of complexer data types, here, a vector and a list.
+    cli# d 4 3
+    4/3
+    cli# ; Example to show the use of complexer data types, here, a vector and a list.
     cli# to-csv [1 7 0 1]
     "1,7,0,1"
-    ; Note that the list is not quoted.
+    cli# ; Note that the list is not quoted.
     cli# to-csv (1 8 6 4)
     "1,8,6,4"
+    cli# 
+    cli# ; Examples of tab-completion.
+    cli# TAB
+    ?        a        add      d        divide   e        exit     h        help     q        quit     t        test     to-csv   
+    cli# add TAB
+    Arguments: [[summand1 summand2]]                                      
+    cli# add 1 2
+    3
+    cli# diTAB
+    cli# divide TAB
+    Arguments: [[numer denom]]   Divide two values.                                        
+    cli# divide 1 3
+    1/3
+    cli# to-csv TAB
+    Arguments: [[data]]                                                                                                     
+    The data argument can be of any Clojure sequence type, e.g., [1 2 3] or (:a :b :c). Note that the list is not quoted.   
+                                                                                                                            
+    cli# to-csv [1 2 3]
+    "1,2,3"
     cli# q
-    ~/r/p/c/cli4clj (master=)
+    ~/r/p/c/cli4clj (master=) lein run
+
+
+For examples how the testing functionality can be used please see the test cases in: https://github.com/ruedigergad/cli4clj/blob/master/test/cli4clj/test/example.clj
+
 
 ## License
 
