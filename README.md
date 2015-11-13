@@ -24,6 +24,8 @@ Features of cli4clj are:
 * Customizable, similar to the Clojure REPL
 * Functionality for testing CLIs via unit tests
 
+On [my website](http://ruedigergad.com/tag/cli4clj) I wrote some posts about cli4clj in which you can find more verbose information.
+
 
 
 ## Usage
