@@ -21,13 +21,15 @@
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)))
 
 (defn cli-repl-print
+  "The default repl print function of cli4clj only prints non-nil values."
   [arg]
   (if (not (nil? arg))
     (prn arg)))
 
 (defn create-repl-read-fn
   [cmds]
-  "The created read function is largely based on the exisiting repl read function:
+  "This function creates a function that is intended to be used as repl read function.
+   The created read function is largely based on the existing repl read function:
    http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
    The main difference is that if the first argument on a line is a keyword,
    all elements on that line will be forwarded in a vector instead of being
@@ -46,6 +48,9 @@
                 (recur (conj v input)))))))))
 
 (defn get-cmd-aliases
+  "This function is used to find all alias definitions for the respective full command definitions.
+   It takes a map of commands as defined in the cli4clj configuration as argument.
+   The returned map maps the keys of the full command definitions to vectors of their corresponding aliases."
   [cmds]
   (reduce
     (fn [m e]
@@ -63,6 +68,7 @@
     cmds))
 
 (defn create-arg-hint-completers
+  "This function creates a vector of jline2 ArgumentCompleter instances for displaying hints related to commands via tab-completion."
   [cmds]
   (let [cmd-aliases (get-cmd-aliases cmds)]
     (reduce
@@ -92,6 +98,9 @@
       (keys cmds))))
 
 (defn create-jline-read-fn
+  "This function creates a read function that leverages jline2 for handling input.
+   Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
+   The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn."
   [cmds prompt-string]
   (let [in-rdr (doto (ConsoleReader.)
                  (.addCompleter (StringsCompleter. (map name (keys cmds))))
@@ -110,12 +119,18 @@
           request-prompt)))))
 
 (defn resolve-cmd-alias
+  "This function is used to resolve the full command definition for a given command alias.
+   If a full command definition is passed as input-cmd, the input-cmd will be returned as-is.
+   If an alias is passed as input-cmd, the full command definition will be looked up in cmds and returned."
   [input-cmd cmds]
   (if (keyword? (cmds input-cmd))
     (cmds input-cmd)
     input-cmd))
 
 (defn create-cli-eval-fn
+  "This function creates the default eval function as used by cli4clj.
+   When allow-eval is false, only commands defined in cmds will be allowed to be executed.
+   In case of exceptions, print-err will be called with the respective exception as argument."
   [cmds allow-eval print-err]
   (fn [arg]
     (if (and (vector? arg) (contains? cmds (keyword (first arg))))
@@ -131,6 +146,8 @@
         (print-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
 
 (defn create-cli-help-fn
+  "This function is used to create the default help function.
+   The help output is created based on the cli4clj configuration that is passed via the options argument."
   [options]
   (let [cmds (:cmds options)
         cmd-aliases (get-cmd-aliases cmds)
@@ -181,6 +198,8 @@
    :prompt-string "cli# "})
 
 (defn merge-options
+  "This function merges the user supplied configuration options with the default and mandatory default options.
+   For creating the actual cli4clj configuration, please use get-cli-opts as get-cli-opts will, e.g., also create and inject the help function."
   [defaults user-options mandatory-defaults]
   (merge-with
     (fn [a b] (if (and (map? a) (map? b))
@@ -189,6 +208,7 @@
     defaults user-options mandatory-defaults))
 
 (defn get-cli-opts
+  "This function creates the actual cli4clj configuration based on the supplied user configuration."
   [user-options]
   (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
         help-fn ((merged-opts :help-factory) merged-opts)]
@@ -197,6 +217,8 @@
 (def ^:dynamic *read-factory* create-jline-read-fn)
 
 (defn add-args-info
+  "This function adds information about the arguments of the commands into the configuration.
+   The default behavior can be overridden by setting :fn-args for commands."
   [opts]
   (reduce
     (fn [m k]
@@ -215,6 +237,8 @@
     (-> opts :cmds keys)))
 
 (defmacro add-args-info-m
+  "Macro version of add-args-info.
+   This is primarily used for testing and directly forwards the evaluation to add-args-info."
   [opts]
   (add-args-info opts))
 
