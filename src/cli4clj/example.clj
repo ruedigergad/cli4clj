@@ -44,13 +44,6 @@
                      :add  {:fn (fn [summand1 summand2] (+ summand1 summand2))
                             :short-info "Add two values."}
                             :a :add
-;;;                  The following example shows the use of a named function.
-;;;                  The divide function is also used to illustrate the behavior on errors during processing (e.g., try to divide by 0).
-                     :divide {:fn divide
-                              :completion-hint :short-info
-                              :short-info "Divide two values."
-                              :long-info "The first argument will be divided by the second argument."}
-                     :d :divide
 ;;;                  cli4clj already provides some pre-defined commands, from which some can overridden while others cannot.
 ;;;                  "h" is a pre-defined command but it can be overridden.
 ;;;                  This is shown by using the definition of an alias to test as example.
@@ -61,9 +54,19 @@
 ;;;                  The following simple example command is used to illustrate that arbitrary Clojure data types can be used.
 ;;;                  The command is intended to take a seq (e.g., a list or vector) which it converts into a CSV string.
                      :to-csv {:fn (fn [data] (reduce (fn [s d] (str s "," d)) (str (first data)) (rest data)))
-                              :completion-hint "The data argument can be of any Clojure sequence type, e.g., [1 2 3] or (:a :b :c)."
+;;;                           A "completion-hint" can be displayed along with the function arguments via tab-completion.
+;;;                           In the CLI, press the tab-key to test the tab-completion feature.
+                              :completion-hint "The data argument can be of any Clojure sequence type, e.g., [1 2 3] or (:a :b :c). Note that the list is not quoted."
                               :short-info "Seq to CSV"
                               :long-info "E.g.: \"to-csv [1 2 3]\""}
+;;;                  The following example shows the use of a named function.
+;;;                  The divide function is also used to illustrate the behavior on errors during processing (e.g., try to divide by 0).
+                     :divide {:fn divide
+;;;                           The completion-hint may also refer to another command property such as the short info.
+                              :completion-hint :short-info
+                              :short-info "Divide two values."
+                              :long-info "The first argument will be divided by the second argument."}
+                     :d :divide
                     }
              }))
 
