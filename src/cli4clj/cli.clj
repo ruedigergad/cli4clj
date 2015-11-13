@@ -176,7 +176,11 @@
           :help {:short-info "Show help."
                  :long-info "Display a help text that lists all available commands including further detailed information about these commands."}}})
 
-(defmulti print-err-fn (fn [arg] (instance? Exception arg)))
+(defmulti print-err-fn
+  "This is the default function for printing error messages.
+   If the supplied argument is an exception, the exception message will be printed to stderr.
+   Otherwise, the string representation of the passed argument is printed to stderr."
+  (fn [arg] (instance? Exception arg)))
 (defmethod print-err-fn true [arg]
   (println-err (.getMessage arg)))
 (defmethod print-err-fn false [arg]
@@ -243,6 +247,9 @@
   (add-args-info opts))
 
 (defmacro start-cli
+  "This is the primary entry point for starting and configuring cli4clj.
+   Please note that the configuration options can also be defined in a global or local var.
+   However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the function call."
   ([]
     (start-cli {}))
   ([user-options]
@@ -257,23 +264,28 @@
 
 
 (defn cmd-vector-to-test-input-string
+  "This function takes a vector of string commands and creates a one-line command that is suited to being passed to a cli instance during testing."
   [cmd-vec]
   (reduce (fn [s c] (str s c "\n")) "" cmd-vec))
 
 (defn create-repl-read-test-fn
+  "This function creates a repl read function for testing."
   [cmds prompt-string]
   (create-repl-read-fn cmds))
 
 (defn exec-tested-fn
+  "This function takes another function as argument and executes it in a way that is suited for testing."
   [tested-fn]
   (binding [*read-factory* create-repl-read-test-fn]
     (tested-fn)))
 
 (defn test-cli-stdout
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn."
   [tested-fn in-cmds]
   (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
 
 (defn test-cli-stderr
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn."
   [tested-fn in-cmds]
   (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn))))))
 
