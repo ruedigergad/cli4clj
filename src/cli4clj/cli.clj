@@ -21,6 +21,8 @@
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)))
 
 (def ^:dynamic *comment-begin-string* ";")
+(def default-quit-string "quit")
+(def ^:dynamic *quit-strings* ["q"])
 
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
@@ -46,7 +48,10 @@
                 (skip-if-eol *in*)
                 input)
               (if (= :line-start (skip-whitespace *in*))
-                (conj v input)
+                (if (and (symbol? input)
+                         (some #(= (name input) %) (conj *quit-strings* default-quit-string)))
+                  request-exit
+                  (conj v input))
                 (recur (conj v input)))))))))
 
 (defn get-cmd-aliases
@@ -172,8 +177,8 @@
           (print cmd-entry-delimiter))))))
 
 (def cli-mandatory-default-options
-  {:cmds {:exit {:fn (fn [] (System/exit 0))
-                 :short-info "Exit the CLI."
+  {:cmds {:quit {:fn (fn [] (println "Error: The quit function should never be called."))
+                 :short-info "Quit the CLI."
                  :long-info "Terminate and close the command line interface."}
           :help {:short-info "Show help."
                  :long-info "Display a help text that lists all available commands including further detailed information about these commands."}}})
@@ -190,11 +195,9 @@
 
 (def cli-default-options
   {:allow-eval false
-   :cmds {:e :exit
-          :h :help
+   :cmds {:h :help
           :? :help
-          :quit :exit
-          :q :exit}
+          :q :quit}
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
    :help-cmd-entry-delimiter "\n"

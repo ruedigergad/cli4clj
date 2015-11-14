@@ -85,7 +85,7 @@
   (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)}}}
         test-cmd-input ["help"]
         out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
-    (is (= "add\n\n\nexit [e q quit]\n\tExit the CLI.\n\tTerminate and close the command line interface.\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands."
+    (is (= "add\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface."
            out-string))))
 
 
