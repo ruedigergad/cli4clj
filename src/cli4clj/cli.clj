@@ -120,7 +120,6 @@
       (let [line (if *mock-jline-readline-input*
                    (read-line)
                    (.readLine in-rdr))]
-        (println "line:" line)
         (if (and (not (nil? line))
                  (not (.isEmpty line))
                  (not (-> line (.trim) (.startsWith *comment-begin-string*))))
