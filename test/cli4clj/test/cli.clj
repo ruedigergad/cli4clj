@@ -154,3 +154,10 @@
     (is (= "My Custom Argument Description" (get-in result [:cmds :a :fn-args])))
     (is (= '[[summand1 summand2]] (get-in result [:cmds :b :fn-args])))))
 
+(deftest simple-create-arg-hint-completers-test
+  (let [cmd-map {:a {:fn-args [['x 'y 'z]]}
+                 :b {:fn-args "Test hint"}}
+        completers (create-arg-hint-completers cmd-map)]
+    (is (vector? completers))
+    (is (= 2 (count completers)))))
+
