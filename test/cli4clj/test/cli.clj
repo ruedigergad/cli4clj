@@ -12,7 +12,8 @@
   cli4clj.test.cli
   (:use clojure.test
         cli4clj.cli
-        clj-assorted-utils.util))
+        clj-assorted-utils.util)
+  (:import (java.util ArrayList)))
 
 (deftest simple-options-merging-test
   (let [user-options {:cmds {:foo {:fn 123}}}
@@ -160,4 +161,19 @@
         completers (create-arg-hint-completers cmd-map)]
     (is (vector? completers))
     (is (= 2 (count completers)))))
+
+(deftest create-arg-hint-completers-completion-proposal-test
+  (let [cmd-map {:a {:fn-args [['x 'y 'z]]}
+                 :b {:fn-args "my args"
+                     :completion-hint "test hint"}}
+        completers (create-arg-hint-completers cmd-map)
+        arr-lst (ArrayList.)]
+    (is (= 2 (.complete (nth completers 0) "a " 2 arr-lst)))
+    (is (= 2 (.size arr-lst)))
+    (is (= "Arguments: [[x y z]]" (.get arr-lst 0)))
+    (.clear arr-lst)
+    (is (= 2 (.complete (nth completers 1) "b " 2 arr-lst)))
+    (is (= 3 (.size arr-lst)))
+    (is (= "Arguments: my args" (.get arr-lst 0)))
+    (is (= "test hint" (.get arr-lst 1)))))
 
