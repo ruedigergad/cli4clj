@@ -21,38 +21,12 @@
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)))
 
 (def ^:dynamic *comment-begin-string* ";")
-(def default-quit-string "quit")
-(def ^:dynamic *quit-strings* ["q"])
 
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
   [arg]
   (if (not (nil? arg))
     (prn arg)))
-
-(defn create-repl-read-fn
-  [cmds]
-  "This function creates a function that is intended to be used as repl read function.
-   The created read function is largely based on the existing repl read function:
-   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
-   The main difference is that if the first argument on a line is a keyword,
-   all elements on that line will be forwarded in a vector instead of being
-   forwarded seperately."
-  (fn [request-prompt request-exit]
-    (or ({:line-start request-prompt :stream-end request-exit}
-         (skip-whitespace *in*))
-        (loop [v []]
-          (let [input (read {:read-cond :allow} *in*)]
-            (if (and (not (symbol? input)) (empty? v))
-              (do
-                (skip-if-eol *in*)
-                input)
-              (if (= :line-start (skip-whitespace *in*))
-                (if (and (symbol? input)
-                         (some #(= (name input) %) (conj *quit-strings* default-quit-string)))
-                  request-exit
-                  (conj v input))
-                (recur (conj v input)))))))))
 
 (defn get-cmd-aliases
   "This function is used to find all alias definitions for the respective full command definitions.
@@ -73,6 +47,31 @@
         m)))
     {}
     cmds))
+
+(defn create-repl-read-fn
+  [cmds]
+  "This function creates a function that is intended to be used as repl read function.
+   The created read function is largely based on the existing repl read function:
+   http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
+   The main difference is that if the first argument on a line is a keyword,
+   all elements on that line will be forwarded in a vector instead of being
+   forwarded seperately."
+  (let [quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
+    (fn [request-prompt request-exit]
+      (or ({:line-start request-prompt :stream-end request-exit}
+           (skip-whitespace *in*))
+          (loop [v []]
+            (let [input (read {:read-cond :allow} *in*)]
+              (if (and (not (symbol? input)) (empty? v))
+                (do
+                  (skip-if-eol *in*)
+                  input)
+                (if (= :line-start (skip-whitespace *in*))
+                  (if (and (symbol? input)
+                           (some #(= (keyword input) %) quit-commands))
+                    request-exit
+                    (conj v input))
+                  (recur (conj v input))))))))))
 
 (defn create-arg-hint-completers
   "This function creates a vector of jline2 ArgumentCompleter instances for displaying hints related to commands via tab-completion."
