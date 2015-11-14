@@ -47,13 +47,13 @@ Below is an example output that shows running the usage example:
         Divide two values.	 Arguments: [[numer denom]]
         The first argument will be divided by the second argument.
 
-    exit [e q quit]
-        Exit the CLI.
-        Terminate and close the command line interface.
-
     help [?]
         Show help.
         Display a help text that lists all available commands including further detailed information about these commands.
+
+    quit [q]
+        Quit the CLI.
+        Terminate and close the command line interface.
 
     test [h t]
         Test Command
