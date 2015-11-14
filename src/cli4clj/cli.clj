@@ -20,6 +20,8 @@
     (jline.console ConsoleReader)
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)))
 
+(def ^:dynamic *comment-begin-string* ";")
+
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
   [arg]
@@ -113,7 +115,7 @@
       (let [line (.readLine in-rdr)]
         (if (and (not (nil? line))
                  (not (.isEmpty line))
-                 (not (-> line (.trim) (.startsWith ";"))))
+                 (not (-> line (.trim) (.startsWith *comment-begin-string*))))
           (binding [*in* (PushbackReader. (StringReader. (str line "\n")))]
             (rdr-fn request-prompt request-exit))
           request-prompt)))))
