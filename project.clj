@@ -7,4 +7,5 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-assorted-utils "1.11.0"]
                  [jline/jline "2.13"]]
-  :main cli4clj.example)
+  :main cli4clj.example
+  :plugins [[lein-cloverage "1.0.2"]])
