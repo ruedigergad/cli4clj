@@ -177,3 +177,14 @@
     (is (= "Arguments: my args" (.get arr-lst 0)))
     (is (= "test hint" (.get arr-lst 1)))))
 
+
+
+(deftest simple-jline-readfn-mock-test
+  (let [in-string "a 1\nb 2 3\nq"
+        out (binding [*mock-jline-readline-input* true]
+              (with-out-str
+                (with-in-str in-string
+                  (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
+                                     :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}}))))]
+    (is (= (expected-string ["2" "5"] out)))))
+
