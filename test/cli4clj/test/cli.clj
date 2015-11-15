@@ -13,7 +13,8 @@
   (:use clojure.test
         cli4clj.cli
         clj-assorted-utils.util)
-  (:import (java.util ArrayList)))
+  (:import (java.io ByteArrayInputStream)
+           (java.util ArrayList)))
 
 (deftest simple-options-merging-test
   (let [user-options {:cmds {:foo {:fn 123}}}
@@ -204,5 +205,13 @@
                 (with-in-str in-string
                   (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
                                      :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}}))))]
+    (is (= (expected-string ["2" "5"] out)))))
+
+(deftest simple-jline-input-stream-mock-test
+  (let [in-string "a 1\nb 2 3\nq\n"
+        out (binding [*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
+              (with-out-str
+                (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
+                                   :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
     (is (= (expected-string ["2" "5"] out)))))
 
