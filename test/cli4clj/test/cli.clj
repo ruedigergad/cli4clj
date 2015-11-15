@@ -184,6 +184,16 @@
     (is (= "Arguments: my args" (.get arr-lst 0)))
     (is (= "test hint" (.get arr-lst 1)))))
 
+(deftest create-arg-hint-completers-link-hint-test
+  (let [cmd-map {:a {:foo "Linking to foo hint test."
+                     :completion-hint :foo}}
+        completers (create-arg-hint-completers cmd-map)
+        arr-lst (ArrayList.)]
+    (is (= 2 (.complete (nth completers 0) "a " 2 arr-lst)))
+    (is (= 2 (.size arr-lst)))
+    (is (= "Linking to foo hint test." (.get arr-lst 0)))
+    (is (= "" (.get arr-lst 1)))))
+
 
 
 (deftest simple-jline-readfn-mock-test
