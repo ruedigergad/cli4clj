@@ -1,0 +1,209 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Namespace cli4clj.cli</title><style type="text/css">body { margin: 10px;
+          padding: 10px;
+          background-color: #DFE9F5;
+          font-family: sans-serif; }
+
+  #top { width: 800px;
+         padding: 10px;
+         margin-left: auto;
+         margin-right: auto;
+         overflow: hidden;
+         background-color: #FFFFFF;
+         color: #123154;
+         border: 3px solid #B4D3F5; }
+
+  pre { padding: 10px;
+        border: 2px dashed #B4D3F5;
+        background-color: #F0F6FD;
+        font-family: monospace; }
+
+  a { color: #4A6A8F; }
+  a:hover { background-color: #B4D3F5; }
+  a:visited { color: #425365; }
+
+  td, th { padding-left: 5px;
+           text-align: left; }
+
+  #ui-widget {
+    position: fixed;
+    top: 0em;
+    left: 0em;
+  }</style><link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" /></head><body><div id="ui-widget"><input autofocus="autofocus" id="api-search" placeholder="API Search" tabindex="1" /></div><div id="top"><header><h1>Namespace cli4clj.cli</h1><p>cli4clj allows to create simple interactive command line interfaces for Clojure applications.</p></header><section class="ns-toc" id="other-ns-toc"><h2>Other Namespaces</h2><details><summary>Show/Hide</summary><table><tr><td><a href="cli4clj.example.html">cli4clj.example</a></td><td><div>This is a simple example for using cli4clj.
+          The example can be run via "lein run".</div></td></tr><tr><td><a href="index.html">Index Page</a></td><td></td></tr><tr><td><a href="var-index.html">Alphabetic Var Index</a></td><td></td></tr></table></details></section><section id="pubvars-toc"><h2>Public Vars</h2><nav><a href="#IDMULcomment-begin-stringMUL">*comment-begin-string*</a>, <a href="#IDMULmock-jline-readline-inputMUL">*mock-jline-readline-input*</a>, <a href="#IDMULread-factoryMUL">*read-factory*</a>, <a href="#IDadd-args-info">add-args-info</a>, <a href="#IDadd-args-info-m">add-args-info-m</a>, <a href="#IDcli-default-options">cli-default-options</a>, <a href="#IDcli-mandatory-default-options">cli-mandatory-default-options</a>, <a href="#IDcli-repl-print">cli-repl-print</a>, <a href="#IDcmd-vector-to-test-input-string">cmd-vector-to-test-input-string</a>, <a href="#IDcreate-arg-hint-completers">create-arg-hint-completers</a>, <a href="#IDcreate-cli-eval-fn">create-cli-eval-fn</a>, <a href="#IDcreate-cli-help-fn">create-cli-help-fn</a>, <a href="#IDcreate-jline-read-fn">create-jline-read-fn</a>, <a href="#IDcreate-repl-read-fn">create-repl-read-fn</a>, <a href="#IDcreate-repl-read-test-fn">create-repl-read-test-fn</a>, <a href="#IDexec-tested-fn">exec-tested-fn</a>, <a href="#IDexpected-string">expected-string</a>, <a href="#IDget-cli-opts">get-cli-opts</a>, <a href="#IDget-cmd-aliases">get-cmd-aliases</a>, <a href="#IDmerge-options">merge-options</a>, <a href="#IDprint-err-fn">print-err-fn</a>, <a href="#IDresolve-cmd-alias">resolve-cmd-alias</a>, <a href="#IDstart-cli">start-cli</a>, <a href="#IDtest-cli-stderr">test-cli-stderr</a>, <a href="#IDtest-cli-stdout">test-cli-stdout</a></nav></section><section><h2>Usage Documentation</h2><details open="open"><summary>Show/Hide</summary><pre>cli4clj allows to create simple interactive command line interfaces for Clojure applications.
+          For an example usage scenario please see the namespace cli4clj.example.</pre></details><a href="#top">Back to top</a></section><section id="details"><h2>Details of Public Vars</h2><div id="IDMULcomment-begin-stringMUL"><div><h4>Dynamic Var: *comment-begin-string*</h4><pre>  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L23">View Source</a></div><div id="IDMULmock-jline-readline-inputMUL"><div><h4>Dynamic Var: *mock-jline-readline-input*</h4><pre>  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L24">View Source</a></div><div id="IDMULread-factoryMUL"><div><h4>Function: *read-factory*</h4><pre>Arglists:
+=========
+
+
+Docstring:
+==========
+
+  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L229">View Source</a></div><div id="IDadd-args-info"><div><h4>Function: add-args-info</h4><pre>Arglists:
+=========
+
+  (add-args-info opts)
+
+Docstring:
+==========
+
+  This function adds information about the arguments of the commands into the configuration.
+   The default behavior can be overridden by setting :fn-args for commands.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L231">View Source</a></div><div id="IDadd-args-info-m"><div><h4>Macro: add-args-info-m</h4><pre>Arglists:
+=========
+
+  (add-args-info-m opts)
+
+Docstring:
+==========
+
+  Macro version of add-args-info.
+   This is primarily used for testing and directly forwards the evaluation to add-args-info.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L251">View Source</a></div><div id="IDcli-default-options"><div><h4>Var: cli-default-options</h4><pre>  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L199">View Source</a></div><div id="IDcli-mandatory-default-options"><div><h4>Var: cli-mandatory-default-options</h4><pre>  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L182">View Source</a></div><div id="IDcli-repl-print"><div><h4>Function: cli-repl-print</h4><pre>Arglists:
+=========
+
+  (cli-repl-print arg)
+
+Docstring:
+==========
+
+  The default repl print function of cli4clj only prints non-nil values.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L26">View Source</a></div><div id="IDcmd-vector-to-test-input-string"><div><h4>Function: cmd-vector-to-test-input-string</h4><pre>Arglists:
+=========
+
+  (cmd-vector-to-test-input-string cmd-vec)
+
+Docstring:
+==========
+
+  This function takes a vector of string commands and creates a one-line command that is suited to being passed to a cli instance during testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L274">View Source</a></div><div id="IDcreate-arg-hint-completers"><div><h4>Function: create-arg-hint-completers</h4><pre>Arglists:
+=========
+
+  (create-arg-hint-completers cmds)
+
+Docstring:
+==========
+
+  This function creates a vector of jline2 ArgumentCompleter instances for displaying hints related to commands via tab-completion.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L77">View Source</a></div><div id="IDcreate-cli-eval-fn"><div><h4>Function: create-cli-eval-fn</h4><pre>Arglists:
+=========
+
+  (create-cli-eval-fn cmds allow-eval print-err)
+
+Docstring:
+==========
+
+  This function creates the default eval function as used by cli4clj.
+   When allow-eval is false, only commands defined in cmds will be allowed to be executed.
+   In case of exceptions, print-err will be called with the respective exception as argument.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L140">View Source</a></div><div id="IDcreate-cli-help-fn"><div><h4>Function: create-cli-help-fn</h4><pre>Arglists:
+=========
+
+  (create-cli-help-fn options)
+
+Docstring:
+==========
+
+  This function is used to create the default help function.
+   The help output is created based on the cli4clj configuration that is passed via the options argument.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L158">View Source</a></div><div id="IDcreate-jline-read-fn"><div><h4>Function: create-jline-read-fn</h4><pre>Arglists:
+=========
+
+  (create-jline-read-fn cmds prompt-string)
+
+Docstring:
+==========
+
+  This function creates a read function that leverages jline2 for handling input.
+   Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
+   The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L108">View Source</a></div><div id="IDcreate-repl-read-fn"><div><h4>Function: create-repl-read-fn</h4><pre>Arglists:
+=========
+
+  (create-repl-read-fn cmds)
+
+Docstring:
+==========
+
+  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L52">View Source</a></div><div id="IDcreate-repl-read-test-fn"><div><h4>Function: create-repl-read-test-fn</h4><pre>Arglists:
+=========
+
+  (create-repl-read-test-fn cmds prompt-string)
+
+Docstring:
+==========
+
+  This function creates a repl read function for testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L279">View Source</a></div><div id="IDexec-tested-fn"><div><h4>Function: exec-tested-fn</h4><pre>Arglists:
+=========
+
+  (exec-tested-fn tested-fn)
+
+Docstring:
+==========
+
+  This function takes another function as argument and executes it in a way that is suited for testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L284">View Source</a></div><div id="IDexpected-string"><div><h4>Function: expected-string</h4><pre>Arglists:
+=========
+
+  (expected-string expected-lines)
+  (expected-string expected-lines separator)
+
+Docstring:
+==========
+
+  Takes a vector of strings that are intended to represent individual line of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
+   The most notably property is that the lines are joined based on the platform dependent line.separator.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L300">View Source</a></div><div id="IDget-cli-opts"><div><h4>Function: get-cli-opts</h4><pre>Arglists:
+=========
+
+  (get-cli-opts user-options)
+
+Docstring:
+==========
+
+  This function creates the actual cli4clj configuration based on the supplied user configuration.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L222">View Source</a></div><div id="IDget-cmd-aliases"><div><h4>Function: get-cmd-aliases</h4><pre>Arglists:
+=========
+
+  (get-cmd-aliases cmds)
+
+Docstring:
+==========
+
+  This function is used to find all alias definitions for the respective full command definitions.
+   It takes a map of commands as defined in the cli4clj configuration as argument.
+   The returned map maps the keys of the full command definitions to vectors of their corresponding aliases.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L32">View Source</a></div><div id="IDmerge-options"><div><h4>Function: merge-options</h4><pre>Arglists:
+=========
+
+  (merge-options defaults user-options mandatory-defaults)
+
+Docstring:
+==========
+
+  This function merges the user supplied configuration options with the default and mandatory default options.
+   For creating the actual cli4clj configuration, please use get-cli-opts as get-cli-opts will, e.g., also create and inject the help function.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L212">View Source</a></div><div id="IDprint-err-fn"><div><h4>Var: print-err-fn</h4><pre>  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L189">View Source</a></div><div id="IDresolve-cmd-alias"><div><h4>Function: resolve-cmd-alias</h4><pre>Arglists:
+=========
+
+  (resolve-cmd-alias input-cmd cmds)
+
+Docstring:
+==========
+
+  This function is used to resolve the full command definition for a given command alias.
+   If a full command definition is passed as input-cmd, the input-cmd will be returned as-is.
+   If an alias is passed as input-cmd, the full command definition will be looked up in cmds and returned.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L131">View Source</a></div><div id="IDstart-cli"><div><h4>Macro: start-cli</h4><pre>Arglists:
+=========
+
+  (start-cli)
+  (start-cli user-options)
+
+Docstring:
+==========
+
+  This is the primary entry point for starting and configuring cli4clj.
+   Please note that the configuration options can also be defined in a global or local var.
+   However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the function call.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L257">View Source</a></div><div id="IDtest-cli-stderr"><div><h4>Function: test-cli-stderr</h4><pre>Arglists:
+=========
+
+  (test-cli-stderr tested-fn in-cmds)
+
+Docstring:
+==========
+
+  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L295">View Source</a></div><div id="IDtest-cli-stdout"><div><h4>Function: test-cli-stdout</h4><pre>Arglists:
+=========
+
+  (test-cli-stdout tested-fn in-cmds)
+
+Docstring:
+==========
+
+  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli.clj#L290">View Source</a></div></section></div><footer><p>These docs were generated by the <a href="https://github.com/tsdh/lein-html5-docs">Leiningen HTML5 Docs Plugin</a>, version 3.0.3.</p><a href="http://www.w3.org/html/logo/"><img alt="HTML5 Powered" height="64" src="http://www.w3.org/html/logo/badge/html5-badge-h-solo.png" title="HTML5 Powered" width="63" /></a><script src="http://code.jquery.com/jquery.min.js"></script><script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script><script src="api-search.js"></script></footer></body></html>
