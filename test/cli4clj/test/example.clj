@@ -27,7 +27,7 @@
         out-string (test-cli-stdout #(-main "") test-cmd-input)]
     (is (= (expected-string ["3" "2" "3/2"]) out-string))))
 
-(deftest simple-main-method-error--example-test
+(deftest simple-main-method-error-example-test
   (let [test-cmd-input ["divide 4 0"]
         out-string (test-cli-stderr #(-main "") test-cmd-input)]
     (is (= "Divide by zero" out-string))))
