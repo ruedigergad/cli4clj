@@ -6,6 +6,12 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clj-assorted-utils "1.11.0"]
-                 [jline/jline "2.14-SNAPSHOT"]]
+                 [jline/jline "2.13"]]
+  :global-vars {*warn-on-reflection* true}
+  :html5-docs-docs-dir "ghpages/doc"
+  :html5-docs-ns-includes #"^cli4clj.*"
+  :html5-docs-repository-url "https://github.com/ruedigergad/cli4clj/blob/master"
+  :test2junit-output-dir "ghpages/test-results"
+  :test2junit-run-ant true
   :main cli4clj.example
   :plugins [[lein-cloverage "1.0.2"]])
