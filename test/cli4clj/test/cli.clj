@@ -88,6 +88,12 @@
     (is (= "add\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface."
            out-string))))
 
+(deftest allow-eval-cli-interaction-test
+  (let [cli-opts {:allow-eval true}
+        test-cmd-input ["(+ 1 2)"]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
+    (is (= (expected-string ["3"]) out-string))))
+
 
 
 (deftest expected-string-creation-single-line-test
