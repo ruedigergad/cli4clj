@@ -82,10 +82,11 @@
     (is (= "Divide by zero" out-string))))
 
 (deftest help-cmd-cli-interaction-stdout-test
-  (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)}}}
+  (let [cli-opts {:cmds {:add {:fn #(+ %1 %2)
+                               :fn-args "fn-args string"}}}
         test-cmd-input ["help"]
         out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
-    (is (= "add\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface."
+    (is (= "add\n\t Arguments: fn-args string\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface."
            out-string))))
 
 (deftest allow-eval-cli-interaction-test
