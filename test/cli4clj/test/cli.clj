@@ -171,9 +171,10 @@
     (is (= 2 (.complete (nth completers 0) "a " 2 arr-lst)))
     (is (= 2 (.size arr-lst)))
     (is (= "Arguments: [[x y z]]" (.get arr-lst 0)))
+    (is (= "" (.get arr-lst 1)))
     (.clear arr-lst)
     (is (= 2 (.complete (nth completers 1) "b " 2 arr-lst)))
-    (is (= 3 (.size arr-lst)))
+    (is (= 2 (.size arr-lst)))
     (is (= "Arguments: my args" (.get arr-lst 0)))
     (is (= "test hint" (.get arr-lst 1)))))
 

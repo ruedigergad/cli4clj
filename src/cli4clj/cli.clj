@@ -96,8 +96,9 @@
                            (.add candidates (str "Arguments: " fn-args)))
                          (if (not (nil? completion-hint))
                            (.add candidates (str completion-hint)))
-                         (if (or (not (nil? fn-args))
-                                 (not (nil? completion-hint)))
+                         (if (not
+                               (and (not (nil? fn-args))
+                                    (not (nil? completion-hint))))
                            (.add candidates ""))
                          0))]))
             v)))
