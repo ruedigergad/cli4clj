@@ -21,7 +21,13 @@
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)))
 
 (def ^:dynamic *comment-begin-string* ";")
+
 (def ^:dynamic *mock-jline-readline-input* false)
+
+(def ^:dynamic *jline-input-stream* System/in)
+(def ^:dynamic *jline-output-stream* System/out)
+
+
 
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
@@ -110,7 +116,7 @@
    Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
    The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn."
   [cmds prompt-string]
-  (let [in-rdr (doto (ConsoleReader.)
+  (let [in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
                  (.addCompleter (StringsCompleter. (map name (keys cmds))))
                  (.setPrompt prompt-string))
         arg-hint-completers (create-arg-hint-completers cmds)
