@@ -52,7 +52,7 @@
 
 
 (deftest cmd-vector-to-cmd-test-input-string-test
-  (let [expected "foo\nbar\n"
+  (let [expected (str "foo" *cli4clj-line-sep* "bar" *cli4clj-line-sep*)
         cmd-vec ["foo" "bar"]]
     (is (= expected (cmd-vector-to-test-input-string cmd-vec)))))
 
@@ -87,7 +87,7 @@
                                :fn-args "fn-args string"}}}
         test-cmd-input ["help"]
         out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
-    (is (= "add\n\t Arguments: fn-args string\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface."
+    (is (= (str "add" *cli4clj-line-sep* "\t Arguments: fn-args string" *cli4clj-line-sep* *cli4clj-line-sep* "help [? h]" *cli4clj-line-sep* "\tShow help." *cli4clj-line-sep* "\tDisplay a help text that lists all available commands including further detailed information about these commands." *cli4clj-line-sep* *cli4clj-line-sep* "quit [q]" *cli4clj-line-sep* "\tQuit the CLI." *cli4clj-line-sep* "\tTerminate and close the command line interface.")
            out-string))))
 
 (deftest allow-eval-cli-interaction-test
@@ -199,7 +199,7 @@
 
 
 (deftest simple-jline-readfn-mock-test
-  (let [in-string "a 1\nb 2 3\nq"
+  (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q")
         out (binding [*mock-jline-readline-input* true]
               (with-out-str
                 (with-in-str in-string
@@ -208,7 +208,7 @@
     (is (= (expected-string ["2" "5"] out)))))
 
 (deftest simple-jline-input-stream-mock-test
-  (let [in-string "a 1\nb 2 3\nq\n"
+  (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q" *cli4clj-line-sep*)
         out (binding [*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
               (with-out-str
                 (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}

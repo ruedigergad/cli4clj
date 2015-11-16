@@ -27,6 +27,7 @@
 (def ^:dynamic *jline-input-stream* System/in)
 (def ^:dynamic *jline-output-stream* System/out)
 
+(def ^:dynamic *cli4clj-line-sep* (System/getProperty "line.separator"))
 
 
 (defn cli-repl-print
@@ -130,7 +131,7 @@
         (if (and (not (nil? line))
                  (not (.isEmpty line))
                  (not (-> line (.trim) (.startsWith *comment-begin-string*))))
-          (binding [*in* (PushbackReader. (StringReader. (str line "\n")))]
+          (binding [*in* (PushbackReader. (StringReader. (str line *cli4clj-line-sep*)))]
             (rdr-fn request-prompt request-exit))
           request-prompt)))))
 
@@ -209,7 +210,7 @@
           :q :quit}
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
-   :help-cmd-entry-delimiter "\n"
+   :help-cmd-entry-delimiter *cli4clj-line-sep*
    :print cli-repl-print
    :print-err print-err-fn
    :prompt-fn (fn [])
@@ -278,7 +279,7 @@
 (defn cmd-vector-to-test-input-string
   "This function takes a vector of string commands and creates a one-line command that is suited to being passed to a cli instance during testing."
   [cmd-vec]
-  (reduce (fn [s c] (str s c "\n")) "" cmd-vec))
+  (reduce (fn [s c] (str s c *cli4clj-line-sep*)) "" cmd-vec))
 
 (defn create-repl-read-test-fn
   "This function creates a repl read function for testing."
@@ -305,7 +306,7 @@
   "Takes a vector of strings that are intended to represent individual line of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
    The most notably property is that the lines are joined based on the platform dependent line.separator."
   ([expected-lines]
-    (expected-string expected-lines (System/getProperty "line.separator")))
+    (expected-string expected-lines *cli4clj-line-sep*))
   ([expected-lines separator]
     (reduce
       (fn [s e] (str s separator e))
