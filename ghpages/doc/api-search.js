@@ -1,6 +1,9 @@
 $(function() {
   var index = [
+    {label: "cli4clj.cli/*cli4clj-line-sep*", value: "cli4clj.cli.html#IDMULcli4clj-line-sepMUL"},
     {label: "cli4clj.cli/*comment-begin-string*", value: "cli4clj.cli.html#IDMULcomment-begin-stringMUL"},
+    {label: "cli4clj.cli/*jline-input-stream*", value: "cli4clj.cli.html#IDMULjline-input-streamMUL"},
+    {label: "cli4clj.cli/*jline-output-stream*", value: "cli4clj.cli.html#IDMULjline-output-streamMUL"},
     {label: "cli4clj.cli/*mock-jline-readline-input*", value: "cli4clj.cli.html#IDMULmock-jline-readline-inputMUL"},
     {label: "cli4clj.cli/*read-factory*", value: "cli4clj.cli.html#IDMULread-factoryMUL"},
     {label: "cli4clj.cli/add-args-info", value: "cli4clj.cli.html#IDadd-args-info"},
