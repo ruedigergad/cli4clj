@@ -108,6 +108,11 @@ Below is an example output that shows running the usage example:
 
 For examples how the testing functionality can be used please see the test cases in: https://github.com/ruedigergad/cli4clj/blob/master/test/cli4clj/test/example.clj
 
+API docs can be found at: http://ruedigergad.github.io/cli4clj/doc/
+
+## Detailed Test Results
+
+Detailed unit test results are avilable at: http://ruedigergad.github.io/cli4clj/test-results/html/
 
 ## License
 
