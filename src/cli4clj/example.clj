@@ -11,7 +11,8 @@
     :doc "This is a simple example for using cli4clj.
           The example can be run via \"lein run\"."}    
   cli4clj.example
-  (:use cli4clj.cli)
+  (:require
+    (cli4clj [cli :refer :all]))
   (:gen-class))
 
 ;;; This function is just used for providing an example below.

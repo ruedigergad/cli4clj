@@ -13,8 +13,9 @@
   cli4clj.cli
   (:use
     [clojure.main :only [repl skip-if-eol skip-whitespace]]
-    [clojure.string :only [blank? split]]
-    clj-assorted-utils.util)
+    [clojure.string :only [blank? split]])
+  (:require
+    (clj-assorted-utils [util :refer :all]))
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
@@ -57,13 +58,13 @@
     cmds))
 
 (defn create-repl-read-fn
-  [cmds]
   "This function creates a function that is intended to be used as repl read function.
    The created read function is largely based on the existing repl read function:
    http://clojure.github.io/clojure/clojure.main-api.html#clojure.main/repl-read
    The main difference is that if the first argument on a line is a keyword,
    all elements on that line will be forwarded in a vector instead of being
    forwarded seperately."
+  [cmds]
   (let [quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
     (fn [request-prompt request-exit]
       (or ({:line-start request-prompt :stream-end request-exit}
@@ -148,7 +149,7 @@
   "This function creates the default eval function as used by cli4clj.
    When allow-eval is false, only commands defined in cmds will be allowed to be executed.
    In case of exceptions, print-err will be called with the respective exception as argument."
-  [cmds allow-eval print-err]
+  [cmds allow-eval err-fn]
   (fn [arg]
     (if (and (vector? arg) (contains? cmds (keyword (first arg))))
       (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
@@ -157,10 +158,10 @@
             (get-in cmds [cmd :fn])
             (rest arg))
           (catch Exception e
-            (print-err e))))
+            (err-fn e))))
       (if allow-eval
         (eval arg)
-        (print-err (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
+        (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
 
 (defn create-cli-help-fn
   "This function is used to create the default help function.
