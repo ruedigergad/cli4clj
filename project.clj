@@ -14,4 +14,6 @@
   :test2junit-output-dir "ghpages/test-results"
   :test2junit-run-ant true
   :main cli4clj.example
-  :plugins [[lein-cloverage "1.0.2"] [test2junit "1.1.3"] [lein-html5-docs "3.0.3"]])
+  :plugins [[lein-cloverage "1.0.2"] [test2junit "1.1.3"] [lein-html5-docs "3.0.3"]]
+  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.2.2" :exclusions  [org.clojure/clojure]]]}}
+)
