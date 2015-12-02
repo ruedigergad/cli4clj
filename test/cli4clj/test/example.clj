@@ -10,10 +10,13 @@
   ^{:author "Ruediger Gad",
     :doc "Example tests for demonstrating the testing of a main method."}
   cli4clj.test.example
-  (:use clojure.test
-        cli4clj.cli
-        cli4clj.example
-        clj-assorted-utils.util))
+  (:require
+    (clojure
+      [test :refer :all])
+    (cli4clj
+      [cli :refer :all]
+      [example :refer :all])
+    (clj-assorted-utils [util :refer :all])))
 
 (deftest simple-main-method-example-test
   (let [test-cmd-input ["t"]
