@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="cli4clj.test.cli" errors="0" failures="0" tests="25" time="0.1161" timestamp="2016-06-19_19:52:05+0200">
-    <testcase name="simple-create-arg-hint-completers-test" classname="cli4clj.test.cli" time="0.0056">
+<testsuite name="cli4clj.test.cli" errors="0" failures="0" tests="25" time="0.1189" timestamp="2016-06-19_19:55:04+0200">
+    <testcase name="simple-create-arg-hint-completers-test" classname="cli4clj.test.cli" time="0.0060">
     </testcase>
-    <testcase name="create-arg-hint-completers-link-hint-test" classname="cli4clj.test.cli" time="0.0043">
+    <testcase name="create-arg-hint-completers-link-hint-test" classname="cli4clj.test.cli" time="0.0044">
     </testcase>
     <testcase name="get-args-info-override-test" classname="cli4clj.test.cli" time="0.0007">
     </testcase>
-    <testcase name="allow-eval-cli-interaction-test" classname="cli4clj.test.cli" time="0.0102">
+    <testcase name="allow-eval-cli-interaction-test" classname="cli4clj.test.cli" time="0.0098">
     </testcase>
-    <testcase name="get-args-info-defns-test" classname="cli4clj.test.cli" time="0.0007">
+    <testcase name="get-args-info-defns-test" classname="cli4clj.test.cli" time="0.0008">
     </testcase>
-    <testcase name="expected-string-creation-multi-line-test" classname="cli4clj.test.cli" time="0.0014">
+    <testcase name="expected-string-creation-multi-line-test" classname="cli4clj.test.cli" time="0.0017">
     </testcase>
     <testcase name="get-args-info-simple-multi-arity-fn-test" classname="cli4clj.test.cli" time="0.0004">
     </testcase>
@@ -20,9 +20,9 @@
     </testcase>
     <testcase name="simple-options-override-test" classname="cli4clj.test.cli" time="0.0003">
     </testcase>
-    <testcase name="help-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0088">
+    <testcase name="help-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0089">
     </testcase>
-    <testcase name="simple-jline-readfn-mock-test" classname="cli4clj.test.cli" time="0.0414">
+    <testcase name="simple-jline-readfn-mock-test" classname="cli4clj.test.cli" time="0.0416">
     </testcase>
     <testcase name="add-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0011">
     </testcase>
@@ -34,11 +34,11 @@
     </testcase>
     <testcase name="simple-test-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0008">
     </testcase>
-    <testcase name="get-args-info-simple-fns-test" classname="cli4clj.test.cli" time="0.0007">
+    <testcase name="get-args-info-simple-fns-test" classname="cli4clj.test.cli" time="0.0010">
     </testcase>
-    <testcase name="create-arg-hint-completers-completion-proposal-test" classname="cli4clj.test.cli" time="0.0029">
+    <testcase name="create-arg-hint-completers-completion-proposal-test" classname="cli4clj.test.cli" time="0.0032">
     </testcase>
-    <testcase name="simple-jline-input-stream-mock-test" classname="cli4clj.test.cli" time="0.0127">
+    <testcase name="simple-jline-input-stream-mock-test" classname="cli4clj.test.cli" time="0.0135">
     </testcase>
     <testcase name="get-cmd-aliases-test" classname="cli4clj.test.cli" time="0.0004">
     </testcase>
@@ -48,6 +48,6 @@
     </testcase>
     <testcase name="user-options-override-non-nested-test" classname="cli4clj.test.cli" time="0.0004">
     </testcase>
-    <testcase name="expected-string-creation-custom-separator-test" classname="cli4clj.test.cli" time="0.0004">
+    <testcase name="expected-string-creation-custom-separator-test" classname="cli4clj.test.cli" time="0.0003">
     </testcase>
 </testsuite>
