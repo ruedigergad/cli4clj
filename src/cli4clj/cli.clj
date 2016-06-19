@@ -265,7 +265,7 @@
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
    Please note that the configuration options can also be defined in a global or local var.
-   However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the function call."
+   However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
     `(let [options# (get-cli-opts ~options-with-args-info)]
