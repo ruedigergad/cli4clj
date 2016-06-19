@@ -10,9 +10,10 @@
   ^{:author "Ruediger Gad",
     :doc "Tests for cli4clj"}
   cli4clj.test.cli
-  (:use clojure.test
-        cli4clj.cli
-        clj-assorted-utils.util)
+  (:use clojure.test)
+  (:require
+    (cli4clj [cli :refer :all])
+    (clj-assorted-utils [util :refer :all]))
   (:import (java.io ByteArrayInputStream)
            (java.util ArrayList)))
 
@@ -205,7 +206,7 @@
                 (with-in-str in-string
                   (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
                                      :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}}))))]
-    (is (= (expected-string ["2" "5"] out)))))
+    (is (= (expected-string ["2" (str "5" *cli4clj-line-sep*)]) out))))
 
 (deftest simple-jline-input-stream-mock-test
   (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q" *cli4clj-line-sep*)
@@ -213,5 +214,5 @@
               (with-out-str
                 (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
                                    :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
-    (is (= (expected-string ["2" "5"] out)))))
+    (is (= (expected-string ["2" (str "5" *cli4clj-line-sep*)]) out))))
 
