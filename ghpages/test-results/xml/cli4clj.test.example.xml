@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="cli4clj.test.example" errors="0" failures="0" tests="4" time="0.0087" timestamp="2015-11-16_18:09:55+0100">
-    <testcase name="advanced-main-method-error-example-test" classname="cli4clj.test.example" time="0.0023">
+<testsuite name="cli4clj.test.example" errors="0" failures="0" tests="4" time="0.0099" timestamp="2016-06-19_19:52:05+0200">
+    <testcase name="advanced-main-method-error-example-test" classname="cli4clj.test.example" time="0.0031">
     </testcase>
-    <testcase name="advanced-main-method-example-test" classname="cli4clj.test.example" time="0.0025">
+    <testcase name="advanced-main-method-example-test" classname="cli4clj.test.example" time="0.0024">
     </testcase>
     <testcase name="simple-main-method-example-test" classname="cli4clj.test.example" time="0.0011">
     </testcase>
-    <testcase name="simple-main-method-error-example-test" classname="cli4clj.test.example" time="0.0008">
+    <testcase name="simple-main-method-error-example-test" classname="cli4clj.test.example" time="0.0011">
     </testcase>
 </testsuite>
