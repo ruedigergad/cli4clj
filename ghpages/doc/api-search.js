@@ -26,6 +26,7 @@ $(function() {
     {label: "cli4clj.cli/get-cmd-aliases", value: "cli4clj.cli.html#IDget-cmd-aliases"},
     {label: "cli4clj.cli/merge-options", value: "cli4clj.cli.html#IDmerge-options"},
     {label: "cli4clj.cli/print-err-fn", value: "cli4clj.cli.html#IDprint-err-fn"},
+    {label: "cli4clj.cli/print-exception-trace", value: "cli4clj.cli.html#IDprint-exception-trace"},
     {label: "cli4clj.cli/resolve-cmd-alias", value: "cli4clj.cli.html#IDresolve-cmd-alias"},
     {label: "cli4clj.cli/start-cli", value: "cli4clj.cli.html#IDstart-cli"},
     {label: "cli4clj.example/-main", value: "cli4clj.example.html#ID-main"},
