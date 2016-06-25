@@ -24,8 +24,8 @@
 
 (defn create-repl-read-test-fn
   "This function creates a repl read function for testing."
-  [cmds prompt-string]
-  (create-repl-read-fn cmds))
+  [opts]
+  (create-repl-read-fn opts))
 
 (defn exec-tested-fn
   "This function takes another function as argument and executes it in a way that is suited for testing."
