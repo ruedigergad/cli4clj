@@ -44,6 +44,16 @@
                              "Divide by zero"])
            out-string))))
 
+(deftest main-method-error-with-trace-example-test
+  (let [test-cmd-input ["enable-trace true"
+                        "divide 4 0"]
+        out-string (test-cli-stdout #(-main "") test-cmd-input)]
+    (is (.startsWith
+          out-string
+          (expected-string ["print-exception-trace is set to: true"
+                            "java.lang.ArithmeticException: Divide by zero"
+                            " at clojure.lang.Numbers.divide (Numbers.java"])))))
+
 (deftest print-function-test
   (let [test-cmd-input ["print 1701"]
         out-string (test-cli-stdout #(-main "") test-cmd-input)]

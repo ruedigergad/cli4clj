@@ -15,7 +15,8 @@
     [clojure.main :only [repl skip-if-eol skip-whitespace]]
     [clojure.string :only [blank? split]])
   (:require
-    (clj-assorted-utils [util :refer :all]))
+    (clj-assorted-utils [util :refer :all])
+    (clojure [stacktrace :refer :all]))
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
@@ -223,7 +224,7 @@
   (fn [arg] (instance? Exception arg)))
 (defmethod print-err-fn true [arg]
   (if @print-exception-trace
-    (.printStackTrace arg)
+    (print-cause-trace arg)
     (println-err (.getMessage arg))))
 (defmethod print-err-fn false [arg]
   (println-err (str arg)))
@@ -301,6 +302,7 @@
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
     `(let [options# (get-cli-opts ~options-with-args-info)]
+       (reset! print-exception-trace false)
        (repl
          :eval ((options# :eval-factory) (options# :cmds) (options# :allow-eval) (options# :print-err))
          :print (options# :print)
