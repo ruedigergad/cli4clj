@@ -44,3 +44,13 @@
                              "Divide by zero"])
            out-string))))
 
+(deftest print-function-test
+  (let [test-cmd-input ["print 1701"]
+        out-string (test-cli-stdout #(-main "") test-cmd-input)]
+    (is
+      (=
+        (expected-string
+          ["Arg-type: java.lang.Long Arg: 1701"
+           "Opt-args: nil"])
+        out-string))))
+
