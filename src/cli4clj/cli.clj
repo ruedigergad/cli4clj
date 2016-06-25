@@ -65,8 +65,10 @@
    The main difference is that if the first argument on a line is a keyword,
    all elements on that line will be forwarded in a vector instead of being
    forwarded seperately."
-  [cmds err-fn]
-  (let [quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
+  [opts]
+  (let [cmds (opts :cmds)
+        err-fn (opts :print-err)
+        quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
     (fn [request-prompt request-exit]
       (try
         (or ({:line-start request-prompt :stream-end request-exit}
@@ -121,14 +123,17 @@
   "This function creates a read function that leverages jline2 for handling input.
    Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
    The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn."
-  [cmds prompt-string err-fn]
-  (let [in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
+  [opts]
+  (let [cmds (opts :cmds)
+        err-fn (opts :print-err)
+        prompt-string (opts :prompt-string)
+        in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
                  (.addCompleter (StringsCompleter. (map name (keys cmds))))
                  (.setPrompt prompt-string))
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
-        rdr-fn (create-repl-read-fn cmds err-fn)]
+        rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
       (try
         (let [line (if *mock-jline-readline-input*
@@ -289,5 +294,5 @@
          :eval ((options# :eval-factory) (options# :cmds) (options# :allow-eval) (options# :print-err))
          :print (options# :print)
          :prompt (options# :prompt-fn)
-         :read (*read-factory* (options# :cmds) (options# :prompt-string) (options# :print-err))))))
+         :read (*read-factory* options#)))))
 
