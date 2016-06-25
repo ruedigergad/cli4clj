@@ -65,23 +65,26 @@
    The main difference is that if the first argument on a line is a keyword,
    all elements on that line will be forwarded in a vector instead of being
    forwarded seperately."
-  [cmds]
+  [cmds err-fn]
   (let [quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
     (fn [request-prompt request-exit]
-      (or ({:line-start request-prompt :stream-end request-exit}
-           (skip-whitespace *in*))
-          (loop [v []]
-            (let [input (read {:read-cond :allow} *in*)]
-              (if (and (not (symbol? input)) (empty? v))
-                (do
-                  (skip-if-eol *in*)
-                  input)
-                (if (= :line-start (skip-whitespace *in*))
-                  (if (and (symbol? input)
-                           (some #(= (keyword input) %) quit-commands))
-                    request-exit
-                    (conj v input))
-                  (recur (conj v input))))))))))
+      (try
+        (or ({:line-start request-prompt :stream-end request-exit}
+             (skip-whitespace *in*))
+            (loop [v []]
+              (let [input (read {:read-cond :allow} *in*)]
+                (if (and (not (symbol? input)) (empty? v))
+                  (do
+                    (skip-if-eol *in*)
+                    input)
+                  (if (= :line-start (skip-whitespace *in*))
+                    (if (and (symbol? input)
+                             (some #(= (keyword input) %) quit-commands))
+                      request-exit
+                      (conj v input))
+                    (recur (conj v input)))))))
+        (catch Exception e
+          (err-fn e))))))
 
 (defn create-arg-hint-completers
   "This function creates a vector of jline2 ArgumentCompleter instances for displaying hints related to commands via tab-completion."
@@ -118,24 +121,27 @@
   "This function creates a read function that leverages jline2 for handling input.
    Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
    The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn."
-  [cmds prompt-string]
+  [cmds prompt-string err-fn]
   (let [in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
                  (.addCompleter (StringsCompleter. (map name (keys cmds))))
                  (.setPrompt prompt-string))
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
-        rdr-fn (create-repl-read-fn cmds)]
+        rdr-fn (create-repl-read-fn cmds err-fn)]
     (fn [request-prompt request-exit]
-      (let [line (if *mock-jline-readline-input*
-                   (read-line)
-                   (.readLine in-rdr))]
-        (if (and (not (nil? line))
-                 (not (.isEmpty line))
-                 (not (-> line (.trim) (.startsWith *comment-begin-string*))))
-          (binding [*in* (PushbackReader. (StringReader. (str line *cli4clj-line-sep*)))]
-            (rdr-fn request-prompt request-exit))
-          request-prompt)))))
+      (try
+        (let [line (if *mock-jline-readline-input*
+                     (read-line)
+                     (.readLine in-rdr))]
+          (if (and (not (nil? line))
+                   (not (.isEmpty line))
+                   (not (-> line (.trim) (.startsWith *comment-begin-string*))))
+            (binding [*in* (PushbackReader. (StringReader. (str line *cli4clj-line-sep*)))]
+              (rdr-fn request-prompt request-exit))
+            request-prompt))
+        (catch Exception e
+          (err-fn e))))))
 
 (defn resolve-cmd-alias
   "This function is used to resolve the full command definition for a given command alias.
@@ -283,5 +289,5 @@
          :eval ((options# :eval-factory) (options# :cmds) (options# :allow-eval) (options# :print-err))
          :print (options# :print)
          :prompt (options# :prompt-fn)
-         :read (*read-factory* (options# :cmds) (options# :prompt-string))))))
+         :read (*read-factory* (options# :cmds) (options# :prompt-string) (options# :print-err))))))
 
