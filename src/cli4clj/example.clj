@@ -12,7 +12,8 @@
           The example can be run via \"lein run\"."}    
   cli4clj.example
   (:require
-    (cli4clj [cli :refer :all]))
+    (cli4clj [cli :refer :all])
+    (clojure [pprint :refer :all]))
   (:gen-class))
 
 ;;; This function is just used for providing an example below.
@@ -68,6 +69,16 @@
                               :short-info "Divide two values."
                               :long-info "The first argument will be divided by the second argument."}
                      :d :divide
+;;;                  The following example shows the use of optional arguments.
+;;;                  It can also be used to test how different types of inputs are treated.
+                     :print {:fn (fn [arg & opt-args]
+                                   (print "Arg: ")
+                                   (pprint arg)
+                                   (print "Opt-args: ")
+                                   (pprint opt-args))
+                             :short-info "Pretty print the supplied arguments."
+                             :long-ingo "This function pretty prints its supplied arguments. It takes at least one argument."}
+                     :p :print
                     }
              }))
 
