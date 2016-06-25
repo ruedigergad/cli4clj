@@ -30,6 +30,7 @@
 
 (def ^:dynamic *cli4clj-line-sep* (System/getProperty "line.separator"))
 
+(def print-exception-trace (atom false))
 
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
@@ -200,7 +201,9 @@
    Otherwise, the string representation of the passed argument is printed to stderr."
   (fn [arg] (instance? Exception arg)))
 (defmethod print-err-fn true [arg]
-  (println-err (.getMessage arg)))
+  (if @print-exception-trace
+    (.printStackTrace arg)
+    (println-err (.getMessage arg))))
 (defmethod print-err-fn false [arg]
   (println-err (str arg)))
 
@@ -208,7 +211,13 @@
   {:allow-eval false
    :cmds {:h :help
           :? :help
-          :q :quit}
+          :q :quit
+          :enable-trace {:fn (fn [arg]
+                               (when (= java.lang.Boolean (type arg))
+                                 (reset! print-exception-trace arg)
+                                 (println "Set print-exception-trace to:" @print-exception-trace)))
+                         :short-info "Enable/Disable Printing of Full Exception Traces"
+                         :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}}
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
    :help-cmd-entry-delimiter *cli4clj-line-sep*
