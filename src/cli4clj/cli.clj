@@ -68,13 +68,23 @@
   [opts]
   (let [cmds (opts :cmds)
         err-fn (opts :print-err)
+        invalid-token-to-string (opts :invalid-token-to-string)
         quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
     (fn [request-prompt request-exit]
       (try
         (or ({:line-start request-prompt :stream-end request-exit}
              (skip-whitespace *in*))
             (loop [v []]
-              (let [input (read {:read-cond :allow} *in*)]
+              (let [input (try
+                            (read {:read-cond :allow} *in*)
+                            (catch RuntimeException e
+                              (let [msg (.getMessage e)
+                                    invalid-msg-start "Invalid token: "]
+                              (if (and
+                                    invalid-token-to-string
+                                    (.startsWith msg invalid-msg-start))
+                                (.replace msg invalid-msg-start "")
+                                (throw e)))))]
                 (if (and (not (symbol? input)) (empty? v))
                   (do
                     (skip-if-eol *in*)
@@ -233,6 +243,7 @@
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
    :help-cmd-entry-delimiter *cli4clj-line-sep*
+   :invalid-token-to-string true
    :print cli-repl-print
    :print-err print-err-fn
    :prompt-fn (fn [])
