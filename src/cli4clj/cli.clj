@@ -80,11 +80,11 @@
                             (catch RuntimeException e
                               (let [msg (.getMessage e)
                                     invalid-msg-start "Invalid token: "]
-                              (if (and
-                                    invalid-token-to-string
-                                    (.startsWith msg invalid-msg-start))
-                                (.replace msg invalid-msg-start "")
-                                (throw e)))))]
+                                (if (and
+                                      invalid-token-to-string
+                                      (.contains msg invalid-msg-start))
+                                  (.replaceAll msg (str ".*" invalid-msg-start) "")
+                                  (throw e)))))]
                 (if (and (not (symbol? input)) (empty? v))
                   (do
                     (skip-if-eol *in*)

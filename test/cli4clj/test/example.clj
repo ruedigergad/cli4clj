@@ -54,3 +54,13 @@
            "Opt-args: nil"])
         out-string))))
 
+(deftest invalid-toke-to-string-fallback-test
+  (let [test-cmd-input ["print /foo/bar"]
+        out-string (test-cli-stdout #(-main "") test-cmd-input)]
+    (is
+      (=
+        (expected-string
+          ["Arg-type: java.lang.String Arg: \"/foo/bar\""
+           "Opt-args: nil"])
+        out-string))))
+
