@@ -213,9 +213,10 @@
           :? :help
           :q :quit
           :enable-trace {:fn (fn [arg]
-                               (when (= java.lang.Boolean (type arg))
+                               (if (instance? java.lang.Boolean arg)
                                  (reset! print-exception-trace arg)
-                                 (println "Set print-exception-trace to:" @print-exception-trace)))
+                                 (println "Error, you need to supply a boolean value: true or false"))
+                                 (println "print-exception-trace is set to:" @print-exception-trace))
                          :short-info "Enable/Disable Printing of Full Exception Traces"
                          :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}}
    :eval-factory create-cli-eval-fn
