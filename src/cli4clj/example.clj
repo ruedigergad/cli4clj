@@ -72,7 +72,7 @@
 ;;;                  The following example shows the use of optional arguments.
 ;;;                  It can also be used to test how different types of inputs are treated.
                      :print {:fn (fn [arg & opt-args]
-                                   (print "Arg: ")
+                                   (print "Arg-type:" (type arg) "Arg: ")
                                    (pprint arg)
                                    (print "Opt-args: ")
                                    (pprint opt-args))
