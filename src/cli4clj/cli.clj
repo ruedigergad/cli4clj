@@ -24,14 +24,10 @@
 
 (def ^:dynamic *comment-begin-string* ";")
 
-(def ^:dynamic *mock-jline-readline-input* false)
-
 (def ^:dynamic *jline-input-stream* System/in)
 (def ^:dynamic *jline-output-stream* System/out)
 
 (def ^:dynamic *cli4clj-line-sep* (System/getProperty "line.separator"))
-
-(def print-exception-trace (atom false))
 
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
@@ -97,7 +93,7 @@
                       (conj v input))
                     (recur (conj v input)))))))
         (catch Exception e
-          (err-fn e))))))
+          (err-fn e opts))))))
 
 (defn create-arg-hint-completers
   "This function creates a vector of jline2 ArgumentCompleter instances for displaying hints related to commands via tab-completion."
@@ -147,9 +143,7 @@
         rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
       (try
-        (let [line (if *mock-jline-readline-input*
-                     (read-line)
-                     (.readLine in-rdr))]
+        (let [line (.readLine in-rdr)]
           (if (and (not (nil? line))
                    (not (.isEmpty line))
                    (not (-> line (.trim) (.startsWith *comment-begin-string*))))
@@ -157,7 +151,7 @@
               (rdr-fn request-prompt request-exit))
             request-prompt))
         (catch Exception e
-          (err-fn e))))))
+          (err-fn e opts))))))
 
 (defn resolve-cmd-alias
   "This function is used to resolve the full command definition for a given command alias.
@@ -172,19 +166,22 @@
   "This function creates the default eval function as used by cli4clj.
    When allow-eval is false, only commands defined in cmds will be allowed to be executed.
    In case of exceptions, print-err will be called with the respective exception as argument."
-  [cmds allow-eval err-fn]
-  (fn [arg]
-    (if (and (vector? arg) (contains? cmds (keyword (first arg))))
-      (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
-        (try
-          (apply
-            (get-in cmds [cmd :fn])
-            (rest arg))
-          (catch Exception e
-            (err-fn e))))
-      (if allow-eval
-        (eval arg)
-        (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands."))))))
+  [opts]
+  (let [cmds (:cmds opts)
+        allow-eval (:allow-eval opts)
+        err-fn (:print-err opts)]
+    (fn [arg]
+      (try
+        (if (and (vector? arg) (contains? cmds (keyword (first arg))))
+          (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
+            (apply
+              (get-in cmds [cmd :fn])
+              (rest arg)))
+          (if allow-eval
+            (eval arg)
+            (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts)))
+        (catch Exception e
+          (err-fn e opts))))))
 
 (defn create-cli-help-fn
   "This function is used to create the default help function.
@@ -210,37 +207,42 @@
             (println (str "\t" li)))
           (print cmd-entry-delimiter))))))
 
-(def cli-mandatory-default-options
-  {:cmds {:quit {:fn (fn [] (println "Error: The quit function should never be called."))
-                 :short-info "Quit the CLI."
-                 :long-info "Terminate and close the command line interface."}
-          :help {:short-info "Show help."
-                 :long-info "Display a help text that lists all available commands including further detailed information about these commands."}}})
+(defn get-cli-mandatory-default-options
+  "Create a map with the mandatory default options.
+   The mandatory default options cannot be overridden by the user."
+  []
+  (let [print-exception-trace (atom false)]
+    {:cmds {:quit {:fn (fn [] (println "Error: The quit function should never be called."))
+                   :short-info "Quit the CLI."
+                   :long-info "Terminate and close the command line interface."}
+            :help {:short-info "Show help."
+                   :long-info "Display a help text that lists all available commands including further detailed information about these commands."}
+            :enable-trace {:fn (fn [arg]
+                                 (if (instance? java.lang.Boolean arg)
+                                   (reset! print-exception-trace arg)
+                                   (println "Error, you need to supply a boolean value: true or false"))
+                                   (println "print-exception-trace is set to:" @print-exception-trace))
+                           :short-info "Enable/Disable Printing of Full Exception Traces"
+                           :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}}
+     :print-exception-trace (fn [] @print-exception-trace)}))
 
 (defmulti print-err-fn
   "This is the default function for printing error messages.
    If the supplied argument is an exception, the exception message will be printed to stderr.
    Otherwise, the string representation of the passed argument is printed to stderr."
-  (fn [arg] (instance? Exception arg)))
-(defmethod print-err-fn true [arg]
-  (if @print-exception-trace
+  (fn [arg opts] (instance? Exception arg)))
+(defmethod print-err-fn true [arg opts]
+  (if ((:print-exception-trace opts))
     (print-cause-trace arg)
     (println-err (.getMessage arg))))
-(defmethod print-err-fn false [arg]
+(defmethod print-err-fn false [arg opts]
   (println-err (str arg)))
 
 (def cli-default-options
   {:allow-eval false
    :cmds {:h :help
           :? :help
-          :q :quit
-          :enable-trace {:fn (fn [arg]
-                               (if (instance? java.lang.Boolean arg)
-                                 (reset! print-exception-trace arg)
-                                 (println "Error, you need to supply a boolean value: true or false"))
-                                 (println "print-exception-trace is set to:" @print-exception-trace))
-                         :short-info "Enable/Disable Printing of Full Exception Traces"
-                         :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}}
+          :q :quit}
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
    :help-cmd-entry-delimiter *cli4clj-line-sep*
@@ -263,7 +265,7 @@
 (defn get-cli-opts
   "This function creates the actual cli4clj configuration based on the supplied user configuration."
   [user-options]
-  (let [merged-opts (merge-options cli-default-options user-options cli-mandatory-default-options)
+  (let [merged-opts (merge-options cli-default-options user-options (get-cli-mandatory-default-options))
         help-fn ((merged-opts :help-factory) merged-opts)]
     (assoc-in merged-opts [:cmds :help :fn] help-fn)))
 
@@ -302,9 +304,8 @@
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
     `(let [options# (get-cli-opts ~options-with-args-info)]
-       (reset! print-exception-trace false)
        (repl
-         :eval ((options# :eval-factory) (options# :cmds) (options# :allow-eval) (options# :print-err))
+         :eval ((options# :eval-factory) options#)
          :print (options# :print)
          :prompt (options# :prompt-fn)
          :read (*read-factory* options#)))))

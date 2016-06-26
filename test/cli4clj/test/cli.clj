@@ -201,15 +201,6 @@
 
 
 
-(deftest simple-jline-readfn-mock-test
-  (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q")
-        out (binding [*mock-jline-readline-input* true]
-              (with-out-str
-                (with-in-str in-string
-                  (start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
-                                     :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}}))))]
-    (is (= (expected-string ["2" (str "5" *cli4clj-line-sep*)]) out))))
-
 (deftest simple-jline-input-stream-mock-test
   (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q" *cli4clj-line-sep*)
         out (binding [*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]

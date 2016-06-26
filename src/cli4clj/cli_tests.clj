@@ -41,7 +41,7 @@
 (defn test-cli-stderr
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn."
   [tested-fn in-cmds]
-  (.trim (with-err-str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn))))))
+  (.trim (with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
 
 (defn expected-string
   "Takes a vector of strings that are intended to represent individual line of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
