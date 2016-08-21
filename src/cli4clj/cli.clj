@@ -223,7 +223,10 @@
                                    (println "Error, you need to supply a boolean value: true or false"))
                                    (println "print-exception-trace is set to:" @print-exception-trace))
                            :short-info "Enable/Disable Printing of Full Exception Traces"
-                           :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}}
+                           :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}
+            :sleep {:fn (fn [duration] (sleep duration))
+                    :short-info "Sleep for n milliseconds."
+                    :long-info "Pause the UI thread for n milliseconds. One use case for this is unit testing of CLIs with asynchronous interaction."}}
      :print-exception-trace (fn [] @print-exception-trace)}))
 
 (defmulti print-err-fn

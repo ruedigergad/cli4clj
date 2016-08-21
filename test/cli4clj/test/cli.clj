@@ -90,7 +90,20 @@
                                :fn-args "fn-args string"}}}
         test-cmd-input ["help"]
         out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
-    (is (= (str "add" *cli4clj-line-sep* "\t Arguments: fn-args string" *cli4clj-line-sep* *cli4clj-line-sep* "enable-trace" *cli4clj-line-sep* "\tEnable/Disable Printing of Full Exception Traces" *cli4clj-line-sep* "\tWhen set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed." *cli4clj-line-sep* *cli4clj-line-sep* "help [? h]" *cli4clj-line-sep* "\tShow help." *cli4clj-line-sep* "\tDisplay a help text that lists all available commands including further detailed information about these commands." *cli4clj-line-sep* *cli4clj-line-sep* "quit [q]" *cli4clj-line-sep* "\tQuit the CLI." *cli4clj-line-sep* "\tTerminate and close the command line interface.")
+    (is (= (str "add" *cli4clj-line-sep*
+                "\t Arguments: fn-args string" *cli4clj-line-sep* *cli4clj-line-sep*
+                "enable-trace" *cli4clj-line-sep*
+                "\tEnable/Disable Printing of Full Exception Traces" *cli4clj-line-sep*
+                "\tWhen set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed." *cli4clj-line-sep* *cli4clj-line-sep*
+                "help [? h]" *cli4clj-line-sep*
+                "\tShow help." *cli4clj-line-sep*
+                "\tDisplay a help text that lists all available commands including further detailed information about these commands." *cli4clj-line-sep* *cli4clj-line-sep*
+                "quit [q]" *cli4clj-line-sep*
+                "\tQuit the CLI." *cli4clj-line-sep*
+                "\tTerminate and close the command line interface." *cli4clj-line-sep* *cli4clj-line-sep*
+                "sleep" *cli4clj-line-sep*
+                "\tSleep for n milliseconds." *cli4clj-line-sep*
+                "\tPause the UI thread for n milliseconds. One use case for this is unit testing of CLIs with asynchronous interaction.")
            out-string))))
 
 (deftest allow-eval-cli-interaction-test
