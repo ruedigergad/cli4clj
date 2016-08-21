@@ -103,7 +103,7 @@
                 "\tTerminate and close the command line interface." *cli4clj-line-sep* *cli4clj-line-sep*
                 "sleep" *cli4clj-line-sep*
                 "\tSleep for n milliseconds." *cli4clj-line-sep*
-                "\tPause the UI thread for n milliseconds. One use case for this is unit testing of CLIs that execute functionality in separate threads.")
+                "\tPause the UI thread for n milliseconds. One use case for this is unit testing of CLIs with asynchronous interaction.")
            out-string))))
 
 (deftest allow-eval-cli-interaction-test
