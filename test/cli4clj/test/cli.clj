@@ -79,7 +79,7 @@
         out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
     (is (= (expected-string ["3" "7" "11"]) out-string))))
 
-(deftest add-cmd-cli-interaction-cmd-error-test
+(deftest div-cmd-cli-interaction-cmd-error-test
   (let [cli-opts {:cmds {:div {:fn #(/ %1 %2)}}}
         test-cmd-input ["div 1 0"]
         out-string (test-cli-stderr #(start-cli cli-opts) test-cmd-input)]
