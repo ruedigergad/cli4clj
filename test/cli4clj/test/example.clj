@@ -45,7 +45,7 @@
            out-string))))
 
 (deftest main-method-error-with-trace-example-test
-  (let [test-cmd-input ["enable-trace true"
+  (let [test-cmd-input ["_enable-trace true"
                         "divide 4 0"]
         out-string (test-cli-stdout #(-main "") test-cmd-input)]
     (is (.startsWith
