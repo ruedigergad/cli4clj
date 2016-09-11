@@ -206,19 +206,39 @@
     (is (= "Linking to foo hint test." (.get arr-lst 0)))
     (is (= "" (.get arr-lst 1)))))
 
+
+
 (deftest async-cmd-not-finished-test
   (let [cli-opts {:cmds {:async-foo {:fn (fn []
                                            (println "Starting...")
-                                           (doto
-                                             (Thread.
-                                               (fn []
-                                                 (sleep 60000)
-                                                 (println "Finished.")))
-                                             (.start))
+                                           (let [tmp-out *out*]
+                                             (doto
+                                               (Thread.
+                                                 (fn []
+                                                   (binding [*out* tmp-out]
+                                                     (sleep 500)
+                                                     (println "Finished."))))
+                                               (.start)))
                                            "Started.")}}}
         test-cmd-input ["async-foo"]
         out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
     (is (= (expected-string ["Starting..." "\"Started.\""]) out-string))))
+
+(deftest async-cmd-sleep-finished-test
+  (let [cli-opts {:cmds {:async-foo {:fn (fn []
+                                           (println "Starting...")
+                                           (let [tmp-out *out*]
+                                             (doto
+                                               (Thread.
+                                                 (fn []
+                                                   (binding [*out* tmp-out]
+                                                     (sleep 500)
+                                                     (println "Finished."))))
+                                               (.start)))
+                                           "Started.")}}}
+        test-cmd-input ["async-foo" "_sleep 1000"]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
+    (is (= (expected-string ["Starting..." "\"Started.\"" "Finished."]) out-string))))
 
 
 
