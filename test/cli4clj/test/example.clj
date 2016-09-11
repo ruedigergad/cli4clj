@@ -74,3 +74,13 @@
            "Opt-args: nil"])
         out-string))))
 
+(deftest print-function-opt-args-test
+  (let [test-cmd-input ["print foo bar baz"]
+        out-string (test-cli-stdout #(-main "") test-cmd-input)]
+    (is
+      (=
+        (expected-string
+          ["Arg-type: clojure.lang.Symbol Arg: foo"
+           "Opt-args: (bar baz)"])
+        out-string))))
+
