@@ -106,22 +106,22 @@
               completion-hint (if (keyword? completion-val)
                                 (get-in cmds [k completion-val])
                                 completion-val)]
-          (if (or (not (nil? fn-args))
-                  (not (nil? completion-hint)))
-            (conj v
-                  (ArgumentCompleter.
-                    [(StringsCompleter. (conj (vec (map name (cmd-aliases k))) (name k)))
-                     (proxy [Completer] []
-                       (complete [buffer cursor candidates]
-                         (if (not (nil? fn-args))
-                           (.add candidates (str "Arguments: " fn-args)))
-                         (if (not (nil? completion-hint))
-                           (.add candidates (str completion-hint)))
-                         (if (not
-                               (and (not (nil? fn-args))
-                                    (not (nil? completion-hint))))
-                           (.add candidates ""))
-                         0))]))
+          (if (or
+                (not (nil? fn-args))
+                (not (nil? completion-hint)))
+            (conj
+              v
+              (ArgumentCompleter.
+                [(StringsCompleter. (conj (mapv name (cmd-aliases k)) (name k)))
+                 (proxy [Completer] []
+                   (complete [buffer cursor candidates]
+                     (if (not (nil? fn-args))
+                       (.add candidates (str "Arguments: " fn-args)))
+                     (if (not (nil? completion-hint))
+                       (.add candidates (str completion-hint)))
+                     (if (not (and (not (nil? fn-args)) (not (nil? completion-hint))))
+                       (.add candidates ""))
+                     0))]))
             v)))
       []
       (keys cmds))))
