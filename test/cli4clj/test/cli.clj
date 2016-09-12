@@ -263,6 +263,23 @@
 
 
 
+(deftest enable-trace-test
+  (let [cli-opts {}
+        test-cmd-input ["_enable-trace true"]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
+    (is (= (expected-string ["print-exception-trace is set to: true"]) out-string))))
+
+(deftest enable-trace-wrong-arg-test
+  (let [cli-opts {}
+        test-cmd-input ["_enable-trace 123"]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
+    (is (= (expected-string
+             ["Error, you need to supply a boolean value: true or false"
+              "print-exception-trace is set to: false"])
+           out-string))))
+
+
+
 (deftest simple-jline-input-stream-mock-test
   (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q" *cli4clj-line-sep*)
         out (binding [*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
