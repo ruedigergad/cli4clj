@@ -142,16 +142,13 @@
             (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
-      (try
-        (let [line (.readLine in-rdr)]
-          (if (and (not (nil? line))
-                   (not (.isEmpty line))
-                   (not (-> line (.trim) (.startsWith *comment-begin-string*))))
-            (binding [*in* (PushbackReader. (StringReader. (str line *cli4clj-line-sep*)))]
-              (rdr-fn request-prompt request-exit))
-            request-prompt))
-        (catch Exception e
-          (err-fn e opts))))))
+      (let [line (.readLine in-rdr)]
+        (if (and (not (nil? line))
+                 (not (.isEmpty line))
+                 (not (-> line (.trim) (.startsWith *comment-begin-string*))))
+          (binding [*in* (PushbackReader. (StringReader. (str line *cli4clj-line-sep*)))]
+            (rdr-fn request-prompt request-exit))
+          request-prompt)))))
 
 (defn resolve-cmd-alias
   "This function is used to resolve the full command definition for a given command alias.
