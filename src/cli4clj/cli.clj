@@ -135,7 +135,7 @@
         err-fn (opts :print-err)
         prompt-string (opts :prompt-string)
         in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
-                 (.addCompleter (StringsCompleter. (map name (keys cmds))))
+                 (.addCompleter (StringsCompleter. (remove #(.startsWith % "_") (map name (keys cmds)))))
                  (.setPrompt prompt-string))
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
