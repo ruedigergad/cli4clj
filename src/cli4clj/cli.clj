@@ -231,17 +231,17 @@
                      :long-info "Pause the UI thread for n milliseconds. One use case for this is unit testing of CLIs with asynchronous interaction."}}
      :print-exception-trace (fn [] @print-exception-trace)}))
 
-(defmulti print-err-fn
+(defn print-err-fn
   "This is the default function for printing error messages.
    If the supplied argument is an exception, the exception message will be printed to stderr.
    Otherwise, the string representation of the passed argument is printed to stderr."
-  (fn [arg opts] (instance? Exception arg)))
-(defmethod print-err-fn true [arg opts]
-  (if ((:print-exception-trace opts))
-    (print-cause-trace arg)
-    (println-err (.getMessage arg))))
-(defmethod print-err-fn false [arg opts]
-  (println-err (str arg)))
+  [arg opts]
+  (cond
+    (and
+      (instance? Exception arg)
+      ((:print-exception-trace opts))) (print-cause-trace arg)
+    (instance? Exception arg) (println-err (.getMessage arg))
+    :default (println-err (str arg))))
 
 (def cli-default-options
   {:allow-eval false
