@@ -248,6 +248,21 @@
 
 
 
+(deftest print-cmd-invalid-token-to-string-fallback-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}}}
+        test-cmd-input ["print /foo/bar"]
+        out-string (test-cli-stdout #(start-cli cli-opts) test-cmd-input)]
+    (is (= (expected-string ["/foo/bar"]) out-string))))
+
+(deftest print-cmd-invalid-token-exception-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}}
+                  :invalid-token-to-string false}
+        test-cmd-input ["print /foo/bar"]
+        out-string (test-cli-stderr #(start-cli cli-opts) test-cmd-input)]
+    (is (.startsWith out-string "java.lang.RuntimeException: Invalid token: /foo/bar"))))
+
+
+
 (deftest simple-jline-input-stream-mock-test
   (let [in-string (str "a 1" *cli4clj-line-sep* "b 2 3" *cli4clj-line-sep* "q" *cli4clj-line-sep*)
         out (binding [*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
