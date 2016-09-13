@@ -15,8 +15,8 @@
     [clojure.main :only [repl skip-if-eol skip-whitespace]]
     [clojure.string :only [blank? split]])
   (:require
-    (clj-assorted-utils [util :refer :all])
-    (clojure [stacktrace :refer :all]))
+    (clj-assorted-utils [util :as utils])
+    (clojure [stacktrace :as strace]))
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
@@ -223,7 +223,7 @@
                                   (println "print-exception-trace is set to:" @print-exception-trace))
                             :short-info "Enable/Disable Printing of Full Exception Traces"
                             :long-info "When set to false (default), only the exception message will be printed when an exception occurs. When set to true, the full traces of exceptions will be printed."}
-            :_sleep {:fn (fn [duration] (sleep duration))
+            :_sleep {:fn (fn [duration] (utils/sleep duration))
                      :short-info "Sleep for n milliseconds."
                      :long-info "Pause the UI thread for n milliseconds. One use case for this is unit testing of CLIs with asynchronous interaction."}}
      :print-exception-trace (fn [] @print-exception-trace)}))
@@ -236,9 +236,9 @@
   (cond
     (and
       (instance? Exception arg)
-      ((:print-exception-trace opts))) (print-cause-trace arg)
-    (instance? Exception arg) (println-err (.getMessage arg))
-    :default (println-err (str arg))))
+      ((:print-exception-trace opts))) (strace/print-cause-trace arg)
+    (instance? Exception arg) (utils/println-err (.getMessage arg))
+    :default (utils/println-err (str arg))))
 
 (def cli-default-options
   {:allow-eval false
@@ -281,9 +281,9 @@
     (fn [m k]
       (let [f (get-in opts [:cmds k :fn])
             args (cond
-                   (symbol? f) (map-quote-vec (get-defn-arglists (eval `(var ~f))))
+                   (symbol? f) (utils/map-quote-vec (utils/get-defn-arglists (eval `(var ~f))))
                    (and (list? f)
-                        (= 'fn (first f))) (:args (get-fn-arglists f))
+                        (= 'fn (first f))) (:args (utils/get-fn-arglists f))
                    :default nil)]
         (if (and
               (not (nil? args))
