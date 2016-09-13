@@ -36,7 +36,6 @@ The given example can be run via "lein run".
 Below is an example output that shows running the usage example:
 
     ~/r/p/c/cli4clj (master=) lein run
-    Invalid command: "[xyz]". Please type "help" to get an overview of commands.
     cli# help
     add [a]
         Add two values.	 Arguments: [[summand1 summand2]]
