@@ -11,12 +11,11 @@
     :doc "cli4clj allows to create simple interactive command line interfaces for Clojure applications.
           For an example usage scenario please see the namespace cli4clj.example."}
   cli4clj.cli
-  (:use
-    [clojure.main :only [repl skip-if-eol skip-whitespace]]
-    [clojure.string :only [blank? split]])
   (:require
     (clj-assorted-utils [util :as utils])
-    (clojure [stacktrace :as strace]))
+    (clojure
+      [main :as main]
+      [stacktrace :as strace]))
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
@@ -70,7 +69,7 @@
     (fn [request-prompt request-exit]
       (try
         (or ({:line-start request-prompt :stream-end request-exit}
-             (skip-whitespace *in*))
+             (main/skip-whitespace *in*))
             (loop [v []]
               (let [input (try
                             (read {:read-cond :allow} *in*)
@@ -84,9 +83,9 @@
                                   (throw e)))))]
                 (if (and (not (symbol? input)) (empty? v))
                   (do
-                    (skip-if-eol *in*)
+                    (main/skip-if-eol *in*)
                     input)
-                  (if (= :line-start (skip-whitespace *in*))
+                  (if (= :line-start (main/skip-whitespace *in*))
                     (if (and (symbol? input)
                              (some #(= (keyword input) %) quit-commands))
                       request-exit
@@ -306,7 +305,7 @@
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
     `(let [options# (get-cli-opts ~options-with-args-info)]
-       (repl
+       (main/repl
          :eval ((options# :eval-factory) options#)
          :print (options# :print)
          :prompt (options# :prompt-fn)
