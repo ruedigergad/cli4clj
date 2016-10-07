@@ -35,10 +35,28 @@
   [tested-fn in-cmds]
   (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
 
+(defn test-cli-stdout-custom
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
+   In addition the function f will be called for each element that is written to stdout."
+  [tested-fn in-cmds f]
+  (.trim (utils/with-out-str-ext
+           f
+           (with-in-str (cmd-vector-to-test-input-string in-cmds)
+             (exec-tested-fn tested-fn)))))
+
 (defn test-cli-stderr
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn."
   [tested-fn in-cmds]
   (.trim (utils/with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
+
+(defn test-cli-stderr-custom
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
+   In addition the function f will be called for each element that is written to stderr."
+  [tested-fn in-cmds f]
+  (.trim (utils/with-err-str-ext
+           f
+           (with-in-str (cmd-vector-to-test-input-string in-cmds)
+             (exec-tested-fn tested-fn)))))
 
 (defn expected-string
   "Takes a vector of strings that are intended to represent individual line of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.

@@ -45,6 +45,34 @@
 
 
 
+(test/deftest custom-test-cli-stdout-test
+  (let [cli-opts {:cmds {:foo {:fn (fn [] (print "bar"))}}}
+        test-cmd-input ["foo"]
+        intercepted-data (atom nil)
+        out-string (cli-tests/test-cli-stdout-custom
+                     #(cli/start-cli cli-opts)
+                     test-cmd-input
+                     (fn [d]
+                       (reset! intercepted-data d)
+                       (str "baz" d)))]
+    (test/is (= (cli-tests/expected-string ["bazbar"]) out-string))
+    (test/is (= "bar" @intercepted-data))))
+
+(test/deftest custom-test-cli-stderr-test
+  (let [cli-opts {:cmds {:foo {:fn (fn [] (utils/print-err "bar"))}}}
+        test-cmd-input ["foo"]
+        intercepted-data (atom nil)
+        out-string (cli-tests/test-cli-stderr-custom
+                     #(cli/start-cli cli-opts)
+                     test-cmd-input
+                     (fn [d]
+                       (reset! intercepted-data d)
+                       (str "baz" d)))]
+    (test/is (= (cli-tests/expected-string ["bazbar"]) out-string))
+    (test/is (= "bar" @intercepted-data))))
+
+
+
 (defn- async-test-fn
   []
   (println "Starting...")
