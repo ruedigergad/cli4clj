@@ -54,11 +54,6 @@
 
 
 
-(test/deftest cmd-vector-to-cmd-test-input-string-test
-  (let [expected (str "foo" cli/*cli4clj-line-sep* "bar" cli/*cli4clj-line-sep*)
-        cmd-vec ["foo" "bar"]]
-    (test/is (= expected (cli-tests/cmd-vector-to-test-input-string cmd-vec)))))
-
 (test/deftest simple-test-cli-interaction-stdout-test
   (let [out-string (cli-tests/test-cli-stdout #(cli/start-cli {}) [])]
     (test/is (= "" out-string))))
@@ -105,25 +100,6 @@
         test-cmd-input ["(+ 1 2)"]
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
     (test/is (= (cli-tests/expected-string ["3"]) out-string))))
-
-
-
-(test/deftest expected-string-creation-single-line-test
-  (let [in ["a"]
-        out (cli-tests/expected-string in)]
-    (test/is (= "a" out))))
-
-(test/deftest expected-string-creation-multi-line-test
-  (let [in ["a" "b" "c"]
-        out (cli-tests/expected-string in)
-        line-sep (System/getProperty "line.separator")]
-    (test/is (= (str "a" line-sep "b" line-sep "c") out))))
-
-(test/deftest expected-string-creation-custom-separator-test
-  (let [in ["a" "b" "c"]
-        out (cli-tests/expected-string in "foo")
-        line-sep "foo"]
-    (test/is (= (str "a" line-sep "b" line-sep "c") out))))
 
 
 
@@ -208,33 +184,6 @@
 
 
 
-(defn- async-test-fn
-  []
-  (println "Starting...")
-  (let [tmp-out *out*]
-    (doto
-      (Thread.
-        (fn []
-          (binding [*out* tmp-out]
-            (utils/sleep 500)
-            (println "Finished."))))
-      (.start)))
-  "Started.")
-
-(test/deftest async-cmd-not-finished-test
-  (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
-        test-cmd-input ["async-foo"]
-        out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
-    (test/is (= (cli-tests/expected-string ["Starting..." "\"Started.\""]) out-string))))
-
-(test/deftest async-cmd-sleep-finished-test
-  (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
-        test-cmd-input ["async-foo" "_sleep 1000"]
-        out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
-    (test/is (= (cli-tests/expected-string ["Starting..." "\"Started.\"" "Finished."]) out-string))))
-
-
-
 (test/deftest print-cmd-invalid-token-to-string-fallback-test
   (let [cli-opts {:cmds {:print {:fn #(println %)}}}
         test-cmd-input ["print /foo/bar"]
@@ -264,14 +213,4 @@
              ["Error, you need to supply a boolean value: true or false"
               "print-exception-trace is set to: false"])
            out-string))))
-
-
-
-(test/deftest simple-jline-input-stream-mock-test
-  (let [in-string (str "a 1" cli/*cli4clj-line-sep* "b 2 3" cli/*cli4clj-line-sep* "q" cli/*cli4clj-line-sep*)
-        out (binding [cli/*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
-              (with-out-str
-                (cli/start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
-                                   :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
-    (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*cli4clj-line-sep*)]) out))))
 
