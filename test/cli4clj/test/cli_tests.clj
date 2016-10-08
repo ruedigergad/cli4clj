@@ -100,7 +100,7 @@
 
 (test/deftest async-cmd-string-latch-test
   (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
-        test-cmd-input ["async-foo" "_sleep 1000"]
+        test-cmd-input ["async-foo"]
         sl (cli-tests/string-latch ["Finished."])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))

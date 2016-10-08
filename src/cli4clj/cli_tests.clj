@@ -45,7 +45,9 @@
     (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
   ([tested-fn in-cmds sl]
     (test-cli-stdout-custom
-      tested-fn
+      (fn []
+        (tested-fn)
+        (sl :await-completed))
       in-cmds
       (fn [s]
         (sl s)
@@ -90,18 +92,25 @@
                   (fn [s]
                     [s (utils/prepare-flag)])
                   strings))
-        currentValue (atom [])
+        completed-flag (utils/prepare-flag)
+        observed-values (atom [])
         set-index (atom 0)
         await-index (atom 0)]
     (fn
       ([]
         (utils/await-flag (-> flags (nth @await-index) second))
         (swap! await-index inc)
-        @currentValue)
+        @observed-values)
       ([s]
-        (swap! currentValue conj s)
-        (when
-          (= (-> flags first first) s)
-          (utils/set-flag (-> flags (nth @set-index) second))
-          (swap! set-index inc))))))
+        (condp = s
+          :await-completed (utils/await-flag completed-flag)
+          (do
+            (swap! observed-values conj s)
+            (when
+              (= (-> flags first first) s)
+              (utils/set-flag (-> flags (nth @set-index) second))
+              (swap! set-index inc)
+              (when
+                (= @set-index (count flags))
+                (utils/set-flag completed-flag)))))))))
 
