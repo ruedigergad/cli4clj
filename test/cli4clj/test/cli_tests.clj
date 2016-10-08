@@ -98,11 +98,32 @@
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
-(test/deftest async-cmd-string-latch-test
+(test/deftest async-cmd-string-latch-stdout-test
   (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
         test-cmd-input ["async-foo"]
         sl (cli-tests/string-latch ["Finished."])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
+    (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))
+    (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
+
+(defn- async-test-stderr-fn
+  []
+  (utils/println-err "Starting...")
+  (let [tmp-err *err*]
+    (doto
+      (Thread.
+        (fn []
+          (binding [*err* tmp-err]
+            (utils/sleep 500)
+            (utils/println-err "Finished."))))
+      (.start)))
+  (utils/println-err "Started."))
+
+(test/deftest async-cmd-string-latch-stderr-test
+  (let [cli-opts {:cmds {:async-foo {:fn async-test-stderr-fn}}}
+        test-cmd-input ["async-foo"]
+        sl (cli-tests/string-latch ["Finished."])
+        out-string (cli-tests/test-cli-stderr #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 

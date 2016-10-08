@@ -68,14 +68,16 @@
     (.trim (utils/with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
   ([tested-fn in-cmds sl]
     (test-cli-stderr-custom
-      tested-fn
+      (fn []
+        (tested-fn)
+        (sl :await-completed))
       in-cmds
       (fn [s]
         (sl s)
         s))))
 
 (defn expected-string
-  "Takes a vector of strings that are intended to represent individual line of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
+  "Takes a vector of strings that are intended to represent individual lines of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
    The most notably property is that the lines are joined based on the platform dependent line.separator."
   ([expected-lines]
     (expected-string expected-lines cli/*cli4clj-line-sep*))
@@ -103,7 +105,9 @@
         @observed-values)
       ([s]
         (condp = s
-          :await-completed (utils/await-flag completed-flag)
+          :await-completed (do
+                             (utils/await-flag completed-flag)
+                             (utils/sleep 10))
           (do
             (swap! observed-values conj s)
             (when
