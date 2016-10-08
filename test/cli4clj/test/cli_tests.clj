@@ -49,26 +49,24 @@
   (let [cli-opts {:cmds {:foo {:fn (fn [] (print "bar"))}}}
         test-cmd-input ["foo"]
         intercepted-data (atom nil)
-        out-string (cli-tests/test-cli-stdout-custom
+        out-string (cli-tests/test-cli-stdout-cb
                      #(cli/start-cli cli-opts)
                      test-cmd-input
                      (fn [d]
-                       (reset! intercepted-data d)
-                       (str "baz" d)))]
-    (test/is (= (cli-tests/expected-string ["bazbar"]) out-string))
+                       (reset! intercepted-data d)))]
+    (test/is (= (cli-tests/expected-string ["bar"]) out-string))
     (test/is (= "bar" @intercepted-data))))
 
 (test/deftest custom-test-cli-stderr-test
   (let [cli-opts {:cmds {:foo {:fn (fn [] (utils/print-err "bar"))}}}
         test-cmd-input ["foo"]
         intercepted-data (atom nil)
-        out-string (cli-tests/test-cli-stderr-custom
+        out-string (cli-tests/test-cli-stderr-cb
                      #(cli/start-cli cli-opts)
                      test-cmd-input
                      (fn [d]
-                       (reset! intercepted-data d)
-                       (str "baz" d)))]
-    (test/is (= (cli-tests/expected-string ["bazbar"]) out-string))
+                       (reset! intercepted-data d)))]
+    (test/is (= (cli-tests/expected-string ["bar"]) out-string))
     (test/is (= "bar" @intercepted-data))))
 
 

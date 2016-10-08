@@ -30,12 +30,12 @@
   (binding [cli/*read-factory* create-repl-read-test-fn]
     (tested-fn)))
 
-(defn test-cli-stdout-custom
+(defn test-cli-stdout-cb
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
-   In addition the function f will be called for each element that is written to stdout."
-  [tested-fn in-cmds f]
-  (.trim (utils/with-out-str-custom
-           f
+   In addition the function cb-fn will be called for each element that is written to stdout."
+  [tested-fn in-cmds cb-fn]
+  (.trim (utils/with-out-str-cb
+           cb-fn
            (with-in-str (cmd-vector-to-test-input-string in-cmds)
              (exec-tested-fn tested-fn)))))
 
@@ -44,21 +44,20 @@
   ([tested-fn in-cmds]
     (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
   ([tested-fn in-cmds sl]
-    (test-cli-stdout-custom
+    (test-cli-stdout-cb
       (fn []
         (tested-fn)
         (sl :await-completed))
       in-cmds
       (fn [s]
-        (sl s)
-        s))))
+        (sl s)))))
 
-(defn test-cli-stderr-custom
+(defn test-cli-stderr-cb
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
-   In addition the function f will be called for each element that is written to stderr."
-  [tested-fn in-cmds f]
-  (.trim (utils/with-err-str-custom
-           f
+   In addition the function cb-fn will be called for each element that is written to stderr."
+  [tested-fn in-cmds cb-fn]
+  (.trim (utils/with-err-str-cb
+           cb-fn
            (with-in-str (cmd-vector-to-test-input-string in-cmds)
              (exec-tested-fn tested-fn)))))
 
@@ -67,14 +66,13 @@
   ([tested-fn in-cmds]
     (.trim (utils/with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
   ([tested-fn in-cmds sl]
-    (test-cli-stderr-custom
+    (test-cli-stderr-cb
       (fn []
         (tested-fn)
         (sl :await-completed))
       in-cmds
       (fn [s]
-        (sl s)
-        s))))
+        (sl s)))))
 
 (defn expected-string
   "Takes a vector of strings that are intended to represent individual lines of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
@@ -105,9 +103,7 @@
         @observed-values)
       ([s]
         (condp = s
-          :await-completed (do
-                             (utils/await-flag completed-flag)
-                             (utils/sleep 10))
+          :await-completed (utils/await-flag completed-flag)
           (do
             (swap! observed-values conj s)
             (when
