@@ -30,11 +30,6 @@
   (binding [cli/*read-factory* create-repl-read-test-fn]
     (tested-fn)))
 
-(defn test-cli-stdout
-  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn."
-  [tested-fn in-cmds]
-  (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
-
 (defn test-cli-stdout-custom
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
    In addition the function f will be called for each element that is written to stdout."
@@ -43,6 +38,18 @@
            f
            (with-in-str (cmd-vector-to-test-input-string in-cmds)
              (exec-tested-fn tested-fn)))))
+
+(defn test-cli-stdout
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn."
+  ([tested-fn in-cmds]
+    (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
+  ([tested-fn in-cmds sl]
+    (test-cli-stdout-custom
+      tested-fn
+      in-cmds
+      (fn [s]
+        (sl s)
+        s))))
 
 (defn test-cli-stderr
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn."
@@ -68,4 +75,26 @@
       (fn [s e] (str s separator e))
       (first expected-lines)
       (rest expected-lines))))
+
+(defn string-latch
+  [strings]
+  (let [flags (doall
+                (map
+                  (fn [s]
+                    [s (utils/prepare-flag)])
+                  strings))
+        currentValue (atom [])
+        set-index (atom 0)
+        await-index (atom 0)]
+    (fn
+      ([]
+        (utils/await-flag (-> flags (nth @await-index) second))
+        (swap! await-index inc)
+        @currentValue)
+      ([s]
+        (swap! currentValue conj s)
+        (when
+          (= (-> flags first first) s)
+          (utils/set-flag (-> flags (nth @set-index) second))
+          (swap! set-index inc))))))
 
