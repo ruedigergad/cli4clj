@@ -1,64 +1,84 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-  <testsuite errors="0" failures="0" id="0" name="cli" package="cli4clj.test" tests="30" time="1.2022" timestamp="2016-09-12_22:26:47+0200">
-        <testcase classname="cli4clj.test.cli" name="async-cmd-sleep-finished-test" time="1.0188">
+  <testsuite errors="0" failures="0" id="0" name="cli-tests" package="cli4clj.test" tests="11" time="2.1303" timestamp="2016-10-08_21:30:09+0200">
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-sleep-finished-test" time="1.0064">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="simple-create-arg-hint-completers-test" time="0.0049">
+        <testcase classname="cli4clj.test.cli-tests" name="custom-test-cli-stdout-test" time="0.0022">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="create-arg-hint-completers-link-hint-test" time="0.0055">
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-string-latch-stdout-test" time="0.5104">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="get-args-info-override-test" time="0.0008">
+        <testcase classname="cli4clj.test.cli-tests" name="expected-string-creation-multi-line-test" time="0.0003">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="allow-eval-cli-interaction-test" time="0.0036">
+        <testcase classname="cli4clj.test.cli-tests" name="custom-test-cli-stderr-test" time="0.0020">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="get-args-info-defns-test" time="0.0008">
+        <testcase classname="cli4clj.test.cli-tests" name="cmd-vector-to-cmd-test-input-string-test" time="0.0002">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="print-cmd-invalid-token-to-string-fallback-test" time="0.0015">
+        <testcase classname="cli4clj.test.cli-tests" name="expected-string-creation-single-line-test" time="0.0002">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="expected-string-creation-multi-line-test" time="0.0004">
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-not-finished-test" time="0.0014">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="get-args-info-simple-multi-arity-fn-test" time="0.0005">
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-string-latch-stderr-test" time="0.5041">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="enable-trace-test" time="0.0034">
+        <testcase classname="cli4clj.test.cli-tests" name="simple-jline-input-stream-mock-test" time="0.0987">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="cmd-vector-to-cmd-test-input-string-test" time="0.0004">
+        <testcase classname="cli4clj.test.cli-tests" name="expected-string-creation-custom-separator-test" time="0.0004">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="expected-string-creation-single-line-test" time="0.0003">
+  </testsuite>
+  <testsuite errors="0" failures="0" id="1" name="cli" package="cli4clj.test" tests="23" time="0.0659" timestamp="2016-10-08_21:30:07+0200">
+        <testcase classname="cli4clj.test.cli" name="simple-create-arg-hint-completers-test" time="0.0064">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="simple-options-override-test" time="0.0004">
+        <testcase classname="cli4clj.test.cli" name="create-arg-hint-completers-link-hint-test" time="0.0057">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="help-cmd-cli-interaction-stdout-test" time="0.0102">
+        <testcase classname="cli4clj.test.cli" name="get-args-info-override-test" time="0.0010">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="enable-trace-wrong-arg-test" time="0.0012">
+        <testcase classname="cli4clj.test.cli" name="allow-eval-cli-interaction-test" time="0.0094">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="async-cmd-not-finished-test" time="0.0015">
+        <testcase classname="cli4clj.test.cli" name="get-args-info-defns-test" time="0.0013">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="print-cmd-invalid-token-exception-test" time="0.0017">
+        <testcase classname="cli4clj.test.cli" name="print-cmd-invalid-token-to-string-fallback-test" time="0.0021">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="add-cmd-cli-interaction-stdout-test" time="0.0017">
+        <testcase classname="cli4clj.test.cli" name="get-args-info-simple-multi-arity-fn-test" time="0.0004">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="add-cmd-cli-interaction-stdout-multiline-test" time="0.0013">
+        <testcase classname="cli4clj.test.cli" name="enable-trace-test" time="0.0010">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="simple-mandatory-options-override-test" time="0.0003">
+        <testcase classname="cli4clj.test.cli" name="simple-options-override-test" time="0.0003">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="help-cmd-cli-interaction-stdout-test" time="0.0087">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="enable-trace-wrong-arg-test" time="0.0025">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="print-cmd-invalid-token-exception-test" time="0.0019">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="add-cmd-cli-interaction-stdout-test" time="0.0010">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="add-cmd-cli-interaction-stdout-multiline-test" time="0.0019">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="simple-mandatory-options-override-test" time="0.0004">
     </testcase>
 
         <testcase classname="cli4clj.test.cli" name="simple-test-cli-interaction-stdout-test" time="0.0008">
@@ -67,54 +87,48 @@
         <testcase classname="cli4clj.test.cli" name="get-args-info-simple-fns-test" time="0.0008">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="create-arg-hint-completers-completion-proposal-test" time="0.0032">
-    </testcase>
-
-        <testcase classname="cli4clj.test.cli" name="simple-jline-input-stream-mock-test" time="0.1177">
+        <testcase classname="cli4clj.test.cli" name="create-arg-hint-completers-completion-proposal-test" time="0.0031">
     </testcase>
 
         <testcase classname="cli4clj.test.cli" name="get-cmd-aliases-test" time="0.0004">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="simple-options-merging-test" time="0.0004">
+        <testcase classname="cli4clj.test.cli" name="simple-options-merging-test" time="0.0003">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="simple-test-cli-interaction-stderr-test" time="0.0010">
+        <testcase classname="cli4clj.test.cli" name="simple-test-cli-interaction-stderr-test" time="0.0009">
     </testcase>
 
         <testcase classname="cli4clj.test.cli" name="user-options-override-non-nested-test" time="0.0003">
     </testcase>
 
-        <testcase classname="cli4clj.test.cli" name="expected-string-creation-custom-separator-test" time="0.0002">
-    </testcase>
-
-        <testcase classname="cli4clj.test.cli" name="div-cmd-cli-interaction-cmd-error-test" time="0.0010">
+        <testcase classname="cli4clj.test.cli" name="div-cmd-cli-interaction-cmd-error-test" time="0.0011">
     </testcase>
 
   </testsuite>
-  <testsuite errors="0" failures="0" id="1" name="example" package="cli4clj.test" tests="8" time="0.0422" timestamp="2016-09-12_22:26:47+0200">
-        <testcase classname="cli4clj.test.example" name="print-function-opt-args-test" time="0.0204">
+  <testsuite errors="0" failures="0" id="2" name="example" package="cli4clj.test" tests="8" time="0.0383" timestamp="2016-10-08_21:30:09+0200">
+        <testcase classname="cli4clj.test.example" name="print-function-opt-args-test" time="0.0182">
     </testcase>
 
-        <testcase classname="cli4clj.test.example" name="advanced-main-method-error-example-test" time="0.0015">
+        <testcase classname="cli4clj.test.example" name="advanced-main-method-error-example-test" time="0.0011">
     </testcase>
 
-        <testcase classname="cli4clj.test.example" name="invalid-token-to-string-fallback-test" time="0.0031">
+        <testcase classname="cli4clj.test.example" name="invalid-token-to-string-fallback-test" time="0.0025">
     </testcase>
 
-        <testcase classname="cli4clj.test.example" name="print-function-test" time="0.0019">
+        <testcase classname="cli4clj.test.example" name="print-function-test" time="0.0018">
     </testcase>
 
-        <testcase classname="cli4clj.test.example" name="main-method-error-with-trace-example-test" time="0.0083">
+        <testcase classname="cli4clj.test.example" name="main-method-error-with-trace-example-test" time="0.0079">
     </testcase>
 
-        <testcase classname="cli4clj.test.example" name="advanced-main-method-example-test" time="0.0025">
+        <testcase classname="cli4clj.test.example" name="advanced-main-method-example-test" time="0.0024">
     </testcase>
 
         <testcase classname="cli4clj.test.example" name="simple-main-method-example-test" time="0.0008">
     </testcase>
 
-        <testcase classname="cli4clj.test.example" name="simple-main-method-error-example-test" time="0.0008">
+        <testcase classname="cli4clj.test.example" name="simple-main-method-error-example-test" time="0.0007">
     </testcase>
 
   </testsuite>

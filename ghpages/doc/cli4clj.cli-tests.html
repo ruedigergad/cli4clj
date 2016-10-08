@@ -29,7 +29,7 @@
     top: 0em;
     left: 0em;
   }</style><link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" /></head><body><div id="ui-widget"><input autofocus="autofocus" id="api-search" placeholder="API Search" tabindex="1" /></div><div id="top"><header><h1>Namespace cli4clj.cli-tests</h1><p>Helper functions for testing CLIs.</p></header><section class="ns-toc" id="other-ns-toc"><h2>Other Namespaces</h2><details><summary>Show/Hide</summary><table><tr><td><a href="cli4clj.cli.html">cli4clj.cli</a></td><td><div>cli4clj allows to create simple interactive command line interfaces for Clojure applications.</div></td></tr><tr><td><a href="cli4clj.example.html">cli4clj.example</a></td><td><div>This is a simple example for using cli4clj.
-          The example can be run via "lein run".</div></td></tr><tr><td><a href="index.html">Index Page</a></td><td></td></tr><tr><td><a href="var-index.html">Alphabetic Var Index</a></td><td></td></tr></table></details></section><section id="pubvars-toc"><h2>Public Vars</h2><nav><a href="#IDcmd-vector-to-test-input-string">cmd-vector-to-test-input-string</a>, <a href="#IDcreate-repl-read-test-fn">create-repl-read-test-fn</a>, <a href="#IDexec-tested-fn">exec-tested-fn</a>, <a href="#IDexpected-string">expected-string</a>, <a href="#IDtest-cli-stderr">test-cli-stderr</a>, <a href="#IDtest-cli-stdout">test-cli-stdout</a></nav></section><section><h2>Usage Documentation</h2><details open="open"><summary>Show/Hide</summary><pre>Helper functions for testing CLIs.</pre></details><a href="#top">Back to top</a></section><section id="details"><h2>Details of Public Vars</h2><div id="IDcmd-vector-to-test-input-string"><div><h4>Function: cmd-vector-to-test-input-string</h4><pre>Arglists:
+          The example can be run via "lein run".</div></td></tr><tr><td><a href="index.html">Index Page</a></td><td></td></tr><tr><td><a href="var-index.html">Alphabetic Var Index</a></td><td></td></tr></table></details></section><section id="pubvars-toc"><h2>Public Vars</h2><nav><a href="#IDcmd-vector-to-test-input-string">cmd-vector-to-test-input-string</a>, <a href="#IDcreate-repl-read-test-fn">create-repl-read-test-fn</a>, <a href="#IDexec-tested-fn">exec-tested-fn</a>, <a href="#IDexpected-string">expected-string</a>, <a href="#IDstring-latch">string-latch</a>, <a href="#IDtest-cli-stderr">test-cli-stderr</a>, <a href="#IDtest-cli-stderr-cb">test-cli-stderr-cb</a>, <a href="#IDtest-cli-stdout">test-cli-stdout</a>, <a href="#IDtest-cli-stdout-cb">test-cli-stdout-cb</a></nav></section><section><h2>Usage Documentation</h2><details open="open"><summary>Show/Hide</summary><pre>Helper functions for testing CLIs.</pre></details><a href="#top">Back to top</a></section><section id="details"><h2>Details of Public Vars</h2><div id="IDcmd-vector-to-test-input-string"><div><h4>Function: cmd-vector-to-test-input-string</h4><pre>Arglists:
 =========
 
   (cmd-vector-to-test-input-string cmd-vec)
@@ -37,7 +37,7 @@
 Docstring:
 ==========
 
-  This function takes a vector of string commands and creates a one-line command that is suited to being passed to a cli instance during testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L20">View Source</a></div><div id="IDcreate-repl-read-test-fn"><div><h4>Function: create-repl-read-test-fn</h4><pre>Arglists:
+  This function takes a vector of string commands and creates a one-line command that is suited to being passed to a cli instance during testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L17">View Source</a></div><div id="IDcreate-repl-read-test-fn"><div><h4>Function: create-repl-read-test-fn</h4><pre>Arglists:
 =========
 
   (create-repl-read-test-fn opts)
@@ -45,7 +45,7 @@ Docstring:
 Docstring:
 ==========
 
-  This function creates a repl read function for testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L25">View Source</a></div><div id="IDexec-tested-fn"><div><h4>Function: exec-tested-fn</h4><pre>Arglists:
+  This function creates a repl read function for testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L22">View Source</a></div><div id="IDexec-tested-fn"><div><h4>Function: exec-tested-fn</h4><pre>Arglists:
 =========
 
   (exec-tested-fn tested-fn)
@@ -53,7 +53,7 @@ Docstring:
 Docstring:
 ==========
 
-  This function takes another function as argument and executes it in a way that is suited for testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L30">View Source</a></div><div id="IDexpected-string"><div><h4>Function: expected-string</h4><pre>Arglists:
+  This function takes another function as argument and executes it in a way that is suited for testing.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L27">View Source</a></div><div id="IDexpected-string"><div><h4>Function: expected-string</h4><pre>Arglists:
 =========
 
   (expected-string expected-lines)
@@ -62,21 +62,49 @@ Docstring:
 Docstring:
 ==========
 
-  Takes a vector of strings that are intended to represent individual line of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
-   The most notably property is that the lines are joined based on the platform dependent line.separator.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L46">View Source</a></div><div id="IDtest-cli-stderr"><div><h4>Function: test-cli-stderr</h4><pre>Arglists:
+  Takes a vector of strings that are intended to represent individual lines of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
+   The most notably property is that the lines are joined based on the platform dependent line.separator.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L77">View Source</a></div><div id="IDstring-latch"><div><h4>Function: string-latch</h4><pre>Arglists:
+=========
+
+  (string-latch strings)
+
+Docstring:
+==========
+
+  No docs attached.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L88">View Source</a></div><div id="IDtest-cli-stderr"><div><h4>Function: test-cli-stderr</h4><pre>Arglists:
 =========
 
   (test-cli-stderr tested-fn in-cmds)
+  (test-cli-stderr tested-fn in-cmds sl)
 
 Docstring:
 ==========
 
-  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L41">View Source</a></div><div id="IDtest-cli-stdout"><div><h4>Function: test-cli-stdout</h4><pre>Arglists:
+  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L64">View Source</a></div><div id="IDtest-cli-stderr-cb"><div><h4>Function: test-cli-stderr-cb</h4><pre>Arglists:
+=========
+
+  (test-cli-stderr-cb tested-fn in-cmds cb-fn)
+
+Docstring:
+==========
+
+  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
+   In addition the function cb-fn will be called for each element that is written to stderr.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L55">View Source</a></div><div id="IDtest-cli-stdout"><div><h4>Function: test-cli-stdout</h4><pre>Arglists:
 =========
 
   (test-cli-stdout tested-fn in-cmds)
+  (test-cli-stdout tested-fn in-cmds sl)
 
 Docstring:
 ==========
 
-  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L36">View Source</a></div></section></div><footer><p>These docs were generated by the <a href="https://github.com/tsdh/lein-html5-docs">Leiningen HTML5 Docs Plugin</a>, version 3.0.3.</p><a href="http://www.w3.org/html/logo/"><img alt="HTML5 Powered" height="64" src="http://www.w3.org/html/logo/badge/html5-badge-h-solo.png" title="HTML5 Powered" width="63" /></a><script src="http://code.jquery.com/jquery.min.js"></script><script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script><script src="api-search.js"></script></footer></body></html>
+  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L42">View Source</a></div><div id="IDtest-cli-stdout-cb"><div><h4>Function: test-cli-stdout-cb</h4><pre>Arglists:
+=========
+
+  (test-cli-stdout-cb tested-fn in-cmds cb-fn)
+
+Docstring:
+==========
+
+  Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
+   In addition the function cb-fn will be called for each element that is written to stdout.</pre></div><a href="#top">Back to top</a> <a href="https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/cli_tests.clj#L33">View Source</a></div></section></div><footer><p>These docs were generated by the <a href="https://github.com/tsdh/lein-html5-docs">Leiningen HTML5 Docs Plugin</a>, version 3.0.3.</p><a href="http://www.w3.org/html/logo/"><img alt="HTML5 Powered" height="64" src="http://www.w3.org/html/logo/badge/html5-badge-h-solo.png" title="HTML5 Powered" width="63" /></a><script src="http://code.jquery.com/jquery.min.js"></script><script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script><script src="api-search.js"></script></footer></body></html>
