@@ -34,7 +34,7 @@
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
    In addition the function f will be called for each element that is written to stdout."
   [tested-fn in-cmds f]
-  (.trim (utils/with-out-str-ext
+  (.trim (utils/with-out-str-custom
            f
            (with-in-str (cmd-vector-to-test-input-string in-cmds)
              (exec-tested-fn tested-fn)))))
@@ -60,7 +60,7 @@
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
    In addition the function f will be called for each element that is written to stderr."
   [tested-fn in-cmds f]
-  (.trim (utils/with-err-str-ext
+  (.trim (utils/with-err-str-custom
            f
            (with-in-str (cmd-vector-to-test-input-string in-cmds)
              (exec-tested-fn tested-fn)))))
