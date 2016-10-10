@@ -96,10 +96,12 @@
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
+
+
 (test/deftest async-cmd-string-latch-stdout-test
   (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
         test-cmd-input ["async-foo"]
-        sl (cli-tests/string-latch ["Finished."])
+        sl (cli-tests/string-latch ["Finished." "\n"])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
@@ -120,7 +122,7 @@
 (test/deftest async-cmd-string-latch-stderr-test
   (let [cli-opts {:cmds {:async-foo {:fn async-test-stderr-fn}}}
         test-cmd-input ["async-foo"]
-        sl (cli-tests/string-latch ["Finished."])
+        sl (cli-tests/string-latch ["Finished." "\n"])
         out-string (cli-tests/test-cli-stderr #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
@@ -133,7 +135,8 @@
         val-2 (atom nil)
         sl (cli-tests/string-latch [["Starting..." #(reset! val-0 %)]
                                     ["Started." (fn [v] (reset! val-1 v))]
-                                    ["Finished." #(reset! val-2 %)]])
+                                    ["Finished." #(reset! val-2 %)]
+                                    "\n"])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= ["Starting..."] @val-0))
     (test/is (= ["Starting..." "\n" "Started."] @val-1))
@@ -148,7 +151,8 @@
         val-2 (atom nil)
         sl (cli-tests/string-latch ["Starting..."
                                     ["Started."]
-                                    ["Finished." #(reset! val-2 %)]])
+                                    ["Finished." #(reset! val-2 %)]
+                                    "\n"])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= nil @val-0))
     (test/is (= nil @val-1))
