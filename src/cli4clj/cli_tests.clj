@@ -40,7 +40,9 @@
              (exec-tested-fn tested-fn)))))
 
 (defn test-cli-stdout
-  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn."
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
+  
+   If an optional string-latch is supplied, the call will block until the string-latch completed."
   ([tested-fn in-cmds]
     (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
   ([tested-fn in-cmds sl]
@@ -62,7 +64,9 @@
              (exec-tested-fn tested-fn)))))
 
 (defn test-cli-stderr
-  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn."
+  "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn.
+  
+   If an optional string-latch is supplied, the call will block until the string-latch completed."
   ([tested-fn in-cmds]
     (.trim (utils/with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
   ([tested-fn in-cmds sl]
@@ -86,6 +90,16 @@
       (rest expected-lines))))
 
 (defn string-latch
+  "A string-latch can be used for testing CLI UI interaction with multi-threaded behaviour.
+
+   The latch takes a vector of string-latch definitions (sl-defs).
+   Each string-latch definition defines a \"wait\" point, which will block the execution of the main CLI UI test thread until the string-latch definition was matched in the CLI output.
+   When multiple string-latch definitions are configured in the vector, the definitions have to be matched in the CLI output in the order in which they are defined in the sl-defs vector.
+  
+   A string-latch definition can either be a string or a two element vector of a string and a function.
+   When only a string is used, the latch will simply await the occurrence of the string in the CLI output.
+   When the two element vector is used, the latch will wait for the occurrence of the string and will call the function once the string was matched.
+   Both representations, string and string plus function vector, can be mixed in the overall string-latch definitions vector."
   [sl-defs]
   (let [flags (doall
                 (mapv
