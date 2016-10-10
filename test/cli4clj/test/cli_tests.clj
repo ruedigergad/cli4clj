@@ -140,6 +140,21 @@
     (test/is (= ["Starting..." "\n" "Started." "\n" "Finished."] @val-2))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
+(test/deftest async-cmd-string-latch-stdout-with-mixed-callback-test
+  (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
+        test-cmd-input ["async-foo"]
+        val-0 (atom nil)
+        val-1 (atom nil)
+        val-2 (atom nil)
+        sl (cli-tests/string-latch ["Starting..."
+                                    ["Started."]
+                                    ["Finished." #(reset! val-2 %)]])
+        out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
+    (test/is (= nil @val-0))
+    (test/is (= nil @val-1))
+    (test/is (= ["Starting..." "\n" "Started." "\n" "Finished."] @val-2))
+    (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
+
 
 
 (test/deftest simple-jline-input-stream-mock-test
