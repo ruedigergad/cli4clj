@@ -86,19 +86,21 @@
       (rest expected-lines))))
 
 (defn string-latch
-  [strings]
+  [sl-defs]
   (let [flags (doall
-                (map
-                  (fn [s]
-                    [s (utils/prepare-flag)])
-                  strings))
+                (mapv
+                  (fn [sl-def]
+                    (if (string? sl-def)
+                      [sl-def (utils/prepare-flag) nil]
+                      [(first sl-def) (utils/prepare-flag) (second sl-def)]))
+                  sl-defs))
         completed-flag (utils/prepare-flag)
         observed-values (atom [])
         set-index (atom 0)
         await-index (atom 0)]
     (fn
       ([]
-        (utils/await-flag (-> flags (nth @await-index) second))
+        (utils/await-flag (get-in flags [@await-index 1]))
         (swap! await-index inc)
         @observed-values)
       ([s]
@@ -106,11 +108,11 @@
           :await-completed (utils/await-flag completed-flag)
           (do
             (swap! observed-values conj s)
-            (when
-              (= (-> flags first first) s)
-              (utils/set-flag (-> flags (nth @set-index) second))
+            (when (= s (get-in flags [@set-index 0]))
+              (when-let [f (get-in flags [@set-index 2])]
+                (f @observed-values))
+              (utils/set-flag (get-in flags [@set-index 1]))
               (swap! set-index inc)
-              (when
-                (= @set-index (count flags))
+              (when (= @set-index (count flags))
                 (utils/set-flag completed-flag)))))))))
 
