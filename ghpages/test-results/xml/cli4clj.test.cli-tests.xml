@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="cli4clj.test.cli-tests" errors="0" failures="0" tests="13" time="3.2025" timestamp="2016-10-16_14:38:30+0200">
+    <testcase name="async-cmd-sleep-finished-test" classname="cli4clj.test.cli-tests" time="1.0186">
+    </testcase>
+    <testcase name="async-cmd-string-latch-stdout-with-callback-test" classname="cli4clj.test.cli-tests" time="0.5382">
+    </testcase>
+    <testcase name="custom-test-cli-stdout-test" classname="cli4clj.test.cli-tests" time="0.0014">
+    </testcase>
+    <testcase name="async-cmd-string-latch-stdout-test" classname="cli4clj.test.cli-tests" time="0.5049">
+    </testcase>
+    <testcase name="expected-string-creation-multi-line-test" classname="cli4clj.test.cli-tests" time="0.0003">
+    </testcase>
+    <testcase name="custom-test-cli-stderr-test" classname="cli4clj.test.cli-tests" time="0.0023">
+    </testcase>
+    <testcase name="async-cmd-string-latch-stdout-with-mixed-callback-test" classname="cli4clj.test.cli-tests" time="0.5092">
+    </testcase>
+    <testcase name="cmd-vector-to-cmd-test-input-string-test" classname="cli4clj.test.cli-tests" time="0.0003">
+    </testcase>
+    <testcase name="expected-string-creation-single-line-test" classname="cli4clj.test.cli-tests" time="0.0003">
+    </testcase>
+    <testcase name="async-cmd-not-finished-test" classname="cli4clj.test.cli-tests" time="0.0010">
+    </testcase>
+    <testcase name="async-cmd-string-latch-stderr-test" classname="cli4clj.test.cli-tests" time="0.5094">
+    </testcase>
+    <testcase name="simple-jline-input-stream-mock-test" classname="cli4clj.test.cli-tests" time="0.1120">
+    </testcase>
+    <testcase name="expected-string-creation-custom-separator-test" classname="cli4clj.test.cli-tests" time="0.0003">
+    </testcase>
+</testsuite>
