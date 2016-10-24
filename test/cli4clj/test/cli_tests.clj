@@ -196,3 +196,8 @@
         out (cli-tests/test-cli-stderr clojure.main/repl in-cmds)]
     (test/is (.startsWith out "ArithmeticException Divide by zero"))))
 
+(test/deftest clojure-repl-stdout-let-inc-println-no-prompt-test
+  (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
+        out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt (fn [] "")) in-cmds)]
+    (test/is (= (cli-tests/expected-string ["#'user/x" "22" "21" "nil"]) out))))
+
