@@ -169,3 +169,30 @@
                                    :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
     (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*cli4clj-line-sep*)]) out))))
 
+
+
+(test/deftest clojure-repl-stdout-no-op-test
+  (let [in-cmds [""]
+        out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
+    (test/is (= (cli-tests/expected-string ["user=> user=>"]) out))))
+
+(test/deftest clojure-repl-stderr-no-op-test
+  (let [in-cmds [""]
+        out (cli-tests/test-cli-stderr clojure.main/repl in-cmds)]
+    (test/is (= (cli-tests/expected-string [""]) out))))
+
+(test/deftest clojure-repl-stdout-inc-test
+  (let [in-cmds ["(inc 1)"]
+        out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
+    (test/is (= (cli-tests/expected-string ["user=> 2" "user=>"]) out))))
+
+(test/deftest clojure-repl-stdout-let-inc-println-test
+  (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
+        out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
+    (test/is (= (cli-tests/expected-string ["user=> #'user/x" "user=> 22" "user=> 21" "nil" "user=>"]) out))))
+
+(test/deftest clojure-repl-stderr-div-zero-test
+  (let [in-cmds ["(/ 1 0)"]
+        out (cli-tests/test-cli-stderr clojure.main/repl in-cmds)]
+    (test/is (.startsWith out "ArithmeticException Divide by zero"))))
+
