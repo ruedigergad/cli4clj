@@ -85,13 +85,13 @@
                                :fn-args "fn-args string"}}}
         test-cmd-input ["help"]
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
-    (test/is (= (str "add" cli/*cli4clj-line-sep*
-                "\t Arguments: fn-args string" cli/*cli4clj-line-sep* cli/*cli4clj-line-sep*
-                "help [? h]" cli/*cli4clj-line-sep*
-                "\tShow help." cli/*cli4clj-line-sep*
-                "\tDisplay a help text that lists all available commands including further detailed information about these commands." cli/*cli4clj-line-sep* cli/*cli4clj-line-sep*
-                "quit [q]" cli/*cli4clj-line-sep*
-                "\tQuit the CLI." cli/*cli4clj-line-sep*
+    (test/is (= (str "add" cli/*line-sep*
+                "\t Arguments: fn-args string" cli/*line-sep* cli/*line-sep*
+                "help [? h]" cli/*line-sep*
+                "\tShow help." cli/*line-sep*
+                "\tDisplay a help text that lists all available commands including further detailed information about these commands." cli/*line-sep* cli/*line-sep*
+                "quit [q]" cli/*line-sep*
+                "\tQuit the CLI." cli/*line-sep*
                 "\tTerminate and close the command line interface.")
            out-string))))
 

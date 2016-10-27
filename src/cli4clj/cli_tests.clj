@@ -17,7 +17,7 @@
 (defn cmd-vector-to-test-input-string
   "This function takes a vector of string commands and creates a one-line command that is suited to being passed to a cli instance during testing."
   [cmd-vec]
-  (reduce (fn [s c] (str s c cli/*cli4clj-line-sep*)) "" cmd-vec))
+  (reduce (fn [s c] (str s c cli/*line-sep*)) "" cmd-vec))
 
 (defn create-repl-read-test-fn
   "This function creates a repl read function for testing."
@@ -82,7 +82,7 @@
   "Takes a vector of strings that are intended to represent individual lines of expected command line output and converts them into a string that can be compared against the output of the test-cli-stdout and test-cli-stderr functions.
    The most notably property is that the lines are joined based on the platform dependent line.separator."
   ([expected-lines]
-    (expected-string expected-lines cli/*cli4clj-line-sep*))
+    (expected-string expected-lines cli/*line-sep*))
   ([expected-lines separator]
     (reduce
       (fn [s e] (str s separator e))

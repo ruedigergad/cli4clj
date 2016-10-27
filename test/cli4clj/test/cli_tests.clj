@@ -22,7 +22,7 @@
 
 
 (test/deftest cmd-vector-to-cmd-test-input-string-test
-  (let [expected (str "foo" cli/*cli4clj-line-sep* "bar" cli/*cli4clj-line-sep*)
+  (let [expected (str "foo" cli/*line-sep* "bar" cli/*line-sep*)
         cmd-vec ["foo" "bar"]]
     (test/is (= expected (cli-tests/cmd-vector-to-test-input-string cmd-vec)))))
 
@@ -162,12 +162,12 @@
 
 
 (test/deftest simple-jline-input-stream-mock-test
-  (let [in-string (str "a 1" cli/*cli4clj-line-sep* "b 2 3" cli/*cli4clj-line-sep* "q" cli/*cli4clj-line-sep*)
+  (let [in-string (str "a 1" cli/*line-sep* "b 2 3" cli/*line-sep* "q" cli/*line-sep*)
         out (binding [cli/*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
               (with-out-str
                 (cli/start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
                                    :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
-    (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*cli4clj-line-sep*)]) out))))
+    (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*line-sep*)]) out))))
 
 
 

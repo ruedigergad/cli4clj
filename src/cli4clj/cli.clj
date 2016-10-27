@@ -26,7 +26,7 @@
 (def ^:dynamic *jline-input-stream* System/in)
 (def ^:dynamic *jline-output-stream* System/out)
 
-(def ^:dynamic *cli4clj-line-sep* (System/getProperty "line.separator"))
+(def ^:dynamic *line-sep* (System/getProperty "line.separator"))
 
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
@@ -145,7 +145,7 @@
         (if (and (not (nil? line))
                  (not (.isEmpty line))
                  (not (-> line (.trim) (.startsWith *comment-begin-string*))))
-          (binding [*in* (PushbackReader. (StringReader. (str line *cli4clj-line-sep*)))]
+          (binding [*in* (PushbackReader. (StringReader. (str line *line-sep*)))]
             (rdr-fn request-prompt request-exit))
           request-prompt)))))
 
@@ -246,7 +246,7 @@
           :q :quit}
    :eval-factory create-cli-eval-fn
    :help-factory create-cli-help-fn
-   :help-cmd-entry-delimiter *cli4clj-line-sep*
+   :help-cmd-entry-delimiter *line-sep*
    :invalid-token-to-string true
    :print cli-repl-print
    :print-err print-err-fn
