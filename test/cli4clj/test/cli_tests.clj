@@ -101,9 +101,9 @@
 (test/deftest async-cmd-string-latch-stdout-test
   (let [cli-opts {:cmds {:async-foo {:fn async-test-fn}}}
         test-cmd-input ["async-foo"]
-        sl (cli-tests/string-latch ["Finished." "\n"])
+        sl (cli-tests/string-latch ["Finished." cli/*line-sep*])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
-    (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))
+    (test/is (= ["Starting..." cli/*line-sep* "Started." cli/*line-sep* "Finished." cli/*line-sep*] (sl)))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
 (defn- async-test-stderr-fn
@@ -122,9 +122,9 @@
 (test/deftest async-cmd-string-latch-stderr-test
   (let [cli-opts {:cmds {:async-foo {:fn async-test-stderr-fn}}}
         test-cmd-input ["async-foo"]
-        sl (cli-tests/string-latch ["Finished." "\n"])
+        sl (cli-tests/string-latch ["Finished." cli/*line-sep*])
         out-string (cli-tests/test-cli-stderr #(cli/start-cli cli-opts) test-cmd-input sl)]
-    (test/is (= ["Starting..." "\n" "Started." "\n" "Finished." "\n"] (sl)))
+    (test/is (= ["Starting..." cli/*line-sep* "Started." cli/*line-sep* "Finished." cli/*line-sep*] (sl)))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
 (test/deftest async-cmd-string-latch-stdout-with-callback-test
@@ -136,11 +136,11 @@
         sl (cli-tests/string-latch [["Starting..." #(reset! val-0 %)]
                                     ["Started." (fn [v] (reset! val-1 v))]
                                     ["Finished." #(reset! val-2 %)]
-                                    "\n"])
+                                    cli/*line-sep*])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= ["Starting..."] @val-0))
-    (test/is (= ["Starting..." "\n" "Started."] @val-1))
-    (test/is (= ["Starting..." "\n" "Started." "\n" "Finished."] @val-2))
+    (test/is (= ["Starting..." cli/*line-sep* "Started."] @val-1))
+    (test/is (= ["Starting..." cli/*line-sep* "Started." cli/*line-sep* "Finished."] @val-2))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
 (test/deftest async-cmd-string-latch-stdout-with-mixed-callback-test
@@ -152,11 +152,11 @@
         sl (cli-tests/string-latch ["Starting..."
                                     ["Started."]
                                     ["Finished." #(reset! val-2 %)]
-                                    "\n"])
+                                    cli/*line-sep*])
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input sl)]
     (test/is (= nil @val-0))
     (test/is (= nil @val-1))
-    (test/is (= ["Starting..." "\n" "Started." "\n" "Finished."] @val-2))
+    (test/is (= ["Starting..." cli/*line-sep* "Started." cli/*line-sep* "Finished."] @val-2))
     (test/is (= (cli-tests/expected-string ["Starting..." "Started." "Finished."]) out-string))))
 
 
@@ -222,7 +222,7 @@
                                     "nil"])
         out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds sl)]
     (test/is (= ["#'user/x"] @val-0))
-    (test/is (= ["#'user/x" "\n" "22"] @val-1))
-    (test/is (= ["#'user/x" "\n" "22" "\n" "21"] @val-2))
+    (test/is (= ["#'user/x" cli/*line-sep* "22"] @val-1))
+    (test/is (= ["#'user/x" cli/*line-sep* "22" cli/*line-sep* "21"] @val-2))
     (test/is (= (cli-tests/expected-string ["#'user/x" "22" "21" "nil"]) out))))
 
