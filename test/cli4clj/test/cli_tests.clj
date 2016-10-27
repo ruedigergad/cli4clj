@@ -211,3 +211,18 @@
         out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds)]
     (test/is (= (cli-tests/expected-string ["#'user/x" "22" "21" "nil"]) out))))
 
+(test/deftest clojure-repl-stdout-let-inc-println-no-prompt-string-latch-test
+  (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
+        val-0 (atom nil)
+        val-1 (atom nil)
+        val-2 (atom nil)
+        sl (cli-tests/string-latch [["#'user/x" #(reset! val-0 %)]
+                                    ["22" #(reset! val-1 %)]
+                                    ["21" #(reset! val-2 %)]
+                                    "nil"])
+        out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds sl)]
+    (test/is (= ["#'user/x"] @val-0))
+    (test/is (= ["#'user/x" "\n" "22"] @val-1))
+    (test/is (= ["#'user/x" "\n" "22" "\n" "21"] @val-2))
+    (test/is (= (cli-tests/expected-string ["#'user/x" "22" "21" "nil"]) out))))
+
