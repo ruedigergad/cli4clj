@@ -174,7 +174,7 @@
 (test/deftest clojure-repl-stdout-no-op-test
   (let [in-cmds [""]
         out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
-    (test/is (= "user=> user=>" out))))
+    (test/is (= (str *ns* "=> " *ns* "=>") out))))
 
 (test/deftest clojure-repl-stderr-no-op-test
   (let [in-cmds [""]
@@ -184,12 +184,12 @@
 (test/deftest clojure-repl-stdout-inc-test
   (let [in-cmds ["(inc 1)"]
         out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
-    (test/is (= (cli-tests/expected-string ["user=> 2" "user=>"]) out))))
+    (test/is (= (cli-tests/expected-string [(str *ns* "=> 2") (str *ns* "=>")]) out))))
 
 (test/deftest clojure-repl-stdout-def-inc-println-test
   (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
         out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
-    (test/is (= (cli-tests/expected-string ["user=> #'user/x" "user=> 22" "user=> 21" "nil" "user=>"]) out))))
+    (test/is (= (cli-tests/expected-string [(str *ns*"=> #'" *ns* "/x") (str *ns* "=> 22") (str *ns* "=> 21") "nil" (str *ns* "=>")]) out))))
 
 (test/deftest clojure-repl-stderr-div-zero-test
   (let [in-cmds ["(/ 1 0)"]
@@ -209,20 +209,20 @@
 (test/deftest clojure-repl-stdout-def-inc-println-no-prompt-test
   (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
         out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds)]
-    (test/is (= (cli-tests/expected-string ["#'user/x" "22" "21" "nil"]) out))))
+    (test/is (= (cli-tests/expected-string [(str "#'" *ns* "/x") "22" "21" "nil"]) out))))
 
 (test/deftest clojure-repl-stdout-def-inc-println-no-prompt-string-latch-test
   (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
         val-0 (atom nil)
         val-1 (atom nil)
         val-2 (atom nil)
-        sl (cli-tests/string-latch [["#'user/x" #(reset! val-0 %)]
+        sl (cli-tests/string-latch [[(str "#'" *ns* "/x") #(reset! val-0 %)]
                                     ["22" #(reset! val-1 %)]
                                     ["21" #(reset! val-2 %)]
                                     "nil"])
         out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds sl)]
-    (test/is (= ["#'user/x"] @val-0))
-    (test/is (= ["#'user/x" cli/*line-sep* "22"] @val-1))
-    (test/is (= ["#'user/x" cli/*line-sep* "22" cli/*line-sep* "21"] @val-2))
-    (test/is (= (cli-tests/expected-string ["#'user/x" "22" "21" "nil"]) out))))
+    (test/is (= [(str "#'" *ns* "/x")] @val-0))
+    (test/is (= [(str "#'" *ns* "/x") cli/*line-sep* "22"] @val-1))
+    (test/is (= [(str "#'" *ns* "/x") cli/*line-sep* "22" cli/*line-sep* "21"] @val-2))
+    (test/is (= (cli-tests/expected-string [(str "#'" *ns* "/x") "22" "21" "nil"]) out))))
 
