@@ -85,8 +85,8 @@
                                :fn-args "fn-args string"}}}
         test-cmd-input ["help"]
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
-    (test/is (= (str "add" cli/*line-sep*
-                "\t Arguments: fn-args string" cli/*line-sep* cli/*line-sep*
+    (test/is (= (str "add"
+                " -- Arguments: fn-args string" cli/*line-sep* cli/*line-sep* cli/*line-sep*
                 "help [? h]" cli/*line-sep*
                 "\tShow help." cli/*line-sep*
                 "\tDisplay a help text that lists all available commands including further detailed information about these commands." cli/*line-sep* cli/*line-sep*

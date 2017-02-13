@@ -195,11 +195,11 @@
           (print (name c))
           (when-let [al (c cmd-aliases)]
             (print "" (vec (map #(symbol (name %)) al))))
+          (when-let [args (get-in cmds [c :fn-args])]
+            (print " -- Arguments:" args))
           (println "")
           (when-let [si (get-in cmds [c :short-info])]
             (print (str "\t" si)))
-          (when-let [args (get-in cmds [c :fn-args])]
-            (print "\t" "Arguments:" args))
           (println "")
           (when-let [li (get-in cmds [c :long-info])]
             (println (str "\t" li)))
