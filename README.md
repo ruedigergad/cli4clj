@@ -3,7 +3,8 @@
 Create simple interactive CLIs for Clojure applications.
 
 [![Clojars Project](http://clojars.org/cli4clj/latest-version.svg)](http://clojars.org/cli4clj)
-[![Build Status](https://travis-ci.org/ruedigergad/cli4clj.svg?branch=master)](https://travis-ci.org/ruedigergad/cli4clj)
+[![Build Status TravisCI](https://travis-ci.org/ruedigergad/cli4clj.svg?branch=master)](https://travis-ci.org/ruedigergad/cli4clj)
+[![Build Status CircleCI](https://circleci.com/gh/ruedigergad/cli4clj.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/ruedigergad/cli4clj.svg?style=shield&circle-token=:circle-token)
 [![Coverage Status](https://coveralls.io/repos/ruedigergad/cli4clj/badge.svg?branch=master&service=github)](https://coveralls.io/github/ruedigergad/cli4clj?branch=master)
 
 ## Overview
