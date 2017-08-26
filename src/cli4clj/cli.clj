@@ -358,6 +358,13 @@
      (doto
        (Thread. #(loop []
                    (binding [*read-factory* read-factory#]
+                     (utils/with-err-str-cb
+                       (fn [err#]
+                         (when
+                           (and
+                             (not (nil? err#))
+                             (not (-> (str err#) (.trim) (.isEmpty))))
+                           (.write @out-wrtr# (str "ERROR: " err#))))
                      (utils/with-out-str-cb
                        (fn [out#]
                          (when
@@ -365,7 +372,7 @@
                              (not (nil? out#))
                              (not (-> (str out#) (.isEmpty))))
                            (.write @out-wrtr# out#)))
-                       (start-cli adjusted-user-options#)))
+                       (start-cli adjusted-user-options#))))
                    (recur)))
        (.setDaemon true)
        (.start))

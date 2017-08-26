@@ -223,6 +223,11 @@
     (test/is (= "foo_bar" (cli-fn "print foo_bar")))
     (test/is (= "2" (cli-fn "divide 4 2")))))
 
+(test/deftest embedded-cli-error-test
+  (let [cli-opts {:cmds {:divide {:fn (fn [x y] (/ x y))}}}
+        cli-fn (cli/embedded-cli-fn cli-opts)]
+    (test/is (= "ERROR: Divide by zero" (cli-fn "divide 1 0")))))
+
 (test/deftest embedded-cli-multiline-out-test
   (let [cli-opts {:cmds {:print {:fn #(println % "\n" % "\n" %)}}}
         cli-fn (cli/embedded-cli-fn cli-opts)]
