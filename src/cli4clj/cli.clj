@@ -305,12 +305,12 @@
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
-    `(let [options# (get-cli-opts ~options-with-args-info)]
-       (main/repl
-         :eval ((options# :eval-factory) options#)
-         :print (options# :print)
-         :prompt (options# :prompt-fn)
-         :read (*read-factory* options#)))))
+   `(let [options# (get-cli-opts ~options-with-args-info)]
+      (main/repl
+        :eval ((options# :eval-factory) options#)
+        :print (options# :print)
+        :prompt (options# :prompt-fn)
+        :read (*read-factory* options#)))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
