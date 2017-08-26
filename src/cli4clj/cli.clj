@@ -313,6 +313,7 @@
          :read (*read-factory* options#)))))
 
 (defn create-embedded-read-fn
+  "This creates a read fn intended for use in the embedded CLI."
   [opts in-chan]
   (let [rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
@@ -325,6 +326,17 @@
           request-prompt)))))
 
 (defmacro embedded-cli-fn
+  "Create an embedded CLI.
+   The embedded CLI is different from the classical CLI that can be created via start-cli
+   in the sense that does not aim at providing an interactive CLI that can be used via a command prompt.
+   An example for a use case of the embedded CLI is as part of a client-server application for which commands
+   can be executed, e.g., remotely on the server from the client.
+   For such use cases, the embedded CLI aims on easing the CLI definition similarly to start-cli.
+   
+   This macro accepts the same options map as start-cli.
+   It will return a function that accepts string input.
+   The returned function accepts a single string argument that corresponds to the CLI input.
+   It returns the string resulting from evaluating the provided input."
   [user-options]
   `(let [out-wrtr# (atom (java.io.StringWriter.))
          out-chan# (async/chan)
