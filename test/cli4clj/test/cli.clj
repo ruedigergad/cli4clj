@@ -228,6 +228,11 @@
         cli-fn (cli/embedded-cli-fn cli-opts)]
     (test/is (= "ERROR: Divide by zero" (cli-fn "divide 1 0")))))
 
+(test/deftest embedded-cli-unknown-command-test
+  (let [cli-opts {:cmds {:divide {:fn (fn [x y] (/ x y))}}}
+        cli-fn (cli/embedded-cli-fn cli-opts)]
+    (test/is (= "ERROR: Invalid command: \"[foo 1 0]\". Please type \"help\" to get an overview of commands." (cli-fn "foo 1 0")))))
+
 (test/deftest embedded-cli-multiline-out-test
   (let [cli-opts {:cmds {:print {:fn #(println % "\n" % "\n" %)}}}
         cli-fn (cli/embedded-cli-fn cli-opts)]
