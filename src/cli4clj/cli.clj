@@ -356,15 +356,17 @@
                   (async/<!! out-chan#))
          read-factory# (fn [opts#] (create-embedded-read-fn opts# in-chan#))]
      (doto
-       (Thread. #(binding [*read-factory* read-factory#]
-                   (utils/with-out-str-cb
-                     (fn [out#]
-                       (when
-                         (and
-                           (not (nil? out#))
-                           (not (-> (str out#) (.isEmpty))))
-                         (.write @out-wrtr# out#)))
-                     (start-cli adjusted-user-options#))))
+       (Thread. #(loop []
+                   (binding [*read-factory* read-factory#]
+                     (utils/with-out-str-cb
+                       (fn [out#]
+                         (when
+                           (and
+                             (not (nil? out#))
+                             (not (-> (str out#) (.isEmpty))))
+                           (.write @out-wrtr# out#)))
+                       (start-cli adjusted-user-options#)))
+                   (recur)))
        (.setDaemon true)
        (.start))
      in-fn#))
