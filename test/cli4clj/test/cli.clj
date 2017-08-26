@@ -214,3 +214,12 @@
               "print-exception-trace is set to: false"])
            out-string))))
 
+
+
+(test/deftest embedded-cli-in-out-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}
+                         :divide {:fn (fn [x y] (/ x y))}}}
+        cli-fn (cli/embedded-cli-fn cli-opts)]
+    (test/is (= "foo_bar" (cli-fn "print foo_bar")))
+    (test/is (= "2" (cli-fn "divide 4 2")))))
+

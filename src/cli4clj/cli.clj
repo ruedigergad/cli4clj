@@ -15,7 +15,8 @@
     (clj-assorted-utils [util :as utils])
     (clojure
       [main :as main]
-      [stacktrace :as strace]))
+      [stacktrace :as strace])
+    (clojure.core [async :as async]))
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
@@ -310,4 +311,34 @@
          :print (options# :print)
          :prompt (options# :prompt-fn)
          :read (*read-factory* options#)))))
+
+(defn create-embedded-read-fn
+  [opts in-chan]
+  (let [rdr-fn (create-repl-read-fn opts)]
+    (fn [request-prompt request-exit]
+      (let [line (async/<!! in-chan)]
+        (if (and (not (nil? line))
+                 (not (.isEmpty line))
+                 (not (-> line (.trim) (.startsWith *comment-begin-string*))))
+          (binding [*in* (PushbackReader. (StringReader. (str line *line-sep*)))]
+            (rdr-fn request-prompt request-exit))
+          request-prompt)))))
+
+(defmacro embedded-cli-fn
+  [user-options]
+  `(let [in-chan# (async/chan)
+         out-chan# (async/chan)
+         in-fn# (fn [input#]
+                  (async/>!! in-chan# input#)
+                  (async/<!! out-chan#))
+         read-factory# (fn [opts#] (create-embedded-read-fn opts# in-chan#))]
+     (doto
+       (Thread. #(binding [*read-factory* read-factory#]
+                   (utils/with-out-str-cb
+                     (fn [out#]
+                       (when (not (-> out# (.trim) (.isEmpty)))
+                         (async/>!! out-chan# out#)))
+                     (start-cli ~user-options))))
+       (.start))
+     in-fn#))
 

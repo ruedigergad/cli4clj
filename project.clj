@@ -6,6 +6,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [clj-assorted-utils "1.17.1"]
+                 [org.clojure/core.async "0.3.443"]
                  [jline/jline "2.14.2"]]
   :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "ghpages/doc"
