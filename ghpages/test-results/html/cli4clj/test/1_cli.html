@@ -6,7 +6,117 @@
 <script type="text/javascript" language="JavaScript">
         var TestCases = new Array();
         var cur;
-        </script><script type="text/javascript" language="JavaScript">
+        
+    cur = TestCases['cli4clj.test.cli'] = new Array();
+    
+        cur['awt.toolkit'] = 'sun.awt.X11.XToolkit';
+    
+        cur['cli4clj.version'] = '1.3.0';
+    
+        cur['clojure.compile.path'] = '/home/rc/repositories/private/clojure/cli4clj/target/classes';
+    
+        cur['clojure.debug'] = 'false';
+    
+        cur['file.encoding'] = 'UTF-8';
+    
+        cur['file.encoding.pkg'] = 'sun.io';
+    
+        cur['file.separator'] = '/';
+    
+        cur['java.awt.graphicsenv'] = 'sun.awt.X11GraphicsEnvironment';
+    
+        cur['java.awt.printerjob'] = 'sun.print.PSPrinterJob';
+    
+        cur['java.class.path'] = '/home/rc/repositories/private/clojure/cli4clj/test:/home/rc/repositories/private/clojure/cli4clj/src:/home/rc/repositories/private/clojure/cli4clj/dev-resources:/home/rc/repositories/private/clojure/cli4clj/resources:/home/rc/repositories/private/clojure/cli4clj/target/classes:/home/rc/.m2/repository/org/clojure/clojure/1.8.0/clojure-1.8.0.jar:/home/rc/.m2/repository/org/clojure/core.async/0.3.443/core.async-0.3.443.jar:/home/rc/.m2/repository/clj-assorted-utils/clj-assorted-utils/1.18.2/clj-assorted-utils-1.18.2.jar:/home/rc/.m2/repository/jline/jline/2.14.2/jline-2.14.2.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer/0.6.9/tools.analyzer-0.6.9.jar:/home/rc/.m2/repository/org/clojure/tools.nrepl/0.2.12/tools.nrepl-0.2.12.jar:/home/rc/.m2/repository/clojure-complete/clojure-complete/0.2.4/clojure-complete-0.2.4.jar:/home/rc/.m2/repository/robert/hooke/1.3.0/hooke-1.3.0.jar:/home/rc/.m2/repository/org/clojure/tools.reader/1.0.0-beta4/tools.reader-1.0.0-beta4.jar:/home/rc/.m2/repository/org/clojure/core.memoize/0.5.9/core.memoize-0.5.9.jar:/home/rc/.m2/repository/test2junit/test2junit/1.3.2/test2junit-1.3.2.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer.jvm/0.7.0/tools.analyzer.jvm-0.7.0.jar:/home/rc/.m2/repository/org/ow2/asm/asm-all/4.2/asm-all-4.2.jar:/home/rc/.m2/repository/org/clojure/data.priority-map/0.0.7/data.priority-map-0.0.7.jar:/home/rc/.m2/repository/org/clojure/core.cache/0.6.5/core.cache-0.6.5.jar';
+    
+        cur['java.class.version'] = '52.0';
+    
+        cur['java.endorsed.dirs'] = '/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/endorsed';
+    
+        cur['java.ext.dirs'] = '/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/ext:/usr/java/packages/lib/ext';
+    
+        cur['java.home'] = '/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre';
+    
+        cur['java.io.tmpdir'] = '/tmp';
+    
+        cur['java.library.path'] = '/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib';
+    
+        cur['java.runtime.name'] = 'OpenJDK Runtime Environment';
+    
+        cur['java.runtime.version'] = '1.8.0_131-b12';
+    
+        cur['java.specification.name'] = 'Java Platform API Specification';
+    
+        cur['java.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.specification.version'] = '1.8';
+    
+        cur['java.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vendor.url'] = 'http://java.oracle.com/';
+    
+        cur['java.vendor.url.bug'] = 'http://bugreport.sun.com/bugreport/';
+    
+        cur['java.version'] = '1.8.0_131';
+    
+        cur['java.vm.info'] = 'mixed mode';
+    
+        cur['java.vm.name'] = 'OpenJDK 64-Bit Server VM';
+    
+        cur['java.vm.specification.name'] = 'Java Virtual Machine Specification';
+    
+        cur['java.vm.specification.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.specification.version'] = '1.8';
+    
+        cur['java.vm.vendor'] = 'Oracle Corporation';
+    
+        cur['java.vm.version'] = '25.131-b12';
+    
+        cur['line.separator'] = ' ';
+    
+        cur['os.arch'] = 'amd64';
+    
+        cur['os.name'] = 'Linux';
+    
+        cur['os.version'] = '4.11.5-200.fc25.x86_64+debug';
+    
+        cur['path.separator'] = ':';
+    
+        cur['sun.arch.data.model'] = '64';
+    
+        cur['sun.boot.class.path'] = '/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/resources.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/rt.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/jsse.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/jce.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/charsets.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/jfr.jar:/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/classes';
+    
+        cur['sun.boot.library.path'] = '/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-1.b12.fc25.x86_64/jre/lib/amd64';
+    
+        cur['sun.cpu.endian'] = 'little';
+    
+        cur['sun.cpu.isalist'] = '';
+    
+        cur['sun.io.unicode.encoding'] = 'UnicodeLittle';
+    
+        cur['sun.java.command'] = 'clojure.main -i /tmp/form-init8784260140109646337.clj';
+    
+        cur['sun.java.launcher'] = 'SUN_STANDARD';
+    
+        cur['sun.jnu.encoding'] = 'UTF-8';
+    
+        cur['sun.management.compiler'] = 'HotSpot 64-Bit Tiered Compilers';
+    
+        cur['sun.os.patch.level'] = 'unknown';
+    
+        cur['user.country'] = 'US';
+    
+        cur['user.dir'] = '/home/rc/repositories/private/clojure/cli4clj';
+    
+        cur['user.home'] = '/home/rc';
+    
+        cur['user.language'] = 'en';
+    
+        cur['user.name'] = 'rc';
+    
+        cur['user.timezone'] = 'Europe/Berlin';
+    </script><script type="text/javascript" language="JavaScript">
         function displayProperties (name) {
           var win = window.open('','JUnitSystemProperties','scrollbars=1,resizable=1');
           var doc = win.document;
@@ -50,7 +160,7 @@
 <th width="80%">Name</th><th>Tests</th><th>Errors</th><th>Failures</th><th>Skipped</th><th nowrap>Time(s)</th><th nowrap>Time Stamp</th><th>Host</th>
 </tr>
 <tr valign="top" class="Pass">
-<td><a title="Display all tests" href="1_cli.html">cli</a></td><td><a title="Display all tests" href="1_cli.html">23</a></td><td>0</td><td>0</td><td></td><td>0.087</td><td>2016-10-16_14:38:27+0200</td><td></td>
+<td><a title="Display all tests" href="1_cli.html">cli</a></td><td><a title="Display all tests" href="1_cli.html">26</a></td><td>0</td><td>0</td><td></td><td>0.105</td><td>2017-08-26_17:49:23+0200</td><td></td>
 </tr>
 </table>
 <h2>Tests</h2>
@@ -59,25 +169,28 @@
 <th>Name</th><th>Status</th><th width="80%">Type</th><th nowrap>Time(s)</th>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="simple-create-arg-hint-completers-test"></a>simple-create-arg-hint-completers-test</td><td>Success</td><td></td><td>0.010</td>
+<td><a name="simple-create-arg-hint-completers-test"></a>simple-create-arg-hint-completers-test</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="create-arg-hint-completers-link-hint-test"></a>create-arg-hint-completers-link-hint-test</td><td>Success</td><td></td><td>0.005</td>
+<td><a name="create-arg-hint-completers-link-hint-test"></a>create-arg-hint-completers-link-hint-test</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="get-args-info-override-test"></a>get-args-info-override-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="allow-eval-cli-interaction-test"></a>allow-eval-cli-interaction-test</td><td>Success</td><td></td><td>0.013</td>
+<td><a name="allow-eval-cli-interaction-test"></a>allow-eval-cli-interaction-test</td><td>Success</td><td></td><td>0.007</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="embedded-cli-in-out-test"></a>embedded-cli-in-out-test</td><td>Success</td><td></td><td>0.012</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="get-args-info-defns-test"></a>get-args-info-defns-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="print-cmd-invalid-token-to-string-fallback-test"></a>print-cmd-invalid-token-to-string-fallback-test</td><td>Success</td><td></td><td>0.001</td>
+<td><a name="print-cmd-invalid-token-to-string-fallback-test"></a>print-cmd-invalid-token-to-string-fallback-test</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="get-args-info-simple-multi-arity-fn-test"></a>get-args-info-simple-multi-arity-fn-test</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="get-args-info-simple-multi-arity-fn-test"></a>get-args-info-simple-multi-arity-fn-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="enable-trace-test"></a>enable-trace-test</td><td>Success</td><td></td><td>0.001</td>
@@ -86,10 +199,10 @@
 <td><a name="simple-options-override-test"></a>simple-options-override-test</td><td>Success</td><td></td><td>0.000</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="help-cmd-cli-interaction-stdout-test"></a>help-cmd-cli-interaction-stdout-test</td><td>Success</td><td></td><td>0.021</td>
+<td><a name="help-cmd-cli-interaction-stdout-test"></a>help-cmd-cli-interaction-stdout-test</td><td>Success</td><td></td><td>0.006</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="enable-trace-wrong-arg-test"></a>enable-trace-wrong-arg-test</td><td>Success</td><td></td><td>0.003</td>
+<td><a name="enable-trace-wrong-arg-test"></a>enable-trace-wrong-arg-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="print-cmd-invalid-token-exception-test"></a>print-cmd-invalid-token-exception-test</td><td>Success</td><td></td><td>0.002</td>
@@ -101,7 +214,10 @@
 <td><a name="add-cmd-cli-interaction-stdout-multiline-test"></a>add-cmd-cli-interaction-stdout-multiline-test</td><td>Success</td><td></td><td>0.002</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="simple-mandatory-options-override-test"></a>simple-mandatory-options-override-test</td><td>Success</td><td></td><td>0.000</td>
+<td><a name="embedded-cli-help-test"></a>embedded-cli-help-test</td><td>Success</td><td></td><td>0.009</td>
+</tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="simple-mandatory-options-override-test"></a>simple-mandatory-options-override-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="simple-test-cli-interaction-stdout-test"></a>simple-test-cli-interaction-stdout-test</td><td>Success</td><td></td><td>0.001</td>
@@ -110,7 +226,7 @@
 <td><a name="get-args-info-simple-fns-test"></a>get-args-info-simple-fns-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
 <tr valign="top" class="TableRowColor">
-<td><a name="create-arg-hint-completers-completion-proposal-test"></a>create-arg-hint-completers-completion-proposal-test</td><td>Success</td><td></td><td>0.004</td>
+<td><a name="create-arg-hint-completers-completion-proposal-test"></a>create-arg-hint-completers-completion-proposal-test</td><td>Success</td><td></td><td>0.005</td>
 </tr>
 <tr valign="top" class="TableRowColor">
 <td><a name="get-cmd-aliases-test"></a>get-cmd-aliases-test</td><td>Success</td><td></td><td>0.000</td>
@@ -127,11 +243,24 @@
 <tr valign="top" class="TableRowColor">
 <td><a name="div-cmd-cli-interaction-cmd-error-test"></a>div-cmd-cli-interaction-cmd-error-test</td><td>Success</td><td></td><td>0.001</td>
 </tr>
+<tr valign="top" class="TableRowColor">
+<td><a name="embedded-cli-multiline-out-test"></a>embedded-cli-multiline-out-test</td><td>Success</td><td></td><td>0.004</td>
+</tr>
 </table>
 <div class="Properties">
 <a href="javascript:displayProperties('cli4clj.test.cli');">
                     Properties &raquo;
                 </a>
+</div>
+<div class="Properties">
+<a href="./1_cli-out.html">
+                        System.out &raquo;
+                    </a>
+</div>
+<div class="Properties">
+<a href="./1_cli-err.html">
+                        System.err &raquo;
+                    </a>
 </div>
 </body>
 </html>

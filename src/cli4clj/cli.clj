@@ -1,5 +1,5 @@
 ;;;
-;;;   Copyright 2015, 2016 Ruediger Gad
+;;;   Copyright 2015, 2016, 2017 Ruediger Gad
 ;;;
 ;;;   This software is released under the terms of the Eclipse Public License 
 ;;;   (EPL) 1.0. You can find a copy of the EPL at: 
