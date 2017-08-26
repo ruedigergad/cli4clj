@@ -223,3 +223,14 @@
     (test/is (= "foo_bar" (cli-fn "print foo_bar")))
     (test/is (= "2" (cli-fn "divide 4 2")))))
 
+(test/deftest embedded-cli-multiline-out-test
+  (let [cli-opts {:cmds {:print {:fn #(println % "\n" % "\n" %)}}}
+        cli-fn (cli/embedded-cli-fn cli-opts)]
+    (test/is (= "foo_bar \n foo_bar \n foo_bar" (cli-fn "print foo_bar")))))
+
+(test/deftest embedded-cli-help-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}
+                         :divide {:fn (fn [x y] (/ x y))}}}
+        cli-fn (cli/embedded-cli-fn cli-opts)]
+    (test/is (= "divide\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nprint\n\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface." (cli-fn "help")))))
+

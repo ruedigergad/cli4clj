@@ -326,8 +326,19 @@
 
 (defmacro embedded-cli-fn
   [user-options]
-  `(let [in-chan# (async/chan)
+  `(let [out-wrtr# (atom (java.io.StringWriter.))
          out-chan# (async/chan)
+         prompt-fn# (fn []
+                      (let [out-str# (-> (str @out-wrtr#) (.trim))]
+                        (reset! out-wrtr# (java.io.StringWriter.))
+                        (when (not (-> out-str# (.isEmpty)))
+                          (async/>!! out-chan# (str out-str#)))
+                        nil))
+         adjusted-user-options# (merge-options
+                                  {}
+                                  ~user-options
+                                  {:prompt-fn prompt-fn#})
+         in-chan# (async/chan)
          in-fn# (fn [input#]
                   (async/>!! in-chan# input#)
                   (async/<!! out-chan#))
@@ -336,9 +347,13 @@
        (Thread. #(binding [*read-factory* read-factory#]
                    (utils/with-out-str-cb
                      (fn [out#]
-                       (when (not (-> out# (.trim) (.isEmpty)))
-                         (async/>!! out-chan# out#)))
-                     (start-cli ~user-options))))
+                       (when
+                         (and
+                           (not (nil? out#))
+                           (not (-> (str out#) (.isEmpty))))
+                         (.write @out-wrtr# out#)))
+                     (start-cli adjusted-user-options#))))
+       (.setDaemon true)
        (.start))
      in-fn#))
 
