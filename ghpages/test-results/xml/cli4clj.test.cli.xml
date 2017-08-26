@@ -1,56 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="cli4clj.test.cli" errors="0" failures="0" tests="26" time="0.1052" timestamp="2017-08-26_17:49:23+0200">
-    <testcase name="simple-create-arg-hint-completers-test" classname="cli4clj.test.cli" time="0.0056">
+<testsuite name="cli4clj.test.cli" errors="0" failures="0" tests="26" time="0.1240" timestamp="2017-08-26_18:09:05+0200">
+    <testcase name="simple-create-arg-hint-completers-test" classname="cli4clj.test.cli" time="0.0114">
     </testcase>
-    <testcase name="create-arg-hint-completers-link-hint-test" classname="cli4clj.test.cli" time="0.0060">
+    <testcase name="create-arg-hint-completers-link-hint-test" classname="cli4clj.test.cli" time="0.0055">
     </testcase>
-    <testcase name="get-args-info-override-test" classname="cli4clj.test.cli" time="0.0009">
+    <testcase name="get-args-info-override-test" classname="cli4clj.test.cli" time="0.0011">
     </testcase>
-    <testcase name="allow-eval-cli-interaction-test" classname="cli4clj.test.cli" time="0.0066">
+    <testcase name="allow-eval-cli-interaction-test" classname="cli4clj.test.cli" time="0.0082">
     </testcase>
-    <testcase name="embedded-cli-in-out-test" classname="cli4clj.test.cli" time="0.0117">
+    <testcase name="embedded-cli-in-out-test" classname="cli4clj.test.cli" time="0.0130">
     </testcase>
-    <testcase name="get-args-info-defns-test" classname="cli4clj.test.cli" time="0.0013">
+    <testcase name="get-args-info-defns-test" classname="cli4clj.test.cli" time="0.0010">
     </testcase>
-    <testcase name="print-cmd-invalid-token-to-string-fallback-test" classname="cli4clj.test.cli" time="0.0016">
+    <testcase name="print-cmd-invalid-token-to-string-fallback-test" classname="cli4clj.test.cli" time="0.0017">
     </testcase>
     <testcase name="get-args-info-simple-multi-arity-fn-test" classname="cli4clj.test.cli" time="0.0006">
     </testcase>
-    <testcase name="enable-trace-test" classname="cli4clj.test.cli" time="0.0012">
+    <testcase name="enable-trace-test" classname="cli4clj.test.cli" time="0.0013">
     </testcase>
     <testcase name="simple-options-override-test" classname="cli4clj.test.cli" time="0.0005">
     </testcase>
-    <testcase name="help-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0057">
+    <testcase name="help-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0108">
     </testcase>
-    <testcase name="enable-trace-wrong-arg-test" classname="cli4clj.test.cli" time="0.0010">
+    <testcase name="enable-trace-wrong-arg-test" classname="cli4clj.test.cli" time="0.0057">
     </testcase>
-    <testcase name="print-cmd-invalid-token-exception-test" classname="cli4clj.test.cli" time="0.0023">
+    <testcase name="print-cmd-invalid-token-exception-test" classname="cli4clj.test.cli" time="0.0025">
     </testcase>
-    <testcase name="add-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0012">
+    <testcase name="add-cmd-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0020">
     </testcase>
-    <testcase name="add-cmd-cli-interaction-stdout-multiline-test" classname="cli4clj.test.cli" time="0.0023">
+    <testcase name="add-cmd-cli-interaction-stdout-multiline-test" classname="cli4clj.test.cli" time="0.0030">
     </testcase>
-    <testcase name="embedded-cli-help-test" classname="cli4clj.test.cli" time="0.0088">
+    <testcase name="embedded-cli-help-test" classname="cli4clj.test.cli" time="0.0061">
     </testcase>
     <testcase name="simple-mandatory-options-override-test" classname="cli4clj.test.cli" time="0.0006">
     </testcase>
-    <testcase name="simple-test-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0011">
+    <testcase name="simple-test-cli-interaction-stdout-test" classname="cli4clj.test.cli" time="0.0014">
     </testcase>
-    <testcase name="get-args-info-simple-fns-test" classname="cli4clj.test.cli" time="0.0014">
+    <testcase name="get-args-info-simple-fns-test" classname="cli4clj.test.cli" time="0.0020">
     </testcase>
-    <testcase name="create-arg-hint-completers-completion-proposal-test" classname="cli4clj.test.cli" time="0.0046">
+    <testcase name="create-arg-hint-completers-completion-proposal-test" classname="cli4clj.test.cli" time="0.0088">
     </testcase>
-    <testcase name="get-cmd-aliases-test" classname="cli4clj.test.cli" time="0.0005">
+    <testcase name="get-cmd-aliases-test" classname="cli4clj.test.cli" time="0.0008">
     </testcase>
-    <testcase name="simple-options-merging-test" classname="cli4clj.test.cli" time="0.0005">
+    <testcase name="simple-options-merging-test" classname="cli4clj.test.cli" time="0.0006">
     </testcase>
-    <testcase name="simple-test-cli-interaction-stderr-test" classname="cli4clj.test.cli" time="0.0011">
+    <testcase name="simple-test-cli-interaction-stderr-test" classname="cli4clj.test.cli" time="0.0018">
     </testcase>
-    <testcase name="user-options-override-non-nested-test" classname="cli4clj.test.cli" time="0.0004">
+    <testcase name="user-options-override-non-nested-test" classname="cli4clj.test.cli" time="0.0005">
     </testcase>
     <testcase name="div-cmd-cli-interaction-cmd-error-test" classname="cli4clj.test.cli" time="0.0011">
     </testcase>
-    <testcase name="embedded-cli-multiline-out-test" classname="cli4clj.test.cli" time="0.0038">
+    <testcase name="embedded-cli-multiline-out-test" classname="cli4clj.test.cli" time="0.0043">
     </testcase>
     <system-err>
     </system-err>
@@ -73,7 +73,7 @@
         </property>
         <property name="path.separator" value=":">
         </property>
-        <property name="cli4clj.version" value="1.3.0">
+        <property name="cli4clj.version" value="1.3.1">
         </property>
         <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
         </property>
@@ -162,7 +162,7 @@
         </property>
         <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/">
         </property>
-        <property name="sun.java.command" value="clojure.main -i /tmp/form-init8784260140109646337.clj">
+        <property name="sun.java.command" value="clojure.main -i /tmp/form-init2664278983240491118.clj">
         </property>
         <property name="user.name" value="rc">
         </property>

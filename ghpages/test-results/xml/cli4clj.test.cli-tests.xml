@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="cli4clj.test.cli-tests" errors="0" failures="0" tests="22" time="3.2201" timestamp="2017-08-26_17:49:26+0200">
-    <testcase name="async-cmd-sleep-finished-test" classname="cli4clj.test.cli-tests" time="1.0028">
+<testsuite name="cli4clj.test.cli-tests" errors="0" failures="0" tests="22" time="3.2617" timestamp="2017-08-26_18:09:08+0200">
+    <testcase name="async-cmd-sleep-finished-test" classname="cli4clj.test.cli-tests" time="1.0027">
     </testcase>
-    <testcase name="clojure-repl-stderr-no-op-test" classname="cli4clj.test.cli-tests" time="0.0025">
+    <testcase name="clojure-repl-stderr-no-op-test" classname="cli4clj.test.cli-tests" time="0.0024">
     </testcase>
-    <testcase name="async-cmd-string-latch-stdout-with-callback-test" classname="cli4clj.test.cli-tests" time="0.5106">
+    <testcase name="async-cmd-string-latch-stdout-with-callback-test" classname="cli4clj.test.cli-tests" time="0.5118">
     </testcase>
-    <testcase name="custom-test-cli-stdout-test" classname="cli4clj.test.cli-tests" time="0.0016">
+    <testcase name="custom-test-cli-stdout-test" classname="cli4clj.test.cli-tests" time="0.0043">
     </testcase>
-    <testcase name="async-cmd-string-latch-stdout-test" classname="cli4clj.test.cli-tests" time="0.5061">
+    <testcase name="async-cmd-string-latch-stdout-test" classname="cli4clj.test.cli-tests" time="0.5076">
     </testcase>
     <testcase name="clojure-repl-stdout-no-op-test" classname="cli4clj.test.cli-tests" time="0.0015">
     </testcase>
-    <testcase name="clojure-repl-stdout-def-inc-println-no-prompt-test" classname="cli4clj.test.cli-tests" time="0.0024">
+    <testcase name="clojure-repl-stdout-def-inc-println-no-prompt-test" classname="cli4clj.test.cli-tests" time="0.0032">
     </testcase>
     <testcase name="expected-string-creation-multi-line-test" classname="cli4clj.test.cli-tests" time="0.0005">
     </testcase>
-    <testcase name="clojure-repl-stdout-inc-no-prompt-test" classname="cli4clj.test.cli-tests" time="0.0014">
+    <testcase name="clojure-repl-stdout-inc-no-prompt-test" classname="cli4clj.test.cli-tests" time="0.0013">
     </testcase>
-    <testcase name="custom-test-cli-stderr-test" classname="cli4clj.test.cli-tests" time="0.0026">
+    <testcase name="custom-test-cli-stderr-test" classname="cli4clj.test.cli-tests" time="0.0020">
     </testcase>
-    <testcase name="async-cmd-string-latch-stdout-with-mixed-callback-test" classname="cli4clj.test.cli-tests" time="0.5110">
+    <testcase name="async-cmd-string-latch-stdout-with-mixed-callback-test" classname="cli4clj.test.cli-tests" time="0.5112">
     </testcase>
-    <testcase name="clojure-repl-stdout-no-op-no-prompt-test" classname="cli4clj.test.cli-tests" time="0.0010">
+    <testcase name="clojure-repl-stdout-no-op-no-prompt-test" classname="cli4clj.test.cli-tests" time="0.0015">
     </testcase>
-    <testcase name="cmd-vector-to-cmd-test-input-string-test" classname="cli4clj.test.cli-tests" time="0.0006">
+    <testcase name="cmd-vector-to-cmd-test-input-string-test" classname="cli4clj.test.cli-tests" time="0.0004">
     </testcase>
-    <testcase name="clojure-repl-stdout-def-inc-println-no-prompt-string-latch-test" classname="cli4clj.test.cli-tests" time="0.0049">
+    <testcase name="clojure-repl-stdout-def-inc-println-no-prompt-string-latch-test" classname="cli4clj.test.cli-tests" time="0.0055">
     </testcase>
     <testcase name="expected-string-creation-single-line-test" classname="cli4clj.test.cli-tests" time="0.0003">
     </testcase>
-    <testcase name="clojure-repl-stdout-inc-test" classname="cli4clj.test.cli-tests" time="0.0011">
+    <testcase name="clojure-repl-stdout-inc-test" classname="cli4clj.test.cli-tests" time="0.0015">
     </testcase>
     <testcase name="async-cmd-not-finished-test" classname="cli4clj.test.cli-tests" time="0.0013">
     </testcase>
-    <testcase name="async-cmd-string-latch-stderr-test" classname="cli4clj.test.cli-tests" time="0.5043">
+    <testcase name="async-cmd-string-latch-stderr-test" classname="cli4clj.test.cli-tests" time="0.5040">
     </testcase>
-    <testcase name="simple-jline-input-stream-mock-test" classname="cli4clj.test.cli-tests" time="0.1456">
+    <testcase name="simple-jline-input-stream-mock-test" classname="cli4clj.test.cli-tests" time="0.1708">
     </testcase>
-    <testcase name="clojure-repl-stderr-div-zero-test" classname="cli4clj.test.cli-tests" time="0.0019">
+    <testcase name="clojure-repl-stderr-div-zero-test" classname="cli4clj.test.cli-tests" time="0.0036">
     </testcase>
-    <testcase name="clojure-repl-stdout-def-inc-println-test" classname="cli4clj.test.cli-tests" time="0.0022">
+    <testcase name="clojure-repl-stdout-def-inc-println-test" classname="cli4clj.test.cli-tests" time="0.0048">
     </testcase>
-    <testcase name="expected-string-creation-custom-separator-test" classname="cli4clj.test.cli-tests" time="0.0008">
+    <testcase name="expected-string-creation-custom-separator-test" classname="cli4clj.test.cli-tests" time="0.0004">
     </testcase>
     <system-err>
     </system-err>
@@ -65,7 +65,7 @@ user=&gt; user=&gt; user=&gt; user=&gt;     </system-out>
         </property>
         <property name="path.separator" value=":">
         </property>
-        <property name="cli4clj.version" value="1.3.0">
+        <property name="cli4clj.version" value="1.3.1">
         </property>
         <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
         </property>
@@ -154,7 +154,7 @@ user=&gt; user=&gt; user=&gt; user=&gt;     </system-out>
         </property>
         <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/">
         </property>
-        <property name="sun.java.command" value="clojure.main -i /tmp/form-init8784260140109646337.clj">
+        <property name="sun.java.command" value="clojure.main -i /tmp/form-init2664278983240491118.clj">
         </property>
         <property name="user.name" value="rc">
         </property>
