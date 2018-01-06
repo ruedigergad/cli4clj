@@ -375,6 +375,7 @@
                        (start-cli adjusted-user-options#))))
                    (recur)))
        (.setDaemon true)
+       (.setName "cli4clj Embedded CLI")
        (.start))
      in-fn#))
 
