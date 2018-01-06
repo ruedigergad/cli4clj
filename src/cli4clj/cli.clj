@@ -16,11 +16,13 @@
     (clojure
       [main :as main]
       [stacktrace :as strace])
+    (clojure.java [io :as jio])
     (clojure.core [async :as async]))
   (:import
     (java.io PushbackReader StringReader)
     (jline.console ConsoleReader)
-    (jline.console.completer ArgumentCompleter Completer StringsCompleter)))
+    (jline.console.completer ArgumentCompleter Completer StringsCompleter)
+    (jline.console.history FileHistory)))
 
 (def ^:dynamic *comment-begin-string* ";")
 
@@ -137,12 +139,27 @@
         in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
                  (.addCompleter (StringsCompleter. (remove #(.startsWith % "_") (map name (keys cmds)))))
                  (.setPrompt prompt-string))
+        file-history (if (opts :persist-history)
+                       (let [history-file-name (if (contains? opts :history-file-name)
+                                                 (opts :history-file-name)
+                                                 (str
+                                                   (System/getProperty "user.home")
+                                                   "/."
+                                                   (opts :calling-ns)
+                                                   ".history"))
+                             history-file (jio/file history-file-name)]
+                         (FileHistory. history-file))
+                       nil)
+        _ (if (not (nil? file-history))
+            (.setHistory in-rdr file-history))
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr)]
+        (if (not (nil? file-history))
+          (.flush file-history))
         (if (and (not (nil? line))
                  (not (.isEmpty line))
                  (not (-> line (.trim) (.startsWith *comment-begin-string*))))
@@ -249,6 +266,7 @@
    :help-factory create-cli-help-fn
    :help-cmd-entry-delimiter *line-sep*
    :invalid-token-to-string true
+   :persist-history true
    :print cli-repl-print
    :print-err print-err-fn
    :prompt-fn (fn [])
@@ -305,7 +323,9 @@
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
-   `(let [options# (get-cli-opts ~options-with-args-info)]
+   `(let [options# (assoc
+                     (get-cli-opts ~options-with-args-info)
+                     :calling-ns ~*ns*)]
       (main/repl
         :eval ((options# :eval-factory) options#)
         :print (options# :print)

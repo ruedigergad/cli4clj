@@ -15,8 +15,9 @@
       [cli :as cli]
       [cli-tests :as cli-tests])
     (clj-assorted-utils [util :as utils])
-    (clojure [test :as test]))
-  (:import (java.io ByteArrayInputStream)
+    (clojure [test :as test])
+    (clojure.java [io :as jio]))
+  (:import (java.io ByteArrayInputStream PipedInputStream PipedOutputStream)
            (java.util ArrayList)))
 
 (test/deftest simple-options-merging-test
@@ -243,4 +244,69 @@
                          :divide {:fn (fn [x y] (/ x y))}}}
         cli-fn (cli/embedded-cli-fn cli-opts)]
     (test/is (= "divide\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nprint\n\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface." (cli-fn "help")))))
+
+
+
+(def default-history-file-path (str (System/getProperty "user.home") "/." *ns* ".history"))
+
+(test/deftest persistent-history-basic-test
+  (utils/rm (jio/file default-history-file-path))
+  (test/is (not (utils/file-exists? (jio/file default-history-file-path))))
+  (let [started-flag (utils/prepare-flag)
+        fn-executed-flag (utils/prepare-flag)
+        cli-opts {:cmds {:add {:fn (fn [x y] (+ x y) (utils/set-flag fn-executed-flag))}}
+                  :prompt-fn #(utils/set-flag started-flag)}
+        piped-out (PipedOutputStream.)
+        piped-in (PipedInputStream. piped-out)
+        test-thread (Thread. #(binding [cli/*jline-input-stream* piped-in] (cli/start-cli cli-opts)))]
+    (.setDaemon test-thread true)
+    (.start test-thread)
+    (utils/await-flag started-flag)
+    (.write piped-out (.getBytes "add 1 2\r"))
+    (utils/await-flag fn-executed-flag)
+    (test/is (utils/file-exists? (jio/file default-history-file-path)))
+    (with-open [rdr (jio/reader (jio/file default-history-file-path))]
+      (test/is (= "add 1 2" (first (line-seq rdr))))
+    (utils/rm (jio/file default-history-file-path)))))
+
+(def custom-history-file-path (str "unit_test.history"))
+
+(test/deftest persistent-history-custom-output-file-test
+  (utils/rm (jio/file custom-history-file-path))
+  (test/is (not (utils/file-exists? (jio/file custom-history-file-path))))
+  (let [started-flag (utils/prepare-flag)
+        fn-executed-flag (utils/prepare-flag)
+        cli-opts {:cmds {:add {:fn (fn [x y] (+ x y) (utils/set-flag fn-executed-flag))}}
+                  :prompt-fn #(utils/set-flag started-flag)
+                  :history-file-name custom-history-file-path}
+        piped-out (PipedOutputStream.)
+        piped-in (PipedInputStream. piped-out)
+        test-thread (Thread. #(binding [cli/*jline-input-stream* piped-in] (cli/start-cli cli-opts)))]
+    (.setDaemon test-thread true)
+    (.start test-thread)
+    (utils/await-flag started-flag)
+    (.write piped-out (.getBytes "add 1 2\r"))
+    (utils/await-flag fn-executed-flag)
+    (test/is (utils/file-exists? (jio/file custom-history-file-path)))
+    (with-open [rdr (jio/reader (jio/file custom-history-file-path))]
+      (test/is (= "add 1 2" (first (line-seq rdr)))))
+    (utils/rm (jio/file custom-history-file-path))))
+
+(test/deftest persistent-history-disable-history-test
+  (utils/rm (jio/file default-history-file-path))
+  (test/is (not (utils/file-exists? (jio/file default-history-file-path))))
+  (let [started-flag (utils/prepare-flag)
+        fn-executed-flag (utils/prepare-flag)
+        cli-opts {:cmds {:add {:fn (fn [x y] (+ x y) (utils/set-flag fn-executed-flag))}}
+                  :prompt-fn #(utils/set-flag started-flag)
+                  :persist-history false}
+        piped-out (PipedOutputStream.)
+        piped-in (PipedInputStream. piped-out)
+        test-thread (Thread. #(binding [cli/*jline-input-stream* piped-in] (cli/start-cli cli-opts)))]
+    (.setDaemon test-thread true)
+    (.start test-thread)
+    (utils/await-flag started-flag)
+    (.write piped-out (.getBytes "add 1 2\r"))
+    (utils/await-flag fn-executed-flag)
+    (test/is (not (utils/file-exists? (jio/file default-history-file-path))))))
 
