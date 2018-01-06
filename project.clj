@@ -7,7 +7,7 @@
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [clj-assorted-utils "1.18.2"]
                  [org.clojure/core.async "0.3.465"]
-                 [jline/jline "2.14.2"]]
+                 [jline/jline "2.14.5"]]
   :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "ghpages/doc"
   :html5-docs-ns-includes #"^cli4clj.*"
