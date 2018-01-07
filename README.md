@@ -10,10 +10,12 @@ Create simple interactive CLIs for Clojure applications.
 ## Overview
 
 The aim of cli4clj is to allow the quick and effortless creation of interactive command line interfaces (CLIs).
+It is build on top of [jline2](https://github.com/jline/jline2).
 Features of cli4clj are:
 
 * Simple configuration via maps
 * Command line history
+  * Default configuration for persistent history (since 1.4.0)
 * Command line editing
 * Tab-completion
   * For command names
@@ -22,7 +24,8 @@ Features of cli4clj are:
 * Clojure data types, e.g., vector, list, map, etc., can be used as command arguments.
 * Build-in help
 * Customizable, similar to the Clojure REPL
-* Functionality for testing CLIs via unit tests
+* Functionality for testing CLIs via unit tests [1](https://ruedigergad.com/2016/10/23/cli4clj-1-2-5-improved-testability-of-multi-threaded-command-line-applications-in-clojure/)[2](https://ruedigergad.com/2016/10/27/unit-testing-arbitrary-command-line-interfaces-cli-with-cli4clj-illustrated-using-the-example-of-the-clojure-repl/)
+* ["Embedded CLIs"](https://ruedigergad.com/2017/10/09/cli4clj-version-1-3-2-new-embedded-clis/)
 
 On [my website](http://ruedigergad.com/tag/cli4clj) I wrote some posts about cli4clj in which you can find more verbose information.
 
