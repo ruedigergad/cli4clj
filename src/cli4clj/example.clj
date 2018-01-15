@@ -77,6 +77,6 @@
                                        (print "Opt-args: ")
                                        (pprint/pprint opt-args))
                                  :short-info "Pretty print the supplied arguments."
-                                 :long-ingo "This function pretty prints its supplied arguments. It takes at least one argument."}
+                                 :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
                          :p :print}}))
 
