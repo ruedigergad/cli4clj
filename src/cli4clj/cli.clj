@@ -199,7 +199,7 @@
 				(get-in cmds [cmd :fn])
 				(rest arg)))
           (and allow-eval (list? arg)) (eval arg)
-           :default (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts))
+          :default (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts))
         (catch Exception e
           (err-fn e opts))))))
 
