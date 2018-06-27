@@ -78,5 +78,5 @@
                                        (pprint/pprint opt-args))
                                  :short-info "Pretty print the supplied arguments."
                                  :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
-                         :p :print}}))
-
+                         :p :print}
+                  :allow-eval true}))

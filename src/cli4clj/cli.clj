@@ -155,7 +155,13 @@
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
-        rdr-fn (create-repl-read-fn opts)]
+        rdr-fn (create-repl-read-fn opts)
+        cli-fns-ns 'cli4clj-cli-fns]
+	(create-ns cli-fns-ns)
+    (doseq [[cmd-name cmd-def] cmds]
+      (when (map? cmd-def)
+        (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))
+	(refer cli-fns-ns)
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr)]
         (if (not (nil? file-history))
