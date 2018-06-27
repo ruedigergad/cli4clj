@@ -192,14 +192,14 @@
         err-fn (:print-err opts)]
     (fn [arg]
       (try
-        (if (and (vector? arg) (contains? cmds (keyword (first arg))))
-          (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
-            (apply
-              (get-in cmds [cmd :fn])
-              (rest arg)))
-          (if allow-eval
-            (eval arg)
-            (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts)))
+        (cond
+          (and (vector? arg) (contains? cmds (keyword (first arg))))
+            (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
+			  (apply
+				(get-in cmds [cmd :fn])
+				(rest arg)))
+          (and allow-eval (list? arg)) (eval arg)
+           :default (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts))
         (catch Exception e
           (err-fn e opts))))))
 
