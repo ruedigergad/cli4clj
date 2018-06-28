@@ -84,3 +84,14 @@
            "Opt-args: (bar baz)"])
         out-string))))
 
+(test/deftest simple-method-clojure-syntax-example-test
+  (let [test-cmd-input ["(add 1 2)"]
+        out-string (cli-tests/test-cli-stdout #(example/-main "") test-cmd-input)]
+    (test/is (= (cli-tests/expected-string ["3"]) out-string))))
+
+(test/deftest advanced-main-method-clojure-syntax-example-test
+  (let [test-cmd-input ["(add 1 2)"
+                        "(divide 4 2)"]
+        out-string (cli-tests/test-cli-stdout #(example/-main "") test-cmd-input)]
+    (test/is (= (cli-tests/expected-string ["3" "2"]) out-string))))
+

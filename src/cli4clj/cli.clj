@@ -57,6 +57,16 @@
     {}
     cmds))
 
+(defn init
+  "Init function passed to the repl :init. This is used to set up the environment."
+  [options]
+  (let [cli-fns-ns 'cli4clj-cli-fns]
+	(create-ns cli-fns-ns)
+    (doseq [[cmd-name cmd-def] (options :cmds)]
+      (when (map? cmd-def)
+        (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))
+	(refer cli-fns-ns)))
+
 (defn create-repl-read-fn
   "This function creates a function that is intended to be used as repl read function.
    The created read function is largely based on the existing repl read function:
@@ -69,6 +79,7 @@
         err-fn (opts :print-err)
         invalid-token-to-string (opts :invalid-token-to-string)
         quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
+    (init opts)
     (fn [request-prompt request-exit]
       (try
         (or ({:line-start request-prompt :stream-end request-exit}
@@ -155,13 +166,7 @@
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
-        rdr-fn (create-repl-read-fn opts)
-        cli-fns-ns 'cli4clj-cli-fns]
-	(create-ns cli-fns-ns)
-    (doseq [[cmd-name cmd-def] cmds]
-      (when (map? cmd-def)
-        (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))
-	(refer cli-fns-ns)
+        rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr)]
         (if (not (nil? file-history))
