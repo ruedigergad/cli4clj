@@ -30,15 +30,15 @@
 ;;;              |  |      |     The function to be called for the command is defined via :fn.
 ;;;              |  |      |     |  In this example we use an anonymous function.
 ;;;              |  |      |     |  However, arbitrary functions can be used.
-  (cli/start-cli {:cmds {:test {:fn #(println "This is a test.")
-;;;                             Optionally a short information text can be given.
-                                :short-info "Test Command"
-;;;                             Another long information text can be optionally given as well.
-                                :long-info "Prints a test message to stdout."}
+  (cli/start-cli {:cmds {:test-cmd {:fn #(println "This is a test.")
+;;;                                Optionally a short information text can be given.
+                                   :short-info "Test Command"
+;;;                                Another long information text can be optionally given as well.
+                                   :long-info "Prints a test message to stdout."}
 ;;;                      "Aliases" can be used, e.g., for defining shortcuts by relating to existing commands.
 ;;;                      The order in which aliases and commands are defined does not matter.
 ;;;                      Just make sure that the alias refers to an existing command.
-                         :t :test
+                         :t :test-cmd
 ;;;                      Commands can also accept arguments as shown for the "add" example."
 ;;;                      All Clojure data types are supported as arguments.
 ;;;                      However, no sanity checks, e.g., with respect to the number of arguments or the argument type(s), are performed.
