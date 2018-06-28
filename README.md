@@ -56,7 +56,7 @@ Below is an example output that shows running the usage example:
         Quit the CLI.
         Terminate and close the command line interface.
 
-    test [h t]
+    test-cmd [h t]
         Test Command
         Prints a test message to stdout.
 
@@ -64,7 +64,7 @@ Below is an example output that shows running the usage example:
         Seq to CSV	 Arguments: [[data]]
         E.g.: "to-csv [1 2 3]"
 
-    cli# test
+    cli# test-cmd
     This is a test.
     cli# t
     This is a test.
