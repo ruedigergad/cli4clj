@@ -64,7 +64,12 @@
 	(create-ns cli-fns-ns)
     (doseq [[cmd-name cmd-def] (options :cmds)]
       (when (map? cmd-def)
-        (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))
+        (let [cmd-sym (symbol (name cmd-name))
+              cmd-res (resolve cmd-sym)]
+          (when (or
+                (nil? cmd-res)
+                (= (name cli-fns-ns) (str (:ns (meta cmd-res)))))
+            (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))))
 	(refer cli-fns-ns)))
 
 (defn create-repl-read-fn
