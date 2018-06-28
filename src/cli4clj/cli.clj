@@ -58,7 +58,7 @@
     cmds))
 
 (defn init
-  "Init function passed to the repl :init. This is used to set up the environment."
+  "Internal init function for setting up the environment."
   [options]
   (let [cli-fns-ns 'cli4clj-cli-fns]
 	(create-ns cli-fns-ns)
