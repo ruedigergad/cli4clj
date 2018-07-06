@@ -71,11 +71,11 @@
                          :d :divide
 ;;;                      The following example shows the use of optional arguments.
 ;;;                      It can also be used to test how different types of inputs are treated.
-                         :print {:fn (fn [arg & opt-args]
-                                       (print "Arg-type:" (type arg) "Arg: ")
-                                       (pprint/pprint arg)
-                                       (print "Opt-args: ")
-                                       (pprint/pprint opt-args))
+                         :print-cmd {:fn (fn [arg & opt-args]
+                                           (print "Arg-type:" (type arg) "Arg: ")
+                                           (pprint/pprint arg)
+                                           (print "Opt-args: ")
+                                           (pprint/pprint opt-args))
                                  :short-info "Pretty print the supplied arguments."
                                  :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
                          :p :print}

@@ -55,7 +55,7 @@
                             " at clojure.lang.Numbers.divide (Numbers.java"])))))
 
 (test/deftest print-function-test
-  (let [test-cmd-input ["print 1701"]
+  (let [test-cmd-input ["print-cmd 1701"]
         out-string (cli-tests/test-cli-stdout #(example/-main "") test-cmd-input)]
     (test/is
       (=
@@ -65,7 +65,7 @@
         out-string))))
 
 (test/deftest invalid-token-to-string-fallback-test
-  (let [test-cmd-input ["print /foo/bar"]
+  (let [test-cmd-input ["print-cmd /foo/bar"]
         out-string (cli-tests/test-cli-stdout #(example/-main "") test-cmd-input)]
     (test/is
       (=
@@ -75,7 +75,7 @@
         out-string))))
 
 (test/deftest print-function-opt-args-test
-  (let [test-cmd-input ["print foo bar baz"]
+  (let [test-cmd-input ["print-cmd foo bar baz"]
         out-string (cli-tests/test-cli-stdout #(example/-main "") test-cmd-input)]
     (test/is
       (=
