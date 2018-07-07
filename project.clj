@@ -16,5 +16,5 @@
   :test2junit-run-ant true
   :main cli4clj.example
   :plugins [[lein-cloverage "1.0.2"] [test2junit "1.3.3"] [lein-html5-docs "3.0.3"]]
-  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.2.6" :exclusions  [org.clojure/clojure]]]}}
+  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.2.7" :exclusions  [org.clojure/clojure]]]}}
 )
