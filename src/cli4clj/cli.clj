@@ -20,6 +20,7 @@
     (clojure.core [async :as async]))
   (:import
     (java.io PushbackReader StringReader)
+    (jline TerminalFactory)
     (jline.console ConsoleReader)
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)
     (jline.console.history FileHistory)))
@@ -144,6 +145,20 @@
       []
       (keys cmds))))
 
+(defn set-up-alternate-scrolling
+  [height width alternate-height prompt-string in-rdr]
+  (let [prompt-width (count prompt-string)
+        adjusted-prompt-string (str "\u001B[" (- height alternate-height) ";0H"
+                                    "\u001B[2K"
+                                    prompt-string
+                                    "\u001B[1;" (- height alternate-height 2) "r"
+                                    "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
+	(print (str
+			 "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"
+			 "\u001B[" (- height alternate-height 1) ";0H"))
+	(flush)
+    (.setPrompt in-rdr adjusted-prompt-string)))
+
 (defn create-jline-read-fn
   "This function creates a read function that leverages jline2 for handling input.
    Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
@@ -171,9 +186,27 @@
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
             (.addCompleter in-rdr compl))
-        rdr-fn (create-repl-read-fn opts)]
+        rdr-fn (create-repl-read-fn opts)
+
+        alternate-scrolling (opts :alternate-scrolling)
+        alternate-height (opts :alternate-height)
+        term (TerminalFactory/create)
+        ansi-support (.isAnsiSupported term)
+        last-height (atom (.getHeight term))
+        last-width (atom (.getWidth term))]
+    (when (and alternate-scrolling ansi-support)
+      (set-up-alternate-scrolling @last-height @last-width alternate-height prompt-string in-rdr))
     (fn [request-prompt request-exit]
-      (let [line (.readLine in-rdr)]
+      (let [line (.readLine in-rdr)
+            current-height (.getHeight term)
+            current-width (.getWidth term)]
+        (when (and
+                alternate-scrolling
+                ansi-support
+                (or (not= @last-height current-height) (not= @last-width current-width)))
+          (reset! last-height current-height)
+          (reset! last-width current-width)
+          (set-up-alternate-scrolling @last-height @last-width alternate-height prompt-string in-rdr))
         (if (not (nil? file-history))
           (.flush file-history))
         (if (and (not (nil? line))
@@ -333,20 +366,46 @@
   [opts]
   (add-args-info opts))
 
+(defn alternate-scrolling-out
+  [options]
+  (let [stdout *out*
+        new-line (atom true)
+        alternate-height (options :alternate-height)
+        term (TerminalFactory/create)
+        wrtr (proxy [java.io.StringWriter] []
+               (write [obj]
+                 (let [s (condp instance? obj
+                           java.lang.String obj
+                           java.lang.Integer (str (char obj))
+                           (str obj))
+                       term-height (.getHeight term)]
+				   (binding [*out* stdout]
+					 (when @new-line
+					   (print (str "\u001B[" (- term-height alternate-height 3) ";0H\n"))
+					   (reset! new-line false))
+					 (print s)
+					 (when (.contains s "\n")
+					   (reset! new-line true))
+					 (flush)))))]
+    wrtr))
+
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
    Please note that the configuration options can also be defined in a global or local var.
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
    (let [options-with-args-info (add-args-info user-options)]
-   `(let [options# (assoc
-                     (get-cli-opts ~options-with-args-info)
-                     :calling-ns ~*ns*)]
-      (main/repl
-        :eval ((options# :eval-factory) options#)
-        :print (options# :print)
-        :prompt (options# :prompt-fn)
-        :read (*read-factory* options#)))))
+	 `(let [options# (assoc
+					   (get-cli-opts ~options-with-args-info)
+					   :calling-ns ~*ns*)]
+		(binding [*out* (if (options# :alternate-scrolling)
+						   (alternate-scrolling-out options#)
+						   *out*)]
+		  (main/repl
+			:eval ((options# :eval-factory) options#)
+			:print (options# :print)
+			:prompt (options# :prompt-fn)
+			:read (*read-factory* options#))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."

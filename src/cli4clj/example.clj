@@ -83,4 +83,7 @@
                          :print-repeat {:fn (fn [text interval]
                                               (utils/run-repeat (utils/executor) #(println text) interval))
                                         :short-info "Repeatedly print text with the given interval in milliseconds."}}
-                  :allow-eval true}))
+                  :allow-eval true
+                  :prompt-string "foo# "
+                  :alternate-scrolling true
+                  :alternate-height 7}))
