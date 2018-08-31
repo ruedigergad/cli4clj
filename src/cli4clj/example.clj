@@ -13,6 +13,7 @@
   cli4clj.example
   (:require
     (cli4clj [cli :as cli])
+    (clj-assorted-utils [util :as utils])
     (clojure [pprint :as pprint]))
   (:gen-class))
 
@@ -76,7 +77,10 @@
                                            (pprint/pprint arg)
                                            (print "Opt-args: ")
                                            (pprint/pprint opt-args))
-                                 :short-info "Pretty print the supplied arguments."
-                                 :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
-                         :p :print}
+                                     :short-info "Pretty print the supplied arguments."
+                                     :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
+                         :p :print
+                         :print-repeat {:fn (fn [text interval]
+                                              (utils/run-repeat (utils/executor) #(println text) interval))
+                                        :short-info "Repeatedly print text with the given interval in milliseconds."}}
                   :allow-eval true}))
