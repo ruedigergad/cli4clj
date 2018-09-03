@@ -317,7 +317,9 @@
    :print cli-repl-print
    :print-err print-err-fn
    :prompt-fn (fn [])
-   :prompt-string "cli# "})
+   :prompt-string "cli# "
+   :alternate-scrolling false
+   :alternate-height 7})
 
 (defn merge-options
   "This function merges the user supplied configuration options with the default and mandatory default options.
@@ -371,22 +373,23 @@
         alternate-height (options :alternate-height)
         term (TerminalFactory/create)
         wrtr (proxy [java.io.StringWriter] []
-               (write [obj]
-                 (let [s (condp instance? obj
-                           java.lang.String obj
-                           java.lang.Integer (str (char obj))
-                           (str obj))
-                       term-height (.getHeight term)]
-				   (binding [*out* stdout]
-					 (when @new-line
-					   (print (str "\u001B[" (- term-height alternate-height) ";0H"
-                                   "\u001B[0J"
-                                   "\u001B[" (- term-height alternate-height 3) ";0H\n"))
-					   (reset! new-line false))
-					 (print s)
-					 (when (.contains s "\n")
-					   (reset! new-line true))
-					 (flush)))))]
+               (flush []
+                 (reset! new-line true))
+               (write
+                 ([obj]
+                   (let [s (condp instance? obj
+                             java.lang.String obj
+                             java.lang.Integer (str (char obj))
+                             (str obj))
+                         term-height (.getHeight term)]
+                     (binding [*out* stdout]
+                       (when @new-line
+                         (print (str "\u001B[" (- term-height alternate-height) ";0H"
+                                     "\u001B[0J"
+                                     "\u001B[" (- term-height alternate-height 3) ";0H\n"))
+                         (reset! new-line false))
+                       (print s)
+                       (flush))))))]
     wrtr))
 
 (defmacro start-cli

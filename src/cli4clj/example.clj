@@ -27,15 +27,15 @@
 ;;; In the following, an example using a simple scenario along with some explanations is provided:
 ;;;              cli4clj is configured via an "options" map.
 ;;;              | Commands are stored in a nested map using the key :cmds in the options map.
-;;;              |  |      As first simple example command, we define a command called "test".
-;;;              |  |      |     The function to be called for the command is defined via :fn.
-;;;              |  |      |     |  In this example we use an anonymous function.
-;;;              |  |      |     |  However, arbitrary functions can be used.
+;;;              |  |      As first simple example command, we define a command called "test-cmd".
+;;;              |  |      |         The function to be called for the command is defined via :fn.
+;;;              |  |      |         |  In this example we use an anonymous function.
+;;;              |  |      |         |  However, arbitrary functions can be used.
   (cli/start-cli {:cmds {:test-cmd {:fn #(println "This is a test.")
-;;;                                Optionally a short information text can be given.
-                                   :short-info "Test Command"
-;;;                                Another long information text can be optionally given as well.
-                                   :long-info "Prints a test message to stdout."}
+;;;                                 Optionally a short information text can be given.
+                                    :short-info "Test Command"
+;;;                                 Another long information text can be optionally given as well.
+                                    :long-info "Prints a test message to stdout."}
 ;;;                      "Aliases" can be used, e.g., for defining shortcuts by relating to existing commands.
 ;;;                      The order in which aliases and commands are defined does not matter.
 ;;;                      Just make sure that the alias refers to an existing command.
@@ -84,6 +84,5 @@
                                               (utils/run-repeat (utils/executor) #(println text) interval))
                                         :short-info "Repeatedly print text with the given interval in milliseconds."}}
                   :allow-eval true
-                  :prompt-string "foo# "
-                  :alternate-scrolling true
-                  :alternate-height 7}))
+                  :prompt-string "cli# "
+                  :alternate-height 3}))
