@@ -151,6 +151,7 @@
         adjusted-prompt-string (str "\u001B[" (- height alternate-height) ";0H"
                                     "\u001B[2K"
                                     prompt-string
+                                    "\u001B[" (- height alternate-height 1) ";0H" (apply str (repeat width "\u203E"))
                                     "\u001B[1;" (- height alternate-height 2) "r"
                                     "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
 	(print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
