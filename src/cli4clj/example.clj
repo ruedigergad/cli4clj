@@ -81,7 +81,7 @@
                                      :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
                          :p :print
                          :print-repeat {:fn (fn [text interval]
-                                              (utils/run-repeat (utils/executor) #(println text) interval))
+                                              (utils/run-repeat (utils/executor) #((cli/with-alt-scroll-out 0 (println text))) interval))
                                         :short-info "Repeatedly print text with the given interval in milliseconds."}}
                   :allow-eval true
                   :prompt-string "cli# "
