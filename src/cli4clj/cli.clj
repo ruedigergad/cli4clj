@@ -370,17 +370,13 @@
   (add-args-info opts))
 
 (defmacro with-alt-scroll-out
-  [offset & body]
+  [& body]
   `(let [stdout# *out*
          new-line# (atom true)
          term# (TerminalFactory/create)
          wrtr# (proxy [java.io.StringWriter] []
                  (flush []
-                   (reset! new-line# true)
-;                   (binding [*out* stdout#]
-;                     (print (str "\u001B[" (- (.getHeight term#) (@__cli4clj_options__ :alternate-height)) ";5H"))
-;)
-                   )
+                   (reset! new-line# true))
                  (write [obj#]
                    (let [s# (condp instance? obj#
                              java.lang.String obj#
@@ -389,12 +385,20 @@
                          term-height# (.getHeight term#)
                          alternate-height# (@__cli4clj_options__ :alternate-height)]
                      (binding [*out* stdout#]
-                       (when @new-line#
-                         (print (str "\u001B[" (- term-height# alternate-height# -1) ";0H"
-                                     "\u001B[0J"
-                                     "\u001B[" (- term-height# alternate-height# ~offset 3) ";0H\n"))
-                         (reset! new-line# false))
+                       (if @new-line#
+                         (do
+                           (print (str "\u001B[" (- term-height# alternate-height# -1) ";0H"
+                                       "\u001B[0J"
+                                       "\u001B[" (- term-height# alternate-height# 3) ";0H\n"))
+                           (reset! new-line# false))
+                         (print "\u001B[u"))
                        (print s#)
+                       (print "\u001B[s")
+                       (print (str "\u001B["
+                                   (- (.getHeight term#) (@__cli4clj_options__ :alternate-height))
+                                   ";"
+                                   (+ (count (@__cli4clj_options__ :prompt-string)) 1)
+                                   "H"))
                        (flush)))))]
      (fn []
 	   (binding [*out* (if (@__cli4clj_options__ :alternate-scrolling)
@@ -412,7 +416,7 @@
     `(let [options# (assoc
 					  (get-cli-opts ~options-with-args-info)
 					  :calling-ns ~*ns*)]
-       ((with-alt-scroll-out 0
+       ((with-alt-scroll-out
 		 (main/repl
 		   :eval ((options# :eval-factory) options#)
 		   :print (options# :print)
