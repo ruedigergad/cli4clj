@@ -327,7 +327,7 @@
    :prompt-fn (fn [])
    :prompt-string "cli# "
    :alternate-scrolling false
-   :alternate-height 7})
+   :alternate-height 3})
 
 (defn merge-options
   "This function merges the user supplied configuration options with the default and mandatory default options.

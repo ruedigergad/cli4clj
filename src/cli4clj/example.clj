@@ -85,5 +85,5 @@
                                         :short-info "Repeatedly print text with the given interval in milliseconds."}}
                   :allow-eval true
                   :prompt-string "cli# "
-                  :alternate-scrolling true
+                  :alternate-scrolling false
                   :alternate-height 3}))
