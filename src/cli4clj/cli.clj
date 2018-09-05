@@ -64,7 +64,7 @@
   "Internal init function for setting up the environment."
   [options]
   (let [cli-fns-ns 'cli4clj-cli-fns]
-	(create-ns cli-fns-ns)
+    (create-ns cli-fns-ns)
     (doseq [[cmd-name cmd-def] (options :cmds)]
       (when (map? cmd-def)
         (let [cmd-sym (symbol (name cmd-name))
@@ -73,7 +73,7 @@
                 (nil? cmd-res)
                 (= (name cli-fns-ns) (str (:ns (meta cmd-res)))))
             (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))))
-	(refer cli-fns-ns)))
+    (refer cli-fns-ns)))
 
 (defn create-repl-read-fn
   "This function creates a function that is intended to be used as repl read function.
@@ -156,8 +156,8 @@
                                     "\u001B[" (- height alternate-height 1) ";0H" (apply str (repeat width "\u203E"))
                                     "\u001B[1;" (- height alternate-height 2) "r"
                                     "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
-	(print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
-	(flush)
+    (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
+    (flush)
     (.setPrompt in-rdr adjusted-prompt-string)))
 
 (defn create-jline-read-fn
@@ -233,15 +233,20 @@
   [opts]
   (let [cmds (:cmds opts)
         allow-eval (:allow-eval opts)
-        err-fn (:print-err opts)]
+        err-fn (:print-err opts)
+        term (TerminalFactory/create)
+        alternate-scrolling (:alternate-scrolling opts)
+        alternate-height (:alternate-height opts)]
     (fn [arg]
+      (when alternate-scrolling
+        (-> System/out (.print (str "\u001B[" (- (.getHeight term) alternate-height -1) ";0H" "\u001B[0J"))))
       (try
         (cond
           (and (vector? arg) (contains? cmds (keyword (first arg))))
             (let [cmd (resolve-cmd-alias (keyword (first arg)) cmds)]
-			  (apply
-				(get-in cmds [cmd :fn])
-				(rest arg)))
+              (apply
+                (get-in cmds [cmd :fn])
+                (rest arg)))
           (and allow-eval (list? arg)) (eval arg)
           :default (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts))
         (catch Exception e
@@ -374,34 +379,36 @@
   `(let [stdout# *out*
          new-line# (atom true)
          term# (TerminalFactory/create)
+         x# (atom 1)
+         y# (atom 1)
          wrtr# (proxy [java.io.StringWriter] []
                  (flush []
                    (reset! new-line# true))
-                 (write [obj#]
-                   (let [s# (condp instance? obj#
-                             java.lang.String obj#
-                             java.lang.Integer (str (char obj#))
-                             (str obj#))
-                         term-height# (.getHeight term#)
-                         alternate-height# (@__cli4clj_options__ :alternate-height)]
-                     (binding [*out* stdout#]
-                       (if @new-line#
-                         (do
-                           (print (str "\u001B[" (- term-height# alternate-height# -1) ";0H"
-                                       "\u001B[0J"
-                                       "\u001B[" (- term-height# alternate-height# 3) ";0H\n"))
-                           (reset! new-line# false))
-                         (print "\u001B[u"))
-                       (print s#)
-                       (print "\u001B[s")
-                       (print (str "\u001B["
-                                   (- (.getHeight term#) (@__cli4clj_options__ :alternate-height))
-                                   ";"
-                                   (+ (count (@__cli4clj_options__ :prompt-string)) 1)
-                                   "H"))
-                       (flush)))))]
+                 (write
+                   ([obj#]
+                     (let [s# (condp instance? obj#
+                               java.lang.String obj#
+                               java.lang.Integer (str (char obj#))
+                               (str obj#))
+                           term-height# (.getHeight term#)
+                           alternate-height# (@__cli4clj_options__ :alternate-height)]
+                       (binding [*out* stdout#]
+                         (when @new-line#
+                           (reset! x# 1)
+                           (reset! y# (- term-height# alternate-height# 3)))
+                         (print "\u001B[s")
+                         (print (str "\u001B[" @y# ";" @x# "H"))
+                         (when @new-line#
+                           (print "\n"))
+                         (print s#)
+                         (swap! x# #(+ % (count s#)))
+                         (when @new-line#
+                           (print "\n"))
+                         (reset! new-line# (.endsWith s# "\n"))
+                         (print "\u001B[u")
+                         (flush))))))]
      (fn []
-	   (binding [*out* (if (@__cli4clj_options__ :alternate-scrolling)
+       (binding [*out* (if (@__cli4clj_options__ :alternate-scrolling)
                          wrtr#
                          stdout#)]
          ~@body))))
@@ -414,14 +421,14 @@
   (let [options-with-args-info (add-args-info user-options)]
   (reset! __cli4clj_options__ options-with-args-info)
     `(let [options# (assoc
-					  (get-cli-opts ~options-with-args-info)
-					  :calling-ns ~*ns*)]
+                      (get-cli-opts ~options-with-args-info)
+                      :calling-ns ~*ns*)]
        ((with-alt-scroll-out
-		 (main/repl
-		   :eval ((options# :eval-factory) options#)
-		   :print (options# :print)
-		   :prompt (options# :prompt-fn)
-		   :read (*read-factory* options#)))))))
+         (main/repl
+           :eval ((options# :eval-factory) options#)
+           :print (options# :print)
+           :prompt (options# :prompt-fn)
+           :read (*read-factory* options#)))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
