@@ -372,44 +372,51 @@
   [opts]
   (add-args-info opts))
 
+(defn alt-scroll-writer
+  [options]
+  (let [alternate-height (options :alternate-height)
+        stdout *out*
+        new-line (atom true)
+        term (TerminalFactory/create)
+        x (atom 1)
+        y (atom 1)
+        wrtr (proxy [java.io.StringWriter] []
+                (flush []
+                  (reset! new-line true))
+                (write
+                  ([obj]
+                    (let [s (condp instance? obj
+                             java.lang.String obj
+                             java.lang.Integer (str (char obj))
+                             (str obj))
+                          term-height (.getHeight term)]
+                      (binding [*out* stdout]
+                        (when @new-line
+                          (reset! x 1)
+                          (reset! y (- term-height alternate-height 3)))
+                        (print "\u001B[s")
+                        (print (str "\u001B[" @y ";" @x "H"))
+                        (when @new-line
+                          (print "\n"))
+                        (print s)
+                        (swap! x #(+ % (count s)))
+                        (when @new-line
+                          (print "\n"))
+                        (reset! new-line (.endsWith s "\n"))
+                        (print "\u001B[u")
+                        (flush))))))]
+    wrtr))
+
+(defn get-writer-to-wrap
+  [wrtr options]
+  (if (options :alternate-scrolling)
+    @wrtr
+    *out*))
+
 (defmacro wrap-alt-scroll-writer
-  [options & body]
-  `(let [stdout# *out*
-         new-line# (atom true)
-         term# (TerminalFactory/create)
-         x# (atom 1)
-         y# (atom 1)
-         wrtr# (proxy [java.io.StringWriter] []
-                 (flush []
-                   (reset! new-line# true))
-                 (write
-                   ([obj#]
-                     (let [s# (condp instance? obj#
-                               java.lang.String obj#
-                               java.lang.Integer (str (char obj#))
-                               (str obj#))
-                           term-height# (.getHeight term#)
-                           alternate-height# (~options :alternate-height)]
-                       (binding [*out* stdout#]
-                         (when @new-line#
-                           (reset! x# 1)
-                           (reset! y# (- term-height# alternate-height# 3)))
-                         (print "\u001B[s")
-                         (print (str "\u001B[" @y# ";" @x# "H"))
-                         (when @new-line#
-                           (print "\n"))
-                         (print s#)
-                         (swap! x# #(+ % (count s#)))
-                         (when @new-line#
-                           (print "\n"))
-                         (reset! new-line# (.endsWith s# "\n"))
-                         (print "\u001B[u")
-                         (flush))))))]
-     (fn []
-       (binding [*out* (if (~options :alternate-scrolling)
-                         wrtr#
-                         stdout#)]
-         ~@body))))
+  [wrtr options & body]
+  `(binding [*out* (get-writer-to-wrap ~wrtr ~options)]
+     ~@body))
 
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
@@ -418,20 +425,23 @@
   [user-options]
   (let []
     `(let [_tmp_options# (atom {})
-           ~'with-alt-scroll-out (fn [& body#] (wrap-alt-scroll-writer @_tmp_options# body#))
+           alt-scroll-wrtr# (atom nil)
+           ~'with-alt-scroll-out (fn [& body#] (wrap-alt-scroll-writer alt-scroll-wrtr# @_tmp_options# body#))
            user-options# ~user-options
            options-with-args-info# (add-args-info user-options#)
            options# (assoc
                       (get-cli-opts options-with-args-info#)
                       :calling-ns ~*ns*)]
        (swap! _tmp_options# into options#)
-       ((wrap-alt-scroll-writer
-          options#
-          (main/repl
-            :eval ((options# :eval-factory) options#)
-            :print (options# :print)
-            :prompt (options# :prompt-fn)
-            :read (*read-factory* options#)))))))
+       (reset! alt-scroll-wrtr# (alt-scroll-writer options#))
+       (wrap-alt-scroll-writer
+         alt-scroll-wrtr#
+         options#
+         (main/repl
+           :eval ((options# :eval-factory) options#)
+           :print (options# :print)
+           :prompt (options# :prompt-fn)
+           :read (*read-factory* options#))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
