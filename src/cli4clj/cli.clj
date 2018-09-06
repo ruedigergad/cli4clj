@@ -32,8 +32,6 @@
 
 (def ^:dynamic *line-sep* (System/getProperty "line.separator"))
 
-(def __cli4clj_options__ (atom nil))
-
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
   [arg]
@@ -374,8 +372,8 @@
   [opts]
   (add-args-info opts))
 
-(defmacro with-alt-scroll-out
-  [& body]
+(defmacro wrap-alt-scroll-writer
+  [options & body]
   `(let [stdout# *out*
          new-line# (atom true)
          term# (TerminalFactory/create)
@@ -391,7 +389,7 @@
                                java.lang.Integer (str (char obj#))
                                (str obj#))
                            term-height# (.getHeight term#)
-                           alternate-height# (@__cli4clj_options__ :alternate-height)]
+                           alternate-height# (~options :alternate-height)]
                        (binding [*out* stdout#]
                          (when @new-line#
                            (reset! x# 1)
@@ -408,7 +406,7 @@
                          (print "\u001B[u")
                          (flush))))))]
      (fn []
-       (binding [*out* (if (@__cli4clj_options__ :alternate-scrolling)
+       (binding [*out* (if (~options :alternate-scrolling)
                          wrtr#
                          stdout#)]
          ~@body))))
@@ -418,17 +416,22 @@
    Please note that the configuration options can also be defined in a global or local var.
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
-  (let [options-with-args-info (add-args-info user-options)]
-  (reset! __cli4clj_options__ options-with-args-info)
-    `(let [options# (assoc
-                      (get-cli-opts ~options-with-args-info)
+  (let []
+    `(let [_tmp_options# (atom {})
+           ~'with-alt-scroll-out (fn [& body#] (wrap-alt-scroll-writer @_tmp_options# body#))
+           user-options# ~user-options
+           options-with-args-info# (add-args-info user-options#)
+           options# (assoc
+                      (get-cli-opts options-with-args-info#)
                       :calling-ns ~*ns*)]
-       ((with-alt-scroll-out
-         (main/repl
-           :eval ((options# :eval-factory) options#)
-           :print (options# :print)
-           :prompt (options# :prompt-fn)
-           :read (*read-factory* options#)))))))
+       (swap! _tmp_options# into options#)
+       ((wrap-alt-scroll-writer
+          options#
+          (main/repl
+            :eval ((options# :eval-factory) options#)
+            :print (options# :print)
+            :prompt (options# :prompt-fn)
+            :read (*read-factory* options#)))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
