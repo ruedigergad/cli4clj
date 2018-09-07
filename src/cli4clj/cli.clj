@@ -409,7 +409,7 @@
 
 (defn get-writer-to-wrap
   [wrtr options]
-  (if (options :alternate-scrolling)
+  (if (@options :alternate-scrolling)
     @wrtr
     *out*))
 
@@ -418,25 +418,28 @@
   `(binding [*out* (get-writer-to-wrap ~wrtr ~options)]
      ~@body))
 
+(defmacro with-alt-scroll-out
+  [& body]
+  `(wrap-alt-scroll-writer ~'__alt-scroll-wrtr ~'__options ~@body))
+
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
    Please note that the configuration options can also be defined in a global or local var.
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
   (let []
-    `(let [_tmp_options# (atom {})
-           alt-scroll-wrtr# (atom nil)
-           ~'with-alt-scroll-out (fn [& body#] (wrap-alt-scroll-writer alt-scroll-wrtr# @_tmp_options# body#))
+    `(let [~'__options (atom {})
+           ~'__alt-scroll-wrtr (atom nil)
            user-options# ~user-options
            options-with-args-info# (add-args-info user-options#)
            options# (assoc
                       (get-cli-opts options-with-args-info#)
                       :calling-ns ~*ns*)]
-       (swap! _tmp_options# into options#)
-       (reset! alt-scroll-wrtr# (alt-scroll-writer options#))
+       (swap! ~'__options into options#)
+       (reset! ~'__alt-scroll-wrtr (alt-scroll-writer options#))
        (wrap-alt-scroll-writer
-         alt-scroll-wrtr#
-         options#
+         ~'__alt-scroll-wrtr
+         ~'__options
          (main/repl
            :eval ((options# :eval-factory) options#)
            :print (options# :print)
