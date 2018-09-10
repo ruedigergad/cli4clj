@@ -430,8 +430,7 @@
   (let []
     `(let [~'__options (atom {})
            ~'__alt-scroll-wrtr (atom nil)
-           user-options# ~user-options
-           options-with-args-info# (add-args-info user-options#)
+           options-with-args-info# (add-args-info-m ~user-options)
            options# (assoc
                       (get-cli-opts options-with-args-info#)
                       :calling-ns ~*ns*)]
