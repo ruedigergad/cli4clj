@@ -34,8 +34,11 @@
   (cli/start-cli {:cmds {:test-cmd {:fn #(println "This is a test.")
 ;;;                                 Optionally a short information text can be given.
                                     :short-info "Test Command"
-;;;                                 Another long information text can be optionally given as well.
-                                    :long-info "Prints a test message to stdout."}
+;;;                                 In addition, a long information text can be optionally given.
+                                    :long-info "Prints a test message to stdout."
+;;;                                 Furthermore, a "hint" text can be defined for the tab-completion.
+                                    :completion-hint "This is a test command without arguments."
+                                   }
 ;;;                      "Aliases" can be used, e.g., for defining shortcuts by relating to existing commands.
 ;;;                      The order in which aliases and commands are defined does not matter.
 ;;;                      Just make sure that the alias refers to an existing command.
@@ -45,8 +48,9 @@
 ;;;                      However, no sanity checks, e.g., with respect to the number of arguments or the argument type(s), are performed.
 ;;;                      If things go wrong, exceptions will be thrown and printed.
                          :add  {:fn (fn [summand1 summand2] (+ summand1 summand2))
-                                :short-info "Add two values."}
-                                :a :add
+                                :short-info "Add two values."
+                                :completion-hint "Enter the value to add."}
+                         :a :add
 ;;;                      cli4clj already provides some pre-defined commands, from which some can overridden while others cannot.
 ;;;                      "h" is a pre-defined command but it can be overridden.
 ;;;                      This is shown by using the definition of an alias to test as example.
@@ -71,7 +75,7 @@
                                   :long-info "The first argument will be divided by the second argument."}
                          :d :divide
 ;;;                      The following example shows the use of optional arguments.
-;;;                      It can also be used to test how different types of inputs are treated.
+;;;                      In addition, it can also be used to test how different types of inputs are treated.
                          :print-cmd {:fn (fn [arg & opt-args]
                                            (print "Arg-type:" (type arg) "Arg: ")
                                            (pprint/pprint arg)
@@ -80,10 +84,15 @@
                                      :short-info "Pretty print the supplied arguments."
                                      :long-info "This function pretty prints its supplied arguments. It takes at least one argument."}
                          :p :print
+;;;                      Below is a test command to mimic asynchronous text output.
+;;;                      Such asynchronous output could occur, e.g., during network interaction with sockets or a middleware.
                          :print-repeat {:fn (fn [text interval]
                                               (utils/run-repeat (utils/executor) (fn [] (cli/with-alt-scroll-out (println text))) interval))
                                         :short-info "Repeatedly print text with the given interval in milliseconds."}}
                   :allow-eval true
                   :prompt-string "cli# "
+;;;               Since cli4clj version 1.6.0 an alternate scrolling mode is supported.
+;;;               By default the "old" scrolling is used.
+;;;               The new scrolling mode can be enabled by setting :alternate-scrolling to "true" or by specifying a corresponding "predicate function".
                   :alternate-scrolling (some #(= % "alt") args)
                   :alternate-height 3}))
