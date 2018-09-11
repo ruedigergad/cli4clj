@@ -146,12 +146,12 @@
       (keys cmds))))
 
 (defn set-up-alternate-scrolling
-  [height width alternate-height prompt-string in-rdr]
+  [height width alternate-height alternate-scroll-separator prompt-string in-rdr]
   (let [prompt-width (count prompt-string)
         adjusted-prompt-string (str "\u001B[" (- height alternate-height) ";0H"
                                     "\u001B[2K"
                                     prompt-string
-                                    "\u001B[" (- height alternate-height 1) ";0H" (apply str (repeat width "\u203E"))
+                                    "\u001B[" (- height alternate-height 1) ";0H" (apply str (repeat width alternate-scroll-separator))
                                     "\u001B[1;" (- height alternate-height 2) "r"
                                     "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
     (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
@@ -189,12 +189,13 @@
 
         alternate-scrolling (opts :alternate-scrolling)
         alternate-height (opts :alternate-height)
+        alternate-scroll-separator (opts :alternate-scroll-separator)
         term (TerminalFactory/create)
         ansi-support (.isAnsiSupported term)
         last-height (atom (.getHeight term))
         last-width (atom (.getWidth term))]
     (when (and alternate-scrolling ansi-support)
-      (set-up-alternate-scrolling @last-height @last-width alternate-height prompt-string in-rdr))
+      (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr)
             current-height (.getHeight term)
@@ -205,7 +206,7 @@
                 (or (not= @last-height current-height) (not= @last-width current-width)))
           (reset! last-height current-height)
           (reset! last-width current-width)
-          (set-up-alternate-scrolling @last-height @last-width alternate-height prompt-string in-rdr))
+          (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
         (if (not (nil? file-history))
           (.flush file-history))
         (if (and (not (nil? line))
@@ -325,7 +326,8 @@
    :prompt-fn (fn [])
    :prompt-string "cli# "
    :alternate-scrolling false
-   :alternate-height 3})
+   :alternate-height 3
+   :alternate-scroll-separator "\u203E"})
 
 (defn merge-options
   "This function merges the user supplied configuration options with the default and mandatory default options.
