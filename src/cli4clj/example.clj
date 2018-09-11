@@ -49,7 +49,7 @@
 ;;;                      If things go wrong, exceptions will be thrown and printed.
                          :add  {:fn (fn [summand1 summand2] (+ summand1 summand2))
                                 :short-info "Add two values."
-                                :completion-hint "Enter the value to add."}
+                                :completion-hint "Enter two values to add."}
                          :a :add
 ;;;                      cli4clj already provides some pre-defined commands, from which some can overridden while others cannot.
 ;;;                      "h" is a pre-defined command but it can be overridden.
