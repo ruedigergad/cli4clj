@@ -1,5 +1,5 @@
-(defproject cli4clj "1.6.3"
-;(defproject cli4clj "1.6.4-SNAPSHOT"
+;(defproject cli4clj "1.6.3"
+(defproject cli4clj "1.6.4-SNAPSHOT"
   :description "Create simple interactive CLIs for Clojure applications."
   :url "https://github.com/ruedigergad/cli4clj"
   :license {:name "Eclipse Public License"
@@ -8,7 +8,7 @@
                  [clj-assorted-utils "1.18.2"]
                  [org.clojure/core.async "0.4.474"]
                  [jline/jline "2.14.6"]]
-;  :global-vars {*warn-on-reflection* true}
+  :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "ghpages/doc"
   :html5-docs-ns-includes #"^cli4clj.*"
   :html5-docs-repository-url "https://github.com/ruedigergad/cli4clj/blob/master"
@@ -17,5 +17,5 @@
   :main cli4clj.example
   :aot :all
   :plugins [[lein-cloverage "1.0.2"] [test2junit "1.3.3"] [lein-html5-docs "3.0.3"]]
-  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.2.7" :exclusions  [org.clojure/clojure]]]}}
+  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.2.9" :exclusions  [org.clojure/clojure]]]}}
 )
