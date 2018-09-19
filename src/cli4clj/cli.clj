@@ -202,11 +202,15 @@
             current-width (.getWidth term)]
         (when (and
                 alternate-scrolling
-                ansi-support
-                (or (not= @last-height current-height) (not= @last-width current-width)))
-          (reset! last-height current-height)
-          (reset! last-width current-width)
-          (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
+                ansi-support)
+          (when (or (not= @last-height current-height) (not= @last-width current-width))
+            (reset! last-height current-height)
+            (reset! last-width current-width)
+            (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
+          (print "\u001B[s")
+          (print (str "\u001B[" (- current-height alternate-height 3) ";1H> " line))
+          (print "\u001B[u")
+          (flush))
         (if (not (nil? file-history))
           (.flush file-history))
         (if (and (not (nil? line))
@@ -445,7 +449,9 @@
            :eval ((options# :eval-factory) options#)
            :print (options# :print)
            :prompt (options# :prompt-fn)
-           :read (*read-factory* options#))))))
+           :read (*read-factory* options#)))
+       (when (options# :alternate-scrolling)
+         (print (str "\u001b[r\u001b[" (-> (TerminalFactory/create) (.getHeight)) ";0H"))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
