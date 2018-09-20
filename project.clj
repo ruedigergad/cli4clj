@@ -8,7 +8,7 @@
                  [clj-assorted-utils "1.18.2"]
                  [org.clojure/core.async "0.4.474"]
                  [jline/jline "2.14.6"]]
-  :global-vars {*warn-on-reflection* true}
+;  :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "ghpages/doc"
   :html5-docs-ns-includes #"^cli4clj.*"
   :html5-docs-repository-url "https://github.com/ruedigergad/cli4clj/blob/master"
