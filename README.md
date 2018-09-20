@@ -35,7 +35,16 @@ On [my website](http://ruedigergad.com/tag/cli4clj) I wrote some posts about cli
 
 See https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/example.clj for a usage example.
 
-The given example can be run via "lein run".
+The given examples can be run via "lein run", respectively "lein run -- alt" to show the "alternate" scrolling mode.
+
+First, animated gifs show basic interaction and the alternate scrolling mode.
+Afterwards, a textual static example provides some more details.
+
+Basic Interaction:
+![](https://github.com/ruedigergad/cli4clj/raw/master/ghpages/ttyrec/basics_introduction.gif "Animated Basic Interaction Example")
+
+Alternate Scrolling Mode Introduction:
+![](https://github.com/ruedigergad/cli4clj/raw/master/ghpages/ttyrec/alternate_scrolling_introduction.gif "Animated Basic Interaction Example")
 
 Below is an example output that shows running the usage example:
 
