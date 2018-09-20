@@ -38,7 +38,7 @@ See https://github.com/ruedigergad/cli4clj/blob/master/src/cli4clj/example.clj f
 The given examples can be run via "lein run", respectively "lein run -- alt" to show the "alternate" scrolling mode.
 
 First, animated gifs show basic interaction and the alternate scrolling mode.
-Afterwards, a textual static example provides some more details.
+Afterwards, a static textual example provides some more details.
 
 Basic Interaction:
 
