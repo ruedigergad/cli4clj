@@ -1,5 +1,5 @@
-;(defproject cli4clj "1.7.0"
-(defproject cli4clj "1.7.1-SNAPSHOT"
+(defproject cli4clj "1.7.1"
+;(defproject cli4clj "1.7.2-SNAPSHOT"
   :description "Create simple interactive CLIs for Clojure applications."
   :url "https://github.com/ruedigergad/cli4clj"
   :license {:name "Eclipse Public License"
