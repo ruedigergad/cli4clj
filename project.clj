@@ -4,8 +4,8 @@
   :url "https://github.com/ruedigergad/cli4clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.9.0"]
-                 [clj-assorted-utils "1.18.2"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
+                 [clj-assorted-utils "1.18.3"]
                  [org.clojure/core.async "0.4.490"]
                  [jline/jline "2.14.6"]]
 ;  :global-vars {*warn-on-reflection* true}
