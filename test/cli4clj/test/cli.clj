@@ -86,15 +86,21 @@
                                :fn-args "fn-args string"}}}
         test-cmd-input ["help"]
         out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
-    (test/is (= (str "add"
-                " -- Arguments: fn-args string" cli/*line-sep* cli/*line-sep* cli/*line-sep*
-                "help [? h]" cli/*line-sep*
-                "\tShow help." cli/*line-sep*
-                "\tDisplay a help text that lists all available commands including further detailed information about these commands." cli/*line-sep* cli/*line-sep*
-                "quit [q]" cli/*line-sep*
-                "\tQuit the CLI." cli/*line-sep*
-                "\tTerminate and close the command line interface.")
-           out-string))))
+    (test/is
+      (=
+        (str
+          "add"
+          " -- Arguments: fn-args string" cli/*line-sep* cli/*line-sep* cli/*line-sep*
+          "clear" cli/*line-sep*
+          "\tClear screen." cli/*line-sep*
+          "\tClears the screen and resets the user interface." cli/*line-sep* cli/*line-sep*
+          "help [? h]" cli/*line-sep*
+          "\tShow help." cli/*line-sep*
+          "\tDisplay a help text that lists all available commands including further detailed information about these commands." cli/*line-sep* cli/*line-sep*
+          "quit [q]" cli/*line-sep*
+          "\tQuit the CLI." cli/*line-sep*
+          "\tTerminate and close the command line interface.")
+        out-string))))
 
 (test/deftest allow-eval-cli-interaction-test
   (let [cli-opts {:allow-eval true}
@@ -243,7 +249,10 @@
   (let [cli-opts {:cmds {:print {:fn #(println %)}
                          :divide {:fn (fn [x y] (/ x y))}}}
         cli-fn (cli/embedded-cli-fn cli-opts)]
-    (test/is (= "divide\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nprint\n\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface." (cli-fn "help")))))
+    (test/is
+      (=
+        "clear\n\tClear screen.\n\tClears the screen and resets the user interface.\n\ndivide\n\n\nhelp [? h]\n\tShow help.\n\tDisplay a help text that lists all available commands including further detailed information about these commands.\n\nprint\n\n\nquit [q]\n\tQuit the CLI.\n\tTerminate and close the command line interface."
+        (cli-fn "help")))))
 
 
 
