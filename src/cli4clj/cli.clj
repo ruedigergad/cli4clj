@@ -437,23 +437,21 @@
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
   (let []
-    `(let [~'__options (atom {})
-           ~'__alt-scroll-wrtr (atom nil)
-           options-with-args-info# (add-args-info-m ~user-options)
-           options# (assoc
-                      (get-cli-opts options-with-args-info#)
-                      :calling-ns ~*ns*)]
-       (swap! ~'__options into options#)
-       (reset! ~'__alt-scroll-wrtr (alt-scroll-writer options#))
+    `(let [~'__options (atom nil)
+           ~'__alt-scroll-wrtr (atom nil)]
+       (reset! ~'__options (assoc
+                             (get-cli-opts (add-args-info-m ~user-options))
+                             :calling-ns ~*ns*))
+       (reset! ~'__alt-scroll-wrtr (alt-scroll-writer @~'__options))
        (wrap-alt-scroll-writer
          ~'__alt-scroll-wrtr
          ~'__options
          (main/repl
-           :eval ((options# :eval-factory) options#)
-           :print (options# :print)
-           :prompt (options# :prompt-fn)
-           :read (*read-factory* options#)))
-       (when (options# :alternate-scrolling)
+           :eval ((@~'__options :eval-factory) @~'__options)
+           :print (@~'__options :print)
+           :prompt (@~'__options :prompt-fn)
+           :read (*read-factory* @~'__options)))
+       (when (@~'__options :alternate-scrolling)
          (print (str "\u001b[r\u001b[" (-> (TerminalFactory/create) (.getHeight)) ";0H"))))))
 
 (defn create-embedded-read-fn
