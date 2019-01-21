@@ -286,11 +286,14 @@
    The mandatory default options cannot be overridden by the user."
   []
   (let [print-exception-trace (atom false)]
-    {:cmds {:quit {:fn (fn [] (println "Error: The quit function should never be called."))
-                   :short-info "Quit the CLI."
-                   :long-info "Terminate and close the command line interface."}
+    {:cmds {:clear {:fn (fn [] (print "\u001B[2J\n"))
+                    :short-info "Clear screen."
+                    :long-info "Clears the screen and resets the user interface."}
             :help {:short-info "Show help."
                    :long-info "Display a help text that lists all available commands including further detailed information about these commands."}
+            :quit {:fn (fn [] (println "Error: The quit function should never be called."))
+                   :short-info "Quit the CLI."
+                   :long-info "Terminate and close the command line interface."}
             :_enable-trace {:fn (fn [arg]
                                   (if (instance? java.lang.Boolean arg)
                                     (reset! print-exception-trace arg)
