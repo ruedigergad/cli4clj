@@ -1,0 +1,347 @@
+% Author and Copyright: Ruediger Gad
+% This work is licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported License.
+% https://creativecommons.org/licenses/by-sa/3.0/
+\documentclass[aspectratio=169]{beamer}
+%[handout]
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+%\usepackage{avant}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[variablett]{lmodern}
+
+\usepackage{courier}
+\usepackage{listings}
+\usepackage{pgf, pgffor}
+\usepackage{lstlinebgrd}
+
+% Thanks a lot to Daniel (https://tex.stackexchange.com/users/3751/daniel) for sharing his codehighlighting snippet:
+% https://tex.stackexchange.com/questions/8851/how-can-i-highlight-some-lines-from-source-code
+% SNIPPET_START
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \btIfInRange{number}{range list}{TRUE}{FALSE}
+%
+% Test in int number <number> is element of a (comma separated) list of ranges
+% (such as: {1,3-5,7,10-12,14}) and processes <TRUE> or <FALSE> respectively
+
+\newcount\bt@rangea
+\newcount\bt@rangeb
+
+\newcommand\btIfInRange[2]{%
+    \global\let\bt@inrange\@secondoftwo%
+    \edef\bt@rangelist{#2}%
+    \foreach \range in \bt@rangelist {%
+        \afterassignment\bt@getrangeb%
+        \bt@rangea=0\range\relax%
+        \pgfmathtruncatemacro\result{ ( #1 >= \bt@rangea) && (#1 <= \bt@rangeb) }%
+        \ifnum\result=1\relax%
+            \breakforeach%
+            \global\let\bt@inrange\@firstoftwo%
+        \fi%
+    }%
+    \bt@inrange%
+}
+\newcommand\bt@getrangeb{%
+    \@ifnextchar\relax%
+        {\bt@rangeb=\bt@rangea}%
+        {\@getrangeb}%
+}
+\def\@getrangeb-#1\relax{%
+    \ifx\relax#1\relax%
+        \bt@rangeb=100000%   \maxdimen is too large for pgfmath
+    \else%
+        \bt@rangeb=#1\relax%
+    \fi%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% \btLstHL<overlay spec>{range list}
+%
+% TODO BUG: \btLstHL commands can not yet be accumulated if more than one overlay spec match.
+% 
+\newcommand<>{\btLstHL}[1]{%
+  \only#2{\btIfInRange{\value{lstnumber}}{#1}{\color{orange!30}\def\lst@linebgrdcmd{\color@block}}{\def\lst@linebgrdcmd####1####2####3{}}}%
+}%
+\makeatother
+% SNIPPET_END
+
+
+\lstset{
+ basicstyle=\ttfamily,
+ columns=fullflexible,
+ upquote,
+ keepspaces,
+ escapeinside=||,
+ literate={*}{{\char42}}1
+ {-}{{\char45}}1
+}
+
+\usepackage{tabulary}
+\usepackage{multirow}
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\usepackage{booktabs}
+\usepackage{url}
+
+\useoutertheme[footline=authorinstitutetitle,subsection=false]{miniframes}
+\usetheme{Madrid}
+%\usecolortheme[RGB={52,147,54}]{structure}
+\usecolortheme{seagull}
+\setbeamertemplate{navigation symbols}{}
+%\setbeamertemplate{blocks}[rounded]
+
+\setbeamercolor{footlinecolor}{fg=black,bg=white}
+\setbeamertemplate{footline}{%
+%  \pgfputat{\pgfxy(12,6.5)}{\pgfbox[center,base]{\includegraphics[width=1.6cm]{template_images/bert_kopf.png}}}
+  \begin{beamercolorbox}[sep=0.5em,wd=\paperwidth]{footlinecolor}
+  \begin{columns}
+    \column{11cm}
+      \tiny{\insertshortauthor}
+      \vspace{0.05cm}
+      \hrule
+      \vspace{0.08cm}
+      \tiny{\insertshorttitle}
+    %\column{2cm}\hfill\includegraphics[width=2cm]{template_images/Logo_FHFFM}
+    \column{4cm}\hfill %\includegraphics[width=1.5cm]{template_images/Logo_FHFFM_klein}
+  \end{columns}
+  \end{beamercolorbox}%
+}
+
+
+\title[cli4clj - Easing the Implementation of Interactive Command Line Interfaces in Clojure for ``Everyone'']{cli4clj\\Easing the Implementation of Interactive Command Line Interfaces in Clojure for ``Everyone''}
+%\subtitle{Event-driven Network Analysis and Surveillance\\(ENeAS)}
+\author[Ruediger Gad - Terma GmbH, Space - Darmstadt, Germany - @ruedigergad]{Ruediger Gad}
+\institute[]{
+  Terma GmbH, Space, Darmstadt, Germany
+  }
+\date{:clojureD\\2019-02-23}
+%\logo{\includegraphics[width=3cm]{template_images/Logo_FHFFM.pdf}}
+
+
+\begin{document}
+
+  \begin{frame}
+      \titlepage
+  \end{frame}
+
+  \begin{frame}
+      \frametitle{What? \& Why?}
+
+      \begin{itemize}
+          \item Interactive Command Line Interfaces (CLIs)
+          \item Clojure REPL
+              \begin{itemize}
+                  \item Powerful \boldmath$+$
+                  \item Requires Clojure Knowledge $-$?
+                  \item Typical Users: Developers
+              \end{itemize}
+          \item cli4clj
+              \begin{itemize}
+                  \item ``CLIs for Everyone''
+                  \item Ease Use \& Implementation
+              \end{itemize}
+      \end{itemize}
+  \end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Developer Perspective: cli4clj Configuration/Implementation Example}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{2}%
+        \btLstHL<2>{6-7}%
+        \btLstHL<3>{8}%
+        \btLstHL<4>{8-10}%
+        \btLstHL<5>{11}%
+        \btLstHL<6>{11-12}%
+        \btLstHL<7>{3,13}%
+        \btLstHL<8>{14}%
+    }]
+(ns cli4clj.minimal-example (:gen-class)
+  (:require (cli4clj [cli :as cli])))
+(defn divide [x y] (/ x y)) ;;; Used for example below.
+
+(defn -main [& args]
+  (cli/start-cli
+    {:cmds
+      {:test-cmd {:fn #(println "This is a test.")
+                  :short-info "Test Command"
+                  :long-info "Prints a test message."}
+       :add {:fn (fn [summand1 summand2] (+ summand1 summand2))
+             :completion-hint "Enter two values to add."}
+       :divide {:fn divide}}
+:allow-eval true, :alternate-scrolling (some #(= % "alt") args)}))
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Application User Perspective: ``Basic Commands''}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{1}%
+        \btLstHL<2>{2,4,6}%
+        \btLstHL<3>{2-7}%
+    }]
+cli# 
+cli# test-cmd
+This is a test.
+cli# add 1 2
+3
+cli# divide 2 3
+2/3
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Application User Perspective: Help}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{1}%
+        \btLstHL<2>{2-8}%
+    }]
+cli# help
+add -- Arguments: [[summand1 summand2]]
+...
+divide -- Arguments: [[x y]]
+...
+test-cmd
+	Test Command
+	Prints a test message.
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Application User Perspective: Tab Completion}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{1-2}%
+        \btLstHL<2>{3-4}%
+        \btLstHL<3>{5-6}%
+    }]
+cli# <TAB>
+...   add   ...  divide  ...  help  ...  test-cmd   
+cli# a<TAB>
+cli# add
+cli# add <TAB>
+Arguments: [[summand1 summand2]]   Enter two values to add.           
+...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Application User Perspective: Clojure Interoperability}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{1,3}%
+    }]
+cli# (reduce add [1 7 0 1])
+9
+cli# (map divide [1 7 0 1] [1 8 6 4])
+(1 7/8 0 1/4)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Application User Perspective: Alternate Scrolling Mode}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{7}%
+        \btLstHL<2>{8}%
+        \btLstHL<3>{1,3,5}%
+        \btLstHL<4>{1-6}%
+    }]
+> test-cmd
+This is a test.
+> add 1 2
+3
+> divide 2 3
+2/3
+_____________________________________________
+cli# 
+ 
+ 
+ 
+ 
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Developer Perspective: Automated Testing}
+\begin{lstlisting}[
+    linebackgroundcolor={%
+        \btLstHL<1>{4-5}%
+        \btLstHL<2>{8-9}%
+        \btLstHL<3>{8-11}%
+        \btLstHL<4>{12-14}%
+    }]
+(ns cli4clj.test.minimal-example
+  (:require
+    (clojure [test :as test])
+    (cli4clj [cli-tests :as cli-tests]
+             [minimal-example :as mini-example])))
+
+(test/deftest example-test
+  (let [test-cmd-input ["add 1 2"
+                        "divide 3 2"]
+        out-string (cli-tests/test-cli-stdout
+                     #(mini-example/-main "") test-cmd-input)]
+    (test/is (=
+               (cli-tests/expected-string ["3" "3/2"])
+               out-string))))
+\end{lstlisting}
+\end{frame}
+
+
+%  \begin{frame}
+%    \frametitle{What if throughput demands increase further?}
+%      \begin{columns}
+%          \column{9cm}
+%    \begin{itemize}
+%        \item<2-> Do nothing?\\
+%              $\rightarrow$ Random Drops of ``Rows''
+%        \item<3-> Apply sampling?\\
+%              $\rightarrow$ More ``Controlled'' Drops of Rows
+%        \item<4-> Reduce extraction operations / extracted fields?\\
+%              $\rightarrow$ ``Drop columns'' in favor of rows.\\
+%        \item<5-> $\rightarrow$ Adjust DSL expression rules.
+%    \end{itemize}
+%          \column{5cm}
+%        \includegraphics<1>[width=4.5cm]{images/columns_and_rows}
+%        \includegraphics<2>[width=4.5cm]{images/columns_and_rows_random_row_drops}
+%        \includegraphics<3>[width=4.5cm]{images/columns_and_rows_controlled_row_drops}
+%        \includegraphics<4->[width=4.5cm]{images/columns_and_rows_controlled_column_drops}
+%      \end{columns}
+%  \end{frame}
+
+
+  \begin{frame}
+      \frametitle{More}
+
+      \begin{itemize}
+          \item Persistent History
+          \item Aliases (Shortcuts)
+          \item Customizable
+          \item ``Embedded CLIs''
+      \end{itemize}
+  \end{frame}
+
+
+  \begin{frame}[c]
+    \frametitle{End}
+    \begin{center}\url{https://github.com/ruedigergad/cli4clj}\\\includegraphics[width=12cm]{images/github_badges.png}\end{center}
+    \begin{center}\url{https://ruedigergad.com/category/libs/cli4clj}\end{center}
+    \vspace{0.1cm}
+    \begin{block}{Thank you very much for your attention!}
+      \begin{center} Questions? \end{center}
+    \end{block}
+    \vspace{0.1cm}
+    \begin{center}Ruediger Gad\\Terma GmbH, Space\\Darmstadt, Germany\end{center}
+    \begin{center}ruga@terma.com\\r.c.g@gmx.de\end{center}
+  \end{frame}
+\end{document}
+

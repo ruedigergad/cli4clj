@@ -1,0 +1,11 @@
+
+cli4clj – Easing the Implementation of Interactive Command Line Interfaces in Clojure for "Everyone"
+by Ruediger Gad
+
+For Clojure developers, the Clojure REPL is a powerful, often indispensable, tool. However, here also lies the problem that the powers of the Clojure REPL are only accessible for Clojure developers.
+
+In this talk, I present an overview of cli4clj, a library that aims on simplifying the implementation of easily usable interactive command line interfaces (CLIs). The talk is a quick tour covering the developer and user perspectives to illustrate how cli4clj helps during the implementation and how it eases the use of the resulting interactive CLIs.
+
+cli4clj is built on top of the Clojure REPL and the Java jline2 library. Key features of cli4clj are: simple configuration via maps, persistent history, tab completion for commands and hints for arguments, support for complex Clojure data types, two scrolling modes, and functionality for easing the implementation of automated tests for CLIs.
+
+
