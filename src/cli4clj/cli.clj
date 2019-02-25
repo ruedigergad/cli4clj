@@ -131,22 +131,25 @@
             (conj
               v
               (ArgumentCompleter.
-                [(StringsCompleter. (conj (mapv name (cmd-aliases k)) (name k)))
-                 (proxy [Completer] []
-                   (complete [buffer cursor candidates]
-                     (if (not (nil? fn-args))
-                       (.add candidates (str "Arguments: " fn-args)))
-                     (if (not (nil? completion-hint))
-                       (.add candidates (str completion-hint)))
-                     (if (not (and (not (nil? fn-args)) (not (nil? completion-hint))))
-                       (.add candidates ""))
-                     0))]))
+                #^"[Ljline.console.completer.Completer;"
+                (into-array
+                  Completer
+                  [(StringsCompleter. #^java.util.Collection (conj (mapv name (cmd-aliases k)) (name k)))
+                   (proxy [Completer] []
+                     (complete [buffer cursor #^java.util.List candidates]
+                       (if (not (nil? fn-args))
+                         (.add candidates (str "Arguments: " fn-args)))
+                       (if (not (nil? completion-hint))
+                         (.add candidates (str completion-hint)))
+                       (if (not (and (not (nil? fn-args)) (not (nil? completion-hint))))
+                         (.add candidates ""))
+                       0))])))
             v)))
       []
       (keys cmds))))
 
 (defn set-up-alternate-scrolling
-  [height width alternate-height alternate-scroll-separator prompt-string in-rdr]
+  [height width alternate-height alternate-scroll-separator prompt-string #^ConsoleReader in-rdr]
   (let [prompt-width (count prompt-string)
         adjusted-prompt-string (str "\u001B[" (- height alternate-height) ";0H"
                                     "\u001B[2K"
@@ -167,7 +170,11 @@
         err-fn (opts :print-err)
         prompt-string (opts :prompt-string)
         in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
-                 (.addCompleter (StringsCompleter. (remove #(.startsWith % "_") (map name (keys cmds)))))
+                 (.addCompleter (StringsCompleter.
+                                  #^java.util.Collection
+                                  (remove
+                                    #(.startsWith #^java.lang.String % "_")
+                                    (map name (keys cmds)))))
                  (.setPrompt prompt-string))
         file-history (if (opts :persist-history)
                        (let [history-file-name (if (contains? opts :history-file-name)
@@ -315,7 +322,7 @@
     (and
       (instance? Exception arg)
       ((:print-exception-trace opts))) (strace/print-cause-trace arg)
-    (instance? Exception arg) (utils/println-err (.getMessage arg))
+    (instance? Exception arg) (utils/println-err (.getMessage #^Exception arg))
     :default (utils/println-err (str arg))))
 
 (def cli-default-options
@@ -394,10 +401,10 @@
                   (reset! new-line true))
                 (write
                   ([obj]
-                    (let [s (condp instance? obj
-                             java.lang.String obj
-                             java.lang.Integer (str (char obj))
-                             (str obj))
+                    (let [#^java.lang.String s (condp instance? obj
+                                                 java.lang.String obj
+                                                 java.lang.Integer (str (char obj))
+                                                 (str obj))
                           term-height (.getHeight term)]
                       (binding [*out* stdout]
                         (when @new-line
@@ -459,7 +466,7 @@
   [opts in-chan]
   (let [rdr-fn (create-repl-read-fn opts)]
     (fn [request-prompt request-exit]
-      (let [line (async/<!! in-chan)]
+      (let [#^java.lang.String line (async/<!! in-chan)]
         (if (and (not (nil? line))
                  (not (.isEmpty line))
                  (not (-> line (.trim) (.startsWith *comment-begin-string*))))
