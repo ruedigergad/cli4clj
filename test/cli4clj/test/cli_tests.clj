@@ -194,7 +194,7 @@
 (test/deftest clojure-repl-stderr-div-zero-test
   (let [in-cmds ["(/ 1 0)"]
         out (cli-tests/test-cli-stderr clojure.main/repl in-cmds)]
-    (test/is (.startsWith out "Execution error (ArithmeticException)"))))
+    (test/is (.startsWith out "ArithmeticException Divide by zero"))))
 
 (test/deftest clojure-repl-stdout-no-op-no-prompt-test
   (let [in-cmds [""]
