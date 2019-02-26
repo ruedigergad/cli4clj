@@ -73,6 +73,30 @@
             (intern cli-fns-ns (symbol (name cmd-name)) (:fn cmd-def))))))
     (refer cli-fns-ns)))
 
+(defn skip-whitespace
+;;; The code for this function was largely taken from
+;;; https://github.com/clojure/clojure/blob/b182982007df934394f0bc68b3a238ca9f200dd1/src/clj/clojure/main.clj#L120
+;;; which is copyrighted as:
+;;; ;; Copyright (c) Rich Hickey All rights reserved. The use and
+;;; ;; distribution terms for this software are covered by the Eclipse Public
+;;; ;; License 1.0 (http://opensource.org/licenses/eclipse-1.0.php) which can be found
+;;; ;; in the file epl-v10.html at the root of this distribution. By using this
+;;; ;; software in any fashion, you are agreeing to be bound by the terms of
+;;; ;; this license. You must not remove this notice, or any other, from this
+;;; ;; software.
+;;; ;; Originally contributed by Stephen C. Gilardi
+;;;
+;;; Changes aim at "making graalvm happy" and include::
+;;; - Add type hints.
+;;; - Remove "readLine" case.
+  [#^PushbackReader s]
+  (loop [c (.read s)]
+	(cond
+	  (= c (int \newline)) :line-start
+	  (= c -1) :stream-end
+	  (or (Character/isWhitespace (char c)) (= c (int \,))) (recur (.read s))
+	  :else (do (.unread s c) :body))))
+
 (defn create-repl-read-fn
   "This function creates a function that is intended to be used as repl read function.
    The created read function is largely based on the existing repl read function:
@@ -89,7 +113,7 @@
     (fn [request-prompt request-exit]
       (try
         (or ({:line-start request-prompt :stream-end request-exit}
-             (main/skip-whitespace *in*))
+              (skip-whitespace *in*))
             (loop [v []]
               (let [input (try
                             (read {:read-cond :allow} *in*)
@@ -105,7 +129,7 @@
                   (do
                     (main/skip-if-eol *in*)
                     input)
-                  (if (= :line-start (main/skip-whitespace *in*))
+                  (if (= :line-start (skip-whitespace *in*))
                     (if (and (symbol? input)
                              (some #(= (keyword input) %) quit-commands))
                       request-exit
