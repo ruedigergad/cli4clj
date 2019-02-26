@@ -4,11 +4,13 @@
   :url "https://github.com/ruedigergad/cli4clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.10.0"]
+; Revert to Clojure 1.9.0 until the following is fixed:
+; https://dev.clojure.org/jira/browse/CLJ-1472
+  :dependencies [[org.clojure/clojure "1.9.0"]
                  [clj-assorted-utils "1.18.3"]
                  [org.clojure/core.async "0.4.490"]
                  [jline/jline "2.14.6"]]
-;  :global-vars {*warn-on-reflection* true}
+  :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "ghpages/doc"
   :html5-docs-ns-includes #"^cli4clj.*"
   :html5-docs-repository-url "https://github.com/ruedigergad/cli4clj/blob/master"
