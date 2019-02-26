@@ -86,7 +86,7 @@
 ;;; ;; software.
 ;;; ;; Originally contributed by Stephen C. Gilardi
 ;;;
-;;; Changes aim at "making graalvm happy" and include::
+;;; Changes aim at "making GraalVM happy" and include::
 ;;; - Add type hints.
 ;;; - Remove "readLine" case.
   [#^PushbackReader s]
