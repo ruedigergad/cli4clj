@@ -20,7 +20,7 @@
     (clojure.core [async :as async]))
   (:import
     (java.io PushbackReader StringReader)
-    (jline TerminalFactory)
+    (jline TerminalFactory TerminalFactory$Flavor UnsupportedTerminal)
     (jline.console ConsoleReader)
     (jline.console.completer ArgumentCompleter Completer StringsCompleter)
     (jline.console.history FileHistory)))
@@ -462,6 +462,11 @@
   [& body]
   `(wrap-alt-scroll-writer ~'__alt-scroll-wrtr ~'__options ~@body))
 
+(defn windows-workaround
+  []
+  (when (utils/is-os? "windows")
+    (TerminalFactory/registerFlavor TerminalFactory$Flavor/WINDOWS (class UnsupportedTerminal))))
+
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
    Please note that the configuration options can also be defined in a global or local var.
@@ -470,6 +475,7 @@
   (let []
     `(let [~'__options (atom nil)
            ~'__alt-scroll-wrtr (atom nil)]
+       (windows-workaround)
        (reset! ~'__options (assoc
                              (get-cli-opts (add-args-info-m ~user-options))
                              :calling-ns ~*ns*))
