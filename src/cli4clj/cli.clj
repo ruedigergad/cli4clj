@@ -465,7 +465,7 @@
 (defn windows-workaround
   []
   (when (utils/is-os? "windows")
-    (TerminalFactory/registerFlavor TerminalFactory$Flavor/WINDOWS (class UnsupportedTerminal))))
+    (TerminalFactory/registerFlavor TerminalFactory$Flavor/WINDOWS UnsupportedTerminal)))
 
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
