@@ -244,12 +244,16 @@
           (flush))
         (if (not (nil? file-history))
           (.flush file-history))
-        (if (and (not (nil? line))
-                 (not (.isEmpty line))
-                 (not (-> line (.trim) (.startsWith *comment-begin-string*))))
-          (binding [*in* (PushbackReader. (StringReader. (str line *line-sep*)))]
-            (rdr-fn request-prompt request-exit))
-          request-prompt)))))
+        (cond
+          (and (not (nil? line))
+               (not (.isEmpty line))
+               (not (-> line (.trim) (.startsWith *comment-begin-string*))))
+            (binding [*in* (PushbackReader. (StringReader. (str line *line-sep*)))]
+              (rdr-fn request-prompt request-exit))
+
+          (nil? line) request-exit
+
+          :default request-prompt)))))
 
 (defn resolve-cmd-alias
   "This function is used to resolve the full command definition for a given command alias.
