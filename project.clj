@@ -8,7 +8,7 @@
 ; https://dev.clojure.org/jira/browse/CLJ-1472
   :dependencies [[org.clojure/clojure "1.9.0"]
                  [clj-assorted-utils "1.18.5"]
-                 [org.clojure/core.async "0.4.490"]
+                 [org.clojure/core.async "0.7.559"]
                  [jline/jline "2.14.6"]]
   :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "ghpages/doc"
@@ -19,5 +19,5 @@
   :main cli4clj.example
   :aot :all
   :plugins [[lein-cloverage "1.0.2"] [test2junit "1.3.3"] [lein-html5-docs "3.0.3"]]
-  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.3.5" :exclusions  [org.clojure/clojure]]]}}
+  :profiles  {:repl  {:dependencies  [[jonase/eastwood "0.3.7" :exclusions  [org.clojure/clojure]]]}}
 )
