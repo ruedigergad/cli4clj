@@ -429,10 +429,10 @@
                   (reset! new-line true))
                 (write
                   ([obj]
-                    (let [#^java.lang.String s (condp instance? obj
-                                                 java.lang.String obj
-                                                 java.lang.Integer (str (char obj))
-                                                 (str obj))
+                    (let [#^String s (condp instance? obj
+                                       java.lang.String obj
+                                       java.lang.Integer (str (char obj))
+                                       (str obj))
                           term-height (.getHeight term)]
                       (binding [*out* stdout]
                         (when @new-line
@@ -547,14 +547,12 @@
                            (and
                              (not (nil? err#))
                              (not (-> (str err#) (.trim) (.isEmpty))))
-                           (.write @out-wrtr# (str "ERROR: " err#))))
+                           (.write ^java.io.Writer @out-wrtr# (str "ERROR: " err#))))
                      (utils/with-out-str-cb
                        (fn [out#]
-                         (when
-                           (and
-                             (not (nil? out#))
-                             (not (-> (str out#) (.isEmpty))))
-                           (.write @out-wrtr# out#)))
+                         (condp = (type out#)
+                           String (when (not-empty out#) (.write ^java.io.Writer @out-wrtr# ^String out#))
+                           Integer (when (not (nil? out#)) (.write ^java.io.Writer @out-wrtr# ^Integer out#))))
                        (start-cli adjusted-user-options#))))
                    (recur)))
        (.setDaemon true)

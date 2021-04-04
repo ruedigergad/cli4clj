@@ -34,17 +34,17 @@
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
    In addition the function cb-fn will be called for each element that is written to stdout."
   [tested-fn in-cmds cb-fn]
-  (.trim (utils/with-out-str-cb
-           cb-fn
-           (with-in-str (cmd-vector-to-test-input-string in-cmds)
-             (exec-tested-fn tested-fn)))))
+  (.trim (str (utils/with-out-str-cb
+                cb-fn
+                (with-in-str (cmd-vector-to-test-input-string in-cmds)
+                  (exec-tested-fn tested-fn))))))
 
 (defn test-cli-stdout
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
   
    If an optional string-latch is supplied, the call will block until the string-latch completed."
   ([tested-fn in-cmds]
-    (.trim (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
+    (.trim (str (with-out-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn))))))
   ([tested-fn in-cmds sl]
     (test-cli-stdout-cb
       (fn []
@@ -58,17 +58,17 @@
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stdout as a result of executing the supplied commands in the cli provided by the tested-fn.
    In addition the function cb-fn will be called for each element that is written to stderr."
   [tested-fn in-cmds cb-fn]
-  (.trim (utils/with-err-str-cb
-           cb-fn
-           (with-in-str (cmd-vector-to-test-input-string in-cmds)
-             (exec-tested-fn tested-fn)))))
+  (.trim (str (utils/with-err-str-cb
+                cb-fn
+                (with-in-str (cmd-vector-to-test-input-string in-cmds)
+                  (exec-tested-fn tested-fn))))))
 
 (defn test-cli-stderr
   "Takes a function to be tested and a vector of string input commands and returns the string that was printed to stderr as a result of executing the supplied commands in the cli provided by the tested-fn.
   
    If an optional string-latch is supplied, the call will block until the string-latch completed."
   ([tested-fn in-cmds]
-    (.trim (utils/with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn)))))
+    (.trim (str (utils/with-err-str (with-in-str (cmd-vector-to-test-input-string in-cmds) (exec-tested-fn tested-fn))))))
   ([tested-fn in-cmds sl]
     (test-cli-stderr-cb
       (fn []

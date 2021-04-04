@@ -7,7 +7,7 @@
 ; Revert to Clojure 1.9.0 until the following is fixed:
 ; https://dev.clojure.org/jira/browse/CLJ-1472
   :dependencies [[org.clojure/clojure "1.10.3"]
-                 [clj-assorted-utils "1.18.5"]
+                 [clj-assorted-utils "1.18.7"]
                  [org.clojure/core.async "1.3.610"]
                  [jline/jline "2.14.6"]]
   :global-vars {*warn-on-reflection* true}
