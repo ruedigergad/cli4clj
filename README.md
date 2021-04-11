@@ -43,11 +43,11 @@ Afterwards, a static textual example provides some more details.
 
 Basic Interaction:
 
-![](https://github.com/ruedigergad/cli4clj/raw/master/ghpages/ttyrec/basics_introduction.gif "Animated Basic Interaction Example")
+![](https://github.com/ruedigergad/cli4clj/raw/master/docs/ttyrec/basics_introduction.gif "Animated Basic Interaction Example")
 
 Alternate Scrolling Mode Introduction:
 
-![](https://github.com/ruedigergad/cli4clj/raw/master/ghpages/ttyrec/alternate_scrolling_introduction.gif "Animated Basic Interaction Example")
+![](https://github.com/ruedigergad/cli4clj/raw/master/docs/ttyrec/alternate_scrolling_introduction.gif "Animated Basic Interaction Example")
 
 Below is an example output that shows running the usage example:
 
