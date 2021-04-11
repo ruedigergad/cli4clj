@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="cli4clj.test.example" errors="0" failures="0" tests="11" time="0.3510" timestamp="2021-04-11_11:55:11+0200">
-    <testcase name="print-function-opt-args-test" classname="cli4clj.test.example" time="0.0464">
+<testsuite name="cli4clj.test.example" errors="0" failures="0" tests="11" time="0.3854" timestamp="2021-04-11_12:13:36+0200">
+    <testcase name="print-function-opt-args-test" classname="cli4clj.test.example" time="0.0479">
     </testcase>
-    <testcase name="advanced-main-method-error-example-test" classname="cli4clj.test.example" time="0.0228">
+    <testcase name="advanced-main-method-error-example-test" classname="cli4clj.test.example" time="0.0221">
     </testcase>
-    <testcase name="invalid-token-to-string-fallback-test" classname="cli4clj.test.example" time="0.0301">
+    <testcase name="invalid-token-to-string-fallback-test" classname="cli4clj.test.example" time="0.0327">
     </testcase>
-    <testcase name="advanced-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0297">
+    <testcase name="advanced-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0321">
     </testcase>
-    <testcase name="print-function-test" classname="cli4clj.test.example" time="0.0323">
+    <testcase name="print-function-test" classname="cli4clj.test.example" time="0.0326">
     </testcase>
-    <testcase name="def-var-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0339">
+    <testcase name="def-var-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0326">
     </testcase>
-    <testcase name="main-method-error-with-trace-example-test" classname="cli4clj.test.example" time="0.0350">
+    <testcase name="main-method-error-with-trace-example-test" classname="cli4clj.test.example" time="0.0428">
     </testcase>
-    <testcase name="advanced-main-method-example-test" classname="cli4clj.test.example" time="0.0252">
+    <testcase name="advanced-main-method-example-test" classname="cli4clj.test.example" time="0.0372">
     </testcase>
-    <testcase name="simple-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0317">
+    <testcase name="simple-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0342">
     </testcase>
-    <testcase name="simple-main-method-example-test" classname="cli4clj.test.example" time="0.0296">
+    <testcase name="simple-main-method-example-test" classname="cli4clj.test.example" time="0.0325">
     </testcase>
-    <testcase name="simple-main-method-error-example-test" classname="cli4clj.test.example" time="0.0288">
+    <testcase name="simple-main-method-error-example-test" classname="cli4clj.test.example" time="0.0300">
     </testcase>
     <system-err>
     </system-err>
@@ -41,7 +41,7 @@
         </property>
         <property name="path.separator" value=":">
         </property>
-        <property name="cli4clj.version" value="1.7.9">
+        <property name="cli4clj.version" value="1.7.19-SNAPSHOT">
         </property>
         <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
         </property>
@@ -132,7 +132,7 @@
         </property>
         <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-11-openjdk&amp;version=31">
         </property>
-        <property name="sun.java.command" value="clojure.main -i /tmp/form-init7974204370087314566.clj">
+        <property name="sun.java.command" value="clojure.main -i /tmp/form-init12820356289719042715.clj">
         </property>
         <property name="user.name" value="rc">
         </property>

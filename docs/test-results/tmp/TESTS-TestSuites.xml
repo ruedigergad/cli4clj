@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" id="0" name="cli-tests" package="cli4clj.test" tests="22" time="3.3934" timestamp="2021-04-11_12:13:35+0200">
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-sleep-finished-test" time="1.0315">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stderr-no-op-test" time="0.0020">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-string-latch-stdout-with-callback-test" time="0.5363">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="custom-test-cli-stdout-test" time="0.0244">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-string-latch-stdout-test" time="0.5342">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-no-op-test" time="0.0010">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-def-inc-println-no-prompt-test" time="0.0031">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="expected-string-creation-multi-line-test" time="0.0004">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-inc-no-prompt-test" time="0.0013">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="custom-test-cli-stderr-test" time="0.0342">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-string-latch-stdout-with-mixed-callback-test" time="0.5340">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-no-op-no-prompt-test" time="0.0014">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="cmd-vector-to-cmd-test-input-string-test" time="0.0005">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-def-inc-println-no-prompt-string-latch-test" time="0.0061">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="expected-string-creation-single-line-test" time="0.0003">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-inc-test" time="0.0012">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-not-finished-test" time="0.0437">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="async-cmd-string-latch-stderr-test" time="0.5351">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="simple-jline-input-stream-mock-test" time="0.0771">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stderr-div-zero-test" time="0.0047">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="clojure-repl-stdout-def-inc-println-test" time="0.0023">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli-tests" name="expected-string-creation-custom-separator-test" time="0.0004">
+    </testcase>
+
+        <system-err>
+    </system-err>
+
+        <system-out>
+user=&gt; user=&gt; user=&gt; user=&gt;     </system-out>
+
+        <properties>
+              <property name="sun.os.patch.level" value="unknown">
+        </property>
+
+              <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers">
+        </property>
+
+              <property name="java.vm.info" value="mixed mode, sharing">
+        </property>
+
+              <property name="clojure.debug" value="false">
+        </property>
+
+              <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64/lib">
+        </property>
+
+              <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment">
+        </property>
+
+              <property name="path.separator" value=":">
+        </property>
+
+              <property name="cli4clj.version" value="1.7.19-SNAPSHOT">
+        </property>
+
+              <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
+        </property>
+
+              <property name="java.vm.specification.vendor" value="Oracle Corporation">
+        </property>
+
+              <property name="user.country" value="US">
+        </property>
+
+              <property name="java.vendor.url" value="https://www.redhat.com/">
+        </property>
+
+              <property name="java.specification.name" value="Java Platform API Specification">
+        </property>
+
+              <property name="line.separator" value=" ">
+        </property>
+
+              <property name="sun.cpu.endian" value="little">
+        </property>
+
+              <property name="java.vm.version" value="11.0.9+11">
+        </property>
+
+              <property name="sun.java.launcher" value="SUN_STANDARD">
+        </property>
+
+              <property name="java.vendor" value="Red Hat, Inc.">
+        </property>
+
+              <property name="java.specification.vendor" value="Oracle Corporation">
+        </property>
+
+              <property name="java.vm.compressedOopsMode" value="32-bit">
+        </property>
+
+              <property name="awt.toolkit" value="sun.awt.X11.XToolkit">
+        </property>
+
+              <property name="clojure.compile.path" value="/home/rc/repositories/private/clojure/cli4clj/target/classes">
+        </property>
+
+              <property name="java.vm.specification.version" value="11">
+        </property>
+
+              <property name="java.io.tmpdir" value="/tmp">
+        </property>
+
+              <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64">
+        </property>
+
+              <property name="java.class.path" value="/home/rc/repositories/private/clojure/cli4clj/test:/home/rc/repositories/private/clojure/cli4clj/src:/home/rc/repositories/private/clojure/cli4clj/dev-resources:/home/rc/repositories/private/clojure/cli4clj/resources:/home/rc/repositories/private/clojure/cli4clj/target/classes:/home/rc/.m2/repository/nrepl/nrepl/0.6.0/nrepl-0.6.0.jar:/home/rc/.m2/repository/clojure-complete/clojure-complete/0.2.5/clojure-complete-0.2.5.jar:/home/rc/.m2/repository/org/clojure/tools.reader/1.3.2/tools.reader-1.3.2.jar:/home/rc/.m2/repository/clj-assorted-utils/clj-assorted-utils/1.18.2/clj-assorted-utils-1.18.2.jar:/home/rc/.m2/repository/org/clojure/data.priority-map/1.0.0/data.priority-map-1.0.0.jar:/home/rc/.m2/repository/jline/jline/2.14.6/jline-2.14.6.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer.jvm/1.1.0/tools.analyzer.jvm-1.1.0.jar:/home/rc/.m2/repository/robert/hooke/1.3.0/hooke-1.3.0.jar:/home/rc/.m2/repository/org/ow2/asm/asm/5.2/asm-5.2.jar:/home/rc/.m2/repository/test2junit/test2junit/1.4.2/test2junit-1.4.2.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer/1.0.0/tools.analyzer-1.0.0.jar:/home/rc/.m2/repository/org/clojure/clojure/1.10.3/clojure-1.10.3.jar:/home/rc/.m2/repository/org/clojure/core.cache/1.0.207/core.cache-1.0.207.jar:/home/rc/.m2/repository/org/clojure/spec.alpha/0.2.194/spec.alpha-0.2.194.jar:/home/rc/.m2/repository/org/clojure/core.memoize/1.0.236/core.memoize-1.0.236.jar:/home/rc/.m2/repository/org/clojure/core.specs.alpha/0.2.56/core.specs.alpha-0.2.56.jar:/home/rc/.m2/repository/org/clojure/core.async/1.3.610/core.async-1.3.610.jar">
+        </property>
+
+              <property name="java.runtime.version" value="11.0.9+11">
+        </property>
+
+              <property name="java.vm.vendor" value="Red Hat, Inc.">
+        </property>
+
+              <property name="user.language" value="en">
+        </property>
+
+              <property name="java.vm.name" value="OpenJDK 64-Bit Server VM">
+        </property>
+
+              <property name="java.version" value="11.0.9">
+        </property>
+
+              <property name="os.arch" value="amd64">
+        </property>
+
+              <property name="user.home" value="/home/rc">
+        </property>
+
+              <property name="java.specification.version" value="11">
+        </property>
+
+              <property name="sun.jnu.encoding" value="ANSI_X3.4-1968">
+        </property>
+
+              <property name="java.vendor.version" value="18.9">
+        </property>
+
+              <property name="java.runtime.name" value="OpenJDK Runtime Environment">
+        </property>
+
+              <property name="sun.io.unicode.encoding" value="UnicodeLittle">
+        </property>
+
+              <property name="sun.arch.data.model" value="64">
+        </property>
+
+              <property name="java.class.version" value="55.0">
+        </property>
+
+              <property name="sun.cpu.isalist" value="">
+        </property>
+
+              <property name="file.encoding" value="UTF-8">
+        </property>
+
+              <property name="jdk.debug" value="release">
+        </property>
+
+              <property name="user.timezone" value="Europe/Berlin">
+        </property>
+
+              <property name="os.name" value="Linux">
+        </property>
+
+              <property name="os.version" value="5.8.8-100.fc31.x86_64">
+        </property>
+
+              <property name="file.separator" value="/">
+        </property>
+
+              <property name="java.vm.specification.name" value="Java Virtual Machine Specification">
+        </property>
+
+              <property name="java.awt.printerjob" value="sun.print.PSPrinterJob">
+        </property>
+
+              <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib">
+        </property>
+
+              <property name="java.version.date" value="2020-10-20">
+        </property>
+
+              <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-11-openjdk&amp;version=31">
+        </property>
+
+              <property name="sun.java.command" value="clojure.main -i /tmp/form-init12820356289719042715.clj">
+        </property>
+
+              <property name="user.name" value="rc">
+        </property>
+
+        </properties>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" id="1" name="cli" package="cli4clj.test" tests="31" time="1.0623" timestamp="2021-04-11_12:13:32+0200">
+        <testcase classname="cli4clj.test.cli" name="simple-create-arg-hint-completers-test" time="0.0076">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="create-arg-hint-completers-link-hint-test" time="0.0069">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="get-args-info-override-test" time="0.0016">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="persistent-history-disable-history-test" time="0.1635">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="persistent-history-basic-test" time="0.0712">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="allow-eval-cli-interaction-test" time="0.0427">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="embedded-cli-in-out-test" time="0.0491">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="get-args-info-defns-test" time="0.0015">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="print-cmd-invalid-token-to-string-fallback-test" time="0.0561">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="get-args-info-simple-multi-arity-fn-test" time="0.0011">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="enable-trace-test" time="0.0462">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="simple-options-override-test" time="0.0013">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="help-cmd-cli-interaction-stdout-test" time="0.0590">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="enable-trace-wrong-arg-test" time="0.0443">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="embedded-cli-error-test" time="0.0480">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="print-cmd-invalid-token-exception-test" time="0.0244">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="add-cmd-cli-interaction-stdout-test" time="0.0467">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="add-cmd-cli-interaction-stdout-multiline-test" time="0.0354">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="embedded-cli-help-test" time="0.0485">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="simple-mandatory-options-override-test" time="0.0005">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="simple-test-cli-interaction-stdout-test" time="0.0243">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="embedded-cli-unknown-command-test" time="0.0422">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="get-args-info-simple-fns-test" time="0.0011">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="create-arg-hint-completers-completion-proposal-test" time="0.0038">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="get-cmd-aliases-test" time="0.0006">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="simple-options-merging-test" time="0.0005">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="simple-test-cli-interaction-stderr-test" time="0.0330">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="user-options-override-non-nested-test" time="0.0005">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="div-cmd-cli-interaction-cmd-error-test" time="0.0324">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="persistent-history-custom-output-file-test" time="0.0652">
+    </testcase>
+
+        <testcase classname="cli4clj.test.cli" name="embedded-cli-multiline-out-test" time="0.0374">
+    </testcase>
+
+        <system-err>
+    </system-err>
+
+        <system-out>
+    </system-out>
+
+        <properties>
+              <property name="sun.os.patch.level" value="unknown">
+        </property>
+
+              <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers">
+        </property>
+
+              <property name="java.vm.info" value="mixed mode, sharing">
+        </property>
+
+              <property name="clojure.debug" value="false">
+        </property>
+
+              <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64/lib">
+        </property>
+
+              <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment">
+        </property>
+
+              <property name="path.separator" value=":">
+        </property>
+
+              <property name="cli4clj.version" value="1.7.19-SNAPSHOT">
+        </property>
+
+              <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
+        </property>
+
+              <property name="java.vm.specification.vendor" value="Oracle Corporation">
+        </property>
+
+              <property name="user.country" value="US">
+        </property>
+
+              <property name="java.vendor.url" value="https://www.redhat.com/">
+        </property>
+
+              <property name="java.specification.name" value="Java Platform API Specification">
+        </property>
+
+              <property name="line.separator" value=" ">
+        </property>
+
+              <property name="sun.cpu.endian" value="little">
+        </property>
+
+              <property name="java.vm.version" value="11.0.9+11">
+        </property>
+
+              <property name="sun.java.launcher" value="SUN_STANDARD">
+        </property>
+
+              <property name="java.vendor" value="Red Hat, Inc.">
+        </property>
+
+              <property name="java.specification.vendor" value="Oracle Corporation">
+        </property>
+
+              <property name="java.vm.compressedOopsMode" value="32-bit">
+        </property>
+
+              <property name="awt.toolkit" value="sun.awt.X11.XToolkit">
+        </property>
+
+              <property name="clojure.compile.path" value="/home/rc/repositories/private/clojure/cli4clj/target/classes">
+        </property>
+
+              <property name="java.vm.specification.version" value="11">
+        </property>
+
+              <property name="java.io.tmpdir" value="/tmp">
+        </property>
+
+              <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64">
+        </property>
+
+              <property name="java.class.path" value="/home/rc/repositories/private/clojure/cli4clj/test:/home/rc/repositories/private/clojure/cli4clj/src:/home/rc/repositories/private/clojure/cli4clj/dev-resources:/home/rc/repositories/private/clojure/cli4clj/resources:/home/rc/repositories/private/clojure/cli4clj/target/classes:/home/rc/.m2/repository/nrepl/nrepl/0.6.0/nrepl-0.6.0.jar:/home/rc/.m2/repository/clojure-complete/clojure-complete/0.2.5/clojure-complete-0.2.5.jar:/home/rc/.m2/repository/org/clojure/tools.reader/1.3.2/tools.reader-1.3.2.jar:/home/rc/.m2/repository/clj-assorted-utils/clj-assorted-utils/1.18.2/clj-assorted-utils-1.18.2.jar:/home/rc/.m2/repository/org/clojure/data.priority-map/1.0.0/data.priority-map-1.0.0.jar:/home/rc/.m2/repository/jline/jline/2.14.6/jline-2.14.6.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer.jvm/1.1.0/tools.analyzer.jvm-1.1.0.jar:/home/rc/.m2/repository/robert/hooke/1.3.0/hooke-1.3.0.jar:/home/rc/.m2/repository/org/ow2/asm/asm/5.2/asm-5.2.jar:/home/rc/.m2/repository/test2junit/test2junit/1.4.2/test2junit-1.4.2.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer/1.0.0/tools.analyzer-1.0.0.jar:/home/rc/.m2/repository/org/clojure/clojure/1.10.3/clojure-1.10.3.jar:/home/rc/.m2/repository/org/clojure/core.cache/1.0.207/core.cache-1.0.207.jar:/home/rc/.m2/repository/org/clojure/spec.alpha/0.2.194/spec.alpha-0.2.194.jar:/home/rc/.m2/repository/org/clojure/core.memoize/1.0.236/core.memoize-1.0.236.jar:/home/rc/.m2/repository/org/clojure/core.specs.alpha/0.2.56/core.specs.alpha-0.2.56.jar:/home/rc/.m2/repository/org/clojure/core.async/1.3.610/core.async-1.3.610.jar">
+        </property>
+
+              <property name="java.runtime.version" value="11.0.9+11">
+        </property>
+
+              <property name="java.vm.vendor" value="Red Hat, Inc.">
+        </property>
+
+              <property name="user.language" value="en">
+        </property>
+
+              <property name="java.vm.name" value="OpenJDK 64-Bit Server VM">
+        </property>
+
+              <property name="java.version" value="11.0.9">
+        </property>
+
+              <property name="os.arch" value="amd64">
+        </property>
+
+              <property name="user.home" value="/home/rc">
+        </property>
+
+              <property name="java.specification.version" value="11">
+        </property>
+
+              <property name="sun.jnu.encoding" value="ANSI_X3.4-1968">
+        </property>
+
+              <property name="java.vendor.version" value="18.9">
+        </property>
+
+              <property name="java.runtime.name" value="OpenJDK Runtime Environment">
+        </property>
+
+              <property name="sun.io.unicode.encoding" value="UnicodeLittle">
+        </property>
+
+              <property name="sun.arch.data.model" value="64">
+        </property>
+
+              <property name="java.class.version" value="55.0">
+        </property>
+
+              <property name="sun.cpu.isalist" value="">
+        </property>
+
+              <property name="file.encoding" value="UTF-8">
+        </property>
+
+              <property name="jdk.debug" value="release">
+        </property>
+
+              <property name="user.timezone" value="Europe/Berlin">
+        </property>
+
+              <property name="os.name" value="Linux">
+        </property>
+
+              <property name="os.version" value="5.8.8-100.fc31.x86_64">
+        </property>
+
+              <property name="file.separator" value="/">
+        </property>
+
+              <property name="java.vm.specification.name" value="Java Virtual Machine Specification">
+        </property>
+
+              <property name="java.awt.printerjob" value="sun.print.PSPrinterJob">
+        </property>
+
+              <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib">
+        </property>
+
+              <property name="java.version.date" value="2020-10-20">
+        </property>
+
+              <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-11-openjdk&amp;version=31">
+        </property>
+
+              <property name="sun.java.command" value="clojure.main -i /tmp/form-init12820356289719042715.clj">
+        </property>
+
+              <property name="user.name" value="rc">
+        </property>
+
+        </properties>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" id="2" name="example" package="cli4clj.test" tests="11" time="0.3854" timestamp="2021-04-11_12:13:36+0200">
+        <testcase classname="cli4clj.test.example" name="print-function-opt-args-test" time="0.0479">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="advanced-main-method-error-example-test" time="0.0221">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="invalid-token-to-string-fallback-test" time="0.0327">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="advanced-main-method-clojure-syntax-example-test" time="0.0321">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="print-function-test" time="0.0326">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="def-var-main-method-clojure-syntax-example-test" time="0.0326">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="main-method-error-with-trace-example-test" time="0.0428">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="advanced-main-method-example-test" time="0.0372">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="simple-method-clojure-syntax-example-test" time="0.0342">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="simple-main-method-example-test" time="0.0325">
+    </testcase>
+
+        <testcase classname="cli4clj.test.example" name="simple-main-method-error-example-test" time="0.0300">
+    </testcase>
+
+        <system-err>
+    </system-err>
+
+        <system-out>
+    </system-out>
+
+        <properties>
+              <property name="sun.os.patch.level" value="unknown">
+        </property>
+
+              <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers">
+        </property>
+
+              <property name="java.vm.info" value="mixed mode, sharing">
+        </property>
+
+              <property name="clojure.debug" value="false">
+        </property>
+
+              <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64/lib">
+        </property>
+
+              <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment">
+        </property>
+
+              <property name="path.separator" value=":">
+        </property>
+
+              <property name="cli4clj.version" value="1.7.19-SNAPSHOT">
+        </property>
+
+              <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
+        </property>
+
+              <property name="java.vm.specification.vendor" value="Oracle Corporation">
+        </property>
+
+              <property name="user.country" value="US">
+        </property>
+
+              <property name="java.vendor.url" value="https://www.redhat.com/">
+        </property>
+
+              <property name="java.specification.name" value="Java Platform API Specification">
+        </property>
+
+              <property name="line.separator" value=" ">
+        </property>
+
+              <property name="sun.cpu.endian" value="little">
+        </property>
+
+              <property name="java.vm.version" value="11.0.9+11">
+        </property>
+
+              <property name="sun.java.launcher" value="SUN_STANDARD">
+        </property>
+
+              <property name="java.vendor" value="Red Hat, Inc.">
+        </property>
+
+              <property name="java.specification.vendor" value="Oracle Corporation">
+        </property>
+
+              <property name="java.vm.compressedOopsMode" value="32-bit">
+        </property>
+
+              <property name="awt.toolkit" value="sun.awt.X11.XToolkit">
+        </property>
+
+              <property name="clojure.compile.path" value="/home/rc/repositories/private/clojure/cli4clj/target/classes">
+        </property>
+
+              <property name="java.vm.specification.version" value="11">
+        </property>
+
+              <property name="java.io.tmpdir" value="/tmp">
+        </property>
+
+              <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64">
+        </property>
+
+              <property name="java.class.path" value="/home/rc/repositories/private/clojure/cli4clj/test:/home/rc/repositories/private/clojure/cli4clj/src:/home/rc/repositories/private/clojure/cli4clj/dev-resources:/home/rc/repositories/private/clojure/cli4clj/resources:/home/rc/repositories/private/clojure/cli4clj/target/classes:/home/rc/.m2/repository/nrepl/nrepl/0.6.0/nrepl-0.6.0.jar:/home/rc/.m2/repository/clojure-complete/clojure-complete/0.2.5/clojure-complete-0.2.5.jar:/home/rc/.m2/repository/org/clojure/tools.reader/1.3.2/tools.reader-1.3.2.jar:/home/rc/.m2/repository/clj-assorted-utils/clj-assorted-utils/1.18.2/clj-assorted-utils-1.18.2.jar:/home/rc/.m2/repository/org/clojure/data.priority-map/1.0.0/data.priority-map-1.0.0.jar:/home/rc/.m2/repository/jline/jline/2.14.6/jline-2.14.6.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer.jvm/1.1.0/tools.analyzer.jvm-1.1.0.jar:/home/rc/.m2/repository/robert/hooke/1.3.0/hooke-1.3.0.jar:/home/rc/.m2/repository/org/ow2/asm/asm/5.2/asm-5.2.jar:/home/rc/.m2/repository/test2junit/test2junit/1.4.2/test2junit-1.4.2.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer/1.0.0/tools.analyzer-1.0.0.jar:/home/rc/.m2/repository/org/clojure/clojure/1.10.3/clojure-1.10.3.jar:/home/rc/.m2/repository/org/clojure/core.cache/1.0.207/core.cache-1.0.207.jar:/home/rc/.m2/repository/org/clojure/spec.alpha/0.2.194/spec.alpha-0.2.194.jar:/home/rc/.m2/repository/org/clojure/core.memoize/1.0.236/core.memoize-1.0.236.jar:/home/rc/.m2/repository/org/clojure/core.specs.alpha/0.2.56/core.specs.alpha-0.2.56.jar:/home/rc/.m2/repository/org/clojure/core.async/1.3.610/core.async-1.3.610.jar">
+        </property>
+
+              <property name="java.runtime.version" value="11.0.9+11">
+        </property>
+
+              <property name="java.vm.vendor" value="Red Hat, Inc.">
+        </property>
+
+              <property name="user.language" value="en">
+        </property>
+
+              <property name="java.vm.name" value="OpenJDK 64-Bit Server VM">
+        </property>
+
+              <property name="java.version" value="11.0.9">
+        </property>
+
+              <property name="os.arch" value="amd64">
+        </property>
+
+              <property name="user.home" value="/home/rc">
+        </property>
+
+              <property name="java.specification.version" value="11">
+        </property>
+
+              <property name="sun.jnu.encoding" value="ANSI_X3.4-1968">
+        </property>
+
+              <property name="java.vendor.version" value="18.9">
+        </property>
+
+              <property name="java.runtime.name" value="OpenJDK Runtime Environment">
+        </property>
+
+              <property name="sun.io.unicode.encoding" value="UnicodeLittle">
+        </property>
+
+              <property name="sun.arch.data.model" value="64">
+        </property>
+
+              <property name="java.class.version" value="55.0">
+        </property>
+
+              <property name="sun.cpu.isalist" value="">
+        </property>
+
+              <property name="file.encoding" value="UTF-8">
+        </property>
+
+              <property name="jdk.debug" value="release">
+        </property>
+
+              <property name="user.timezone" value="Europe/Berlin">
+        </property>
+
+              <property name="os.name" value="Linux">
+        </property>
+
+              <property name="os.version" value="5.8.8-100.fc31.x86_64">
+        </property>
+
+              <property name="file.separator" value="/">
+        </property>
+
+              <property name="java.vm.specification.name" value="Java Virtual Machine Specification">
+        </property>
+
+              <property name="java.awt.printerjob" value="sun.print.PSPrinterJob">
+        </property>
+
+              <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib">
+        </property>
+
+              <property name="java.version.date" value="2020-10-20">
+        </property>
+
+              <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-11-openjdk&amp;version=31">
+        </property>
+
+              <property name="sun.java.command" value="clojure.main -i /tmp/form-init12820356289719042715.clj">
+        </property>
+
+              <property name="user.name" value="rc">
+        </property>
+
+        </properties>
+
+  </testsuite>
+</testsuites>
