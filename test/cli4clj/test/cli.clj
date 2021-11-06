@@ -204,6 +204,19 @@
         out-string (cli-tests/test-cli-stderr #(cli/start-cli cli-opts) test-cmd-input)]
     (test/is (.startsWith out-string "java.lang.RuntimeException: Invalid token: /foo/bar"))))
 
+(test/deftest print-cmd-invalid-number-exception-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}}
+                  :invalid-token-to-string false}
+        test-cmd-input ["print 1701/ncc"]
+        out-string (cli-tests/test-cli-stderr #(cli/start-cli cli-opts) test-cmd-input)]
+    (test/is (.startsWith out-string "java.lang.NumberFormatException: Invalid number: 1701/ncc"))))
+
+(test/deftest print-cmd-invalid-number-to-string-fallback-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}}}
+        test-cmd-input ["print 1701/ncc"]
+        out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
+    (test/is (= (cli-tests/expected-string ["1701/ncc"]) out-string))))
+
 
 
 (test/deftest enable-trace-test

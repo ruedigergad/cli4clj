@@ -118,12 +118,11 @@
               (let [input (try
                             (read {:read-cond :allow} *in*)
                             (catch RuntimeException e
-                              (let [msg (.getMessage e)
-                                    invalid-msg-start "Invalid token: "]
+                              (let [msg (.getMessage e)]
                                 (if (and
                                       invalid-token-to-string
-                                      (.contains msg invalid-msg-start))
-                                  (.replaceAll msg (str ".*" invalid-msg-start) "")
+                                      (.contains msg "Invalid"))
+                                  (.replaceAll msg ".* Invalid \\w*: " "")
                                   (throw e)))))]
                 (if (and (not (symbol? input)) (empty? v))
                   (do
