@@ -332,3 +332,16 @@
     (utils/await-flag fn-executed-flag)
     (test/is (not (utils/file-exists? (jio/file default-history-file-path))))))
 
+
+
+(test/deftest custom-read-fn-test
+  (let [cli-opts {:cmds {:print {:fn #(println %)}}
+                  :read-fn (fn [opts stream]
+                             (let [in (read opts stream)]
+                               (if (string? in)
+                                 (str "foo-" in)
+                                 in)))}
+        test-cmd-input ["print \"bar\""]
+        out-string (cli-tests/test-cli-stdout #(cli/start-cli cli-opts) test-cmd-input)]
+    (test/is (= (cli-tests/expected-string ["foo-bar"]) out-string))))
+

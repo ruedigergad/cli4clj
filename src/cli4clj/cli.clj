@@ -108,7 +108,8 @@
   (let [cmds (opts :cmds)
         err-fn (opts :print-err)
         invalid-token-to-string (opts :invalid-token-to-string)
-        quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)]
+        quit-commands (conj (:quit (get-cmd-aliases cmds)) :quit)
+        read-fn (opts :read-fn)]
     (init opts)
     (fn [request-prompt request-exit]
       (try
@@ -116,7 +117,7 @@
               (skip-whitespace *in*))
             (loop [v []]
               (let [input (try
-                            (read {:read-cond :allow} *in*)
+                            (read-fn {:read-cond :allow} *in*)
                             (catch RuntimeException e
                               (let [msg (.getMessage e)]
                                 (if (and
@@ -366,6 +367,7 @@
    :print-err print-err-fn
    :prompt-fn (fn [])
    :prompt-string "cli# "
+   :read-fn read
    :alternate-scrolling false
    :alternate-height 3
    :alternate-scroll-separator "\u203E"})
