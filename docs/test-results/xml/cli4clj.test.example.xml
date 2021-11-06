@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="cli4clj.test.example" errors="0" failures="0" tests="11" time="0.3854" timestamp="2021-04-11_12:13:36+0200">
-    <testcase name="print-function-opt-args-test" classname="cli4clj.test.example" time="0.0479">
+<testsuite name="cli4clj.test.example" errors="0" failures="0" tests="11" time="0.3367" timestamp="2021-11-06_20:34:20+0100">
+    <testcase name="print-function-opt-args-test" classname="cli4clj.test.example" time="0.0437">
     </testcase>
-    <testcase name="advanced-main-method-error-example-test" classname="cli4clj.test.example" time="0.0221">
+    <testcase name="advanced-main-method-error-example-test" classname="cli4clj.test.example" time="0.0282">
     </testcase>
-    <testcase name="invalid-token-to-string-fallback-test" classname="cli4clj.test.example" time="0.0327">
+    <testcase name="invalid-token-to-string-fallback-test" classname="cli4clj.test.example" time="0.0282">
     </testcase>
-    <testcase name="advanced-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0321">
+    <testcase name="advanced-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0227">
     </testcase>
-    <testcase name="print-function-test" classname="cli4clj.test.example" time="0.0326">
+    <testcase name="print-function-test" classname="cli4clj.test.example" time="0.0300">
     </testcase>
-    <testcase name="def-var-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0326">
+    <testcase name="def-var-main-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0315">
     </testcase>
-    <testcase name="main-method-error-with-trace-example-test" classname="cli4clj.test.example" time="0.0428">
+    <testcase name="main-method-error-with-trace-example-test" classname="cli4clj.test.example" time="0.0330">
     </testcase>
-    <testcase name="advanced-main-method-example-test" classname="cli4clj.test.example" time="0.0372">
+    <testcase name="advanced-main-method-example-test" classname="cli4clj.test.example" time="0.0323">
     </testcase>
-    <testcase name="simple-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0342">
+    <testcase name="simple-method-clojure-syntax-example-test" classname="cli4clj.test.example" time="0.0278">
     </testcase>
-    <testcase name="simple-main-method-example-test" classname="cli4clj.test.example" time="0.0325">
+    <testcase name="simple-main-method-example-test" classname="cli4clj.test.example" time="0.0232">
     </testcase>
-    <testcase name="simple-main-method-error-example-test" classname="cli4clj.test.example" time="0.0300">
+    <testcase name="simple-main-method-error-example-test" classname="cli4clj.test.example" time="0.0285">
     </testcase>
     <system-err>
     </system-err>
@@ -35,13 +35,13 @@
         </property>
         <property name="clojure.debug" value="false">
         </property>
-        <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64/lib">
+        <property name="sun.boot.library.path" value="/usr/lib/jvm/java-11-openjdk-11.0.12.0.7-0.fc34.x86_64/lib">
         </property>
         <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment">
         </property>
         <property name="path.separator" value=":">
         </property>
-        <property name="cli4clj.version" value="1.7.19-SNAPSHOT">
+        <property name="cli4clj.version" value="1.7.10">
         </property>
         <property name="user.dir" value="/home/rc/repositories/private/clojure/cli4clj">
         </property>
@@ -58,7 +58,7 @@
         </property>
         <property name="sun.cpu.endian" value="little">
         </property>
-        <property name="java.vm.version" value="11.0.9+11">
+        <property name="java.vm.version" value="11.0.12+7">
         </property>
         <property name="sun.java.launcher" value="SUN_STANDARD">
         </property>
@@ -76,11 +76,11 @@
         </property>
         <property name="java.io.tmpdir" value="/tmp">
         </property>
-        <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-11.0.9.11-0.fc31.x86_64">
+        <property name="java.home" value="/usr/lib/jvm/java-11-openjdk-11.0.12.0.7-0.fc34.x86_64">
         </property>
-        <property name="java.class.path" value="/home/rc/repositories/private/clojure/cli4clj/test:/home/rc/repositories/private/clojure/cli4clj/src:/home/rc/repositories/private/clojure/cli4clj/dev-resources:/home/rc/repositories/private/clojure/cli4clj/resources:/home/rc/repositories/private/clojure/cli4clj/target/classes:/home/rc/.m2/repository/nrepl/nrepl/0.6.0/nrepl-0.6.0.jar:/home/rc/.m2/repository/clojure-complete/clojure-complete/0.2.5/clojure-complete-0.2.5.jar:/home/rc/.m2/repository/org/clojure/tools.reader/1.3.2/tools.reader-1.3.2.jar:/home/rc/.m2/repository/clj-assorted-utils/clj-assorted-utils/1.18.2/clj-assorted-utils-1.18.2.jar:/home/rc/.m2/repository/org/clojure/data.priority-map/1.0.0/data.priority-map-1.0.0.jar:/home/rc/.m2/repository/jline/jline/2.14.6/jline-2.14.6.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer.jvm/1.1.0/tools.analyzer.jvm-1.1.0.jar:/home/rc/.m2/repository/robert/hooke/1.3.0/hooke-1.3.0.jar:/home/rc/.m2/repository/org/ow2/asm/asm/5.2/asm-5.2.jar:/home/rc/.m2/repository/test2junit/test2junit/1.4.2/test2junit-1.4.2.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer/1.0.0/tools.analyzer-1.0.0.jar:/home/rc/.m2/repository/org/clojure/clojure/1.10.3/clojure-1.10.3.jar:/home/rc/.m2/repository/org/clojure/core.cache/1.0.207/core.cache-1.0.207.jar:/home/rc/.m2/repository/org/clojure/spec.alpha/0.2.194/spec.alpha-0.2.194.jar:/home/rc/.m2/repository/org/clojure/core.memoize/1.0.236/core.memoize-1.0.236.jar:/home/rc/.m2/repository/org/clojure/core.specs.alpha/0.2.56/core.specs.alpha-0.2.56.jar:/home/rc/.m2/repository/org/clojure/core.async/1.3.610/core.async-1.3.610.jar">
+        <property name="java.class.path" value="/home/rc/repositories/private/clojure/cli4clj/test:/home/rc/repositories/private/clojure/cli4clj/src:/home/rc/repositories/private/clojure/cli4clj/dev-resources:/home/rc/repositories/private/clojure/cli4clj/resources:/home/rc/repositories/private/clojure/cli4clj/target/classes:/home/rc/.m2/repository/org/clojure/tools.analyzer/1.1.0/tools.analyzer-1.1.0.jar:/home/rc/.m2/repository/clojure-complete/clojure-complete/0.2.5/clojure-complete-0.2.5.jar:/home/rc/.m2/repository/org/clojure/tools.reader/1.3.2/tools.reader-1.3.2.jar:/home/rc/.m2/repository/clj-assorted-utils/clj-assorted-utils/1.18.2/clj-assorted-utils-1.18.2.jar:/home/rc/.m2/repository/org/clojure/data.priority-map/1.0.0/data.priority-map-1.0.0.jar:/home/rc/.m2/repository/jline/jline/2.14.6/jline-2.14.6.jar:/home/rc/.m2/repository/org/clojure/core.async/1.4.627/core.async-1.4.627.jar:/home/rc/.m2/repository/robert/hooke/1.3.0/hooke-1.3.0.jar:/home/rc/.m2/repository/org/ow2/asm/asm/5.2/asm-5.2.jar:/home/rc/.m2/repository/test2junit/test2junit/1.4.2/test2junit-1.4.2.jar:/home/rc/.m2/repository/org/clojure/clojure/1.10.3/clojure-1.10.3.jar:/home/rc/.m2/repository/org/clojure/core.cache/1.0.207/core.cache-1.0.207.jar:/home/rc/.m2/repository/nrepl/nrepl/0.8.3/nrepl-0.8.3.jar:/home/rc/.m2/repository/org/clojure/spec.alpha/0.2.194/spec.alpha-0.2.194.jar:/home/rc/.m2/repository/org/clojure/core.memoize/1.0.236/core.memoize-1.0.236.jar:/home/rc/.m2/repository/org/clojure/tools.analyzer.jvm/1.2.0/tools.analyzer.jvm-1.2.0.jar:/home/rc/.m2/repository/org/clojure/core.specs.alpha/0.2.56/core.specs.alpha-0.2.56.jar">
         </property>
-        <property name="java.runtime.version" value="11.0.9+11">
+        <property name="java.runtime.version" value="11.0.12+7">
         </property>
         <property name="java.vm.vendor" value="Red Hat, Inc.">
         </property>
@@ -88,7 +88,7 @@
         </property>
         <property name="java.vm.name" value="OpenJDK 64-Bit Server VM">
         </property>
-        <property name="java.version" value="11.0.9">
+        <property name="java.version" value="11.0.12">
         </property>
         <property name="os.arch" value="amd64">
         </property>
@@ -118,7 +118,7 @@
         </property>
         <property name="os.name" value="Linux">
         </property>
-        <property name="os.version" value="5.8.8-100.fc31.x86_64">
+        <property name="os.version" value="5.13.6-200.fc34.x86_64">
         </property>
         <property name="file.separator" value="/">
         </property>
@@ -128,11 +128,11 @@
         </property>
         <property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib">
         </property>
-        <property name="java.version.date" value="2020-10-20">
+        <property name="java.version.date" value="2021-07-20">
         </property>
-        <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-11-openjdk&amp;version=31">
+        <property name="java.vendor.url.bug" value="https://bugzilla.redhat.com/enter_bug.cgi?product=Fedora&amp;component=java-11-openjdk&amp;version=34">
         </property>
-        <property name="sun.java.command" value="clojure.main -i /tmp/form-init12820356289719042715.clj">
+        <property name="sun.java.command" value="clojure.main -i /tmp/form-init9055992552672694993.clj">
         </property>
         <property name="user.name" value="rc">
         </property>
