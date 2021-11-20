@@ -25,6 +25,7 @@
     (org.jline.reader.impl.completer AggregateCompleter ArgumentCompleter StringsCompleter)
     (org.jline.reader.impl.history DefaultHistory)
     (org.jline.utils NonBlockingReader)
+    (org.jline.widget AutosuggestionWidgets)
     ))
 
 (def ^:dynamic *comment-begin-string* ";")
@@ -218,6 +219,8 @@
                  (.completer aggregate-completer)
                  (.variable LineReader/HISTORY_FILE history-file-path)
                  (.build))
+        auto-suggestion-widgets (AutosuggestionWidgets. in-rdr)
+        _ (.enable auto-suggestion-widgets)
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
               ;   (.addCompleter (StringsCompleter.
               ;                    #^java.util.Collection
