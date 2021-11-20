@@ -93,11 +93,11 @@
 ;;; - Remove "readLine" case.
   [#^PushbackReader s]
   (loop [c (.read s)]
-	(cond
-	  (= c (int \newline)) :line-start
-	  (= c -1) :stream-end
-	  (or (Character/isWhitespace (char c)) (= c (int \,))) (recur (.read s))
-	  :else (do (.unread s c) :body))))
+    (cond
+      (= c (int \newline)) :line-start
+      (= c -1) :stream-end
+      (or (Character/isWhitespace (char c)) (= c (int \,))) (recur (.read s))
+      :else (do (.unread s c) :body))))
 
 (defn create-repl-read-fn
   "This function creates a function that is intended to be used as repl read function.
@@ -196,13 +196,21 @@
   (let [cmds (opts :cmds)
         err-fn (opts :print-err)
         prompt-string (opts :prompt-string)
+        history-file-name (if (contains? opts :history-file-name)
+                            (opts :history-file-name)
+                            (str
+                              (System/getProperty "user.home")
+                              "/."
+                              (opts :calling-ns)
+                              ".history"))
+        history-file-path (-> (jio/file history-file-name) (.toPath))
+
         term (-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
         ;_ (doto term
         ;    (.enterRawMode)
         ;    (.puts org.jline.utils.InfoCmp$Capability/enter_ca_mode (object-array 0))
         ;    (.puts org.jline.utils.InfoCmp$Capability/keypad_xmit (object-array 0)))
-        history (DefaultHistory.)
-        in-rdr (-> (LineReaderBuilder/builder) (.history history) (.terminal term) (.build))
+        in-rdr (-> (LineReaderBuilder/builder) (.terminal term) (.variable LineReader/HISTORY_FILE history-file-path) (.build))
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
               ;   (.addCompleter (StringsCompleter.
               ;                    #^java.util.Collection
@@ -211,19 +219,12 @@
               ;                      (map name (keys cmds)))))
               ;   (.setPrompt prompt-string))
 
-        history-file-name (if (contains? opts :history-file-name)
-							(opts :history-file-name)
-							(str
-							  (System/getProperty "user.home")
-							  "/."
-							  (opts :calling-ns)
-							  ".history"))
-		history-file-path (-> (jio/file history-file-name) (.toPath))
         arg-hint-completers (create-arg-hint-completers cmds)
         ;_ (doseq [compl arg-hint-completers]
         ;    (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn opts)
 
+        history nil; (DefaultHistory.)
         alternate-scrolling (opts :alternate-scrolling)
         alternate-height (opts :alternate-height)
         alternate-scroll-separator (opts :alternate-scroll-separator)
