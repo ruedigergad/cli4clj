@@ -277,7 +277,7 @@
   (let [cmds (:cmds opts)
         allow-eval (:allow-eval opts)
         err-fn (:print-err opts)
-        term (-> (TerminalBuilder/builder) (.build))
+        term nil
         alternate-scrolling (:alternate-scrolling opts)
         alternate-height (:alternate-height opts)]
     (fn [arg]
@@ -427,7 +427,7 @@
   (let [alternate-height (options :alternate-height)
         stdout *out*
         new-line (atom true)
-        term (-> (TerminalBuilder/builder) (.build))
+        term nil ;(-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
         x (atom 1)
         y (atom 1)
         wrtr (proxy [java.io.StringWriter] []

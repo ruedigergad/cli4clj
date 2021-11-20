@@ -94,5 +94,5 @@
 ;;;               Since cli4clj version 1.6.0 an alternate scrolling mode is supported.
 ;;;               By default the "old" scrolling is used.
 ;;;               The new scrolling mode can be enabled by setting :alternate-scrolling to "true" or by specifying a corresponding "predicate function".
-                  :alternate-scrolling (some #(= % "alt") args)
+                  :alternate-scrolling false ; (some #(= % "alt") args)
                   :alternate-height 3}))
