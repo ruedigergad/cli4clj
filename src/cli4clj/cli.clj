@@ -20,8 +20,10 @@
     (clojure.core [async :as async]))
   (:import
     (java.io PushbackReader StringReader)
+    (org.fusesource.jansi AnsiConsole)
     (org.jline.terminal TerminalBuilder)
     (org.jline.reader Candidate Completer LineReader LineReaderBuilder)
+    (org.jline.reader.impl DefaultParser)
     (org.jline.reader.impl.completer AggregateCompleter ArgumentCompleter StringsCompleter)
     (org.jline.reader.impl.history DefaultHistory)
     (org.jline.utils NonBlockingReader)
@@ -206,7 +208,14 @@
                               ".history"))
         history-file-path (-> (jio/file history-file-name) (.toPath))
 
-        term (-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
+        ;_ (AnsiConsole/systemInstall)
+        term (->
+               (TerminalBuilder/builder)
+               ;(.streams *jline-input-stream* *jline-output-stream*)
+               (.system true)
+               (.dumb false)
+               (.jansi true)
+               (.build))
         ;_ (doto term
         ;    (.enterRawMode)
         ;    (.puts org.jline.utils.InfoCmp$Capability/enter_ca_mode (object-array 0))
@@ -217,8 +226,10 @@
                  (LineReaderBuilder/builder)
                  (.terminal term)
                  (.completer aggregate-completer)
+                 (.parser (DefaultParser.))
                  (.variable LineReader/HISTORY_FILE history-file-path)
                  (.build))
+        _ (.unsetOpt in-rdr org.jline.reader.LineReader$Option/INSERT_TAB)
         auto-suggestion-widgets (AutosuggestionWidgets. in-rdr)
         _ (.enable auto-suggestion-widgets)
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
