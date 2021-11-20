@@ -23,6 +23,7 @@
     (org.jline.terminal TerminalBuilder)
     (org.jline.reader Completer LineReader LineReaderBuilder)
     (org.jline.reader.impl.completer ArgumentCompleter StringsCompleter)
+    (org.jline.reader.impl.history DefaultHistory)
     (org.jline.utils NonBlockingReader)
     ))
 
@@ -195,7 +196,8 @@
         err-fn (opts :print-err)
         prompt-string (opts :prompt-string)
         term (-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
-        in-rdr (-> (LineReaderBuilder/builder) (.terminal term) (.build))
+        history (DefaultHistory.)
+        in-rdr (-> (LineReaderBuilder/builder) (.history history) (.terminal term) (.build))
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
               ;   (.addCompleter (StringsCompleter.
               ;                    #^java.util.Collection
@@ -203,19 +205,15 @@
               ;                      #(.startsWith #^java.lang.String % "_")
               ;                      (map name (keys cmds)))))
               ;   (.setPrompt prompt-string))
-        file-history (if false ;(opts :persist-history)
-                       (let [history-file-name (if (contains? opts :history-file-name)
-                                                 (opts :history-file-name)
-                                                 (str
-                                                   (System/getProperty "user.home")
-                                                   "/."
-                                                   (opts :calling-ns)
-                                                   ".history"))
-                             history-file (jio/file history-file-name)]
-                         nil) ;(FileHistory. history-file))
-                       nil)
-        _ (if (not (nil? file-history))
-            (.setHistory in-rdr file-history))
+
+        history-file-name (if (contains? opts :history-file-name)
+							(opts :history-file-name)
+							(str
+							  (System/getProperty "user.home")
+							  "/."
+							  (opts :calling-ns)
+							  ".history"))
+		history-file-path (-> (jio/file history-file-name) (.toPath))
         arg-hint-completers (create-arg-hint-completers cmds)
         ;_ (doseq [compl arg-hint-completers]
         ;    (.addCompleter in-rdr compl))
@@ -244,8 +242,8 @@
           (print (str "\u001B[" (- current-height alternate-height 3) ";1H> " line))
           (print "\u001B[u")
           (flush))
-        (if (not (nil? file-history))
-          (.flush file-history))
+        (if (not (nil? history))
+          (.write history history-file-path false))
         (cond
           (and (not (nil? line))
                (not (.isEmpty line))
