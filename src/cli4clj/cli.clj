@@ -21,8 +21,8 @@
   (:import
     (java.io PushbackReader StringReader)
     (org.jline.terminal TerminalBuilder)
-    (org.jline.reader Completer LineReader LineReaderBuilder)
-    (org.jline.reader.impl.completer ArgumentCompleter StringsCompleter)
+    (org.jline.reader Candidate Completer LineReader LineReaderBuilder)
+    (org.jline.reader.impl.completer AggregateCompleter ArgumentCompleter StringsCompleter)
     (org.jline.reader.impl.history DefaultHistory)
     (org.jline.utils NonBlockingReader)
     ))
@@ -160,15 +160,15 @@
                 #^"[Lorg.jline.reader.Completer;"
                 (into-array
                   Completer
-                  [(StringsCompleter. #^java.util.Collection (conj (mapv name (cmd-aliases k)) (name k)))
+                  [(StringsCompleter. #^java.util.Collection (conj (mapv (fn [c] (Candidate. (name c))) (cmd-aliases k)) (Candidate. (name k))))
                    (proxy [Completer] []
                      (complete [buffer cursor #^java.util.List candidates]
                        (if (not (nil? fn-args))
-                         (.add candidates (str "Arguments: " fn-args)))
+                         (.add candidates (Candidate. (str "Arguments: " fn-args))))
                        (if (not (nil? completion-hint))
-                         (.add candidates (str completion-hint)))
+                         (.add candidates (Candidate. (str completion-hint))))
                        (if (not (and (not (nil? fn-args)) (not (nil? completion-hint))))
-                         (.add candidates ""))
+                         (.add candidates (Candidate. "")))
                        0))])))
             v)))
       []
@@ -210,7 +210,14 @@
         ;    (.enterRawMode)
         ;    (.puts org.jline.utils.InfoCmp$Capability/enter_ca_mode (object-array 0))
         ;    (.puts org.jline.utils.InfoCmp$Capability/keypad_xmit (object-array 0)))
-        in-rdr (-> (LineReaderBuilder/builder) (.terminal term) (.variable LineReader/HISTORY_FILE history-file-path) (.build))
+        arg-hint-completers (create-arg-hint-completers cmds)
+        aggregate-completer (AggregateCompleter. #^java.util.Collection arg-hint-completers)
+        in-rdr (->
+                 (LineReaderBuilder/builder)
+                 (.terminal term)
+                 (.completer aggregate-completer)
+                 (.variable LineReader/HISTORY_FILE history-file-path)
+                 (.build))
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
               ;   (.addCompleter (StringsCompleter.
               ;                    #^java.util.Collection
@@ -219,7 +226,6 @@
               ;                      (map name (keys cmds)))))
               ;   (.setPrompt prompt-string))
 
-        arg-hint-completers (create-arg-hint-completers cmds)
         ;_ (doseq [compl arg-hint-completers]
         ;    (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn opts)
