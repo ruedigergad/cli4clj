@@ -20,10 +20,11 @@
     (clojure.core [async :as async]))
   (:import
     (java.io PushbackReader StringReader)
-    (jline TerminalFactory TerminalFactory$Flavor UnsupportedTerminal)
-    (jline.console ConsoleReader)
-    (jline.console.completer ArgumentCompleter Completer StringsCompleter)
-    (jline.console.history FileHistory)))
+    (org.jline.terminal TerminalBuilder)
+    (org.jline.reader Completer LineReader LineReaderBuilder)
+    (org.jline.reader.impl.completer ArgumentCompleter StringsCompleter)
+    (org.jline.utils NonBlockingReader)
+    ))
 
 (def ^:dynamic *comment-begin-string* ";")
 
@@ -155,7 +156,7 @@
             (conj
               v
               (ArgumentCompleter.
-                #^"[Ljline.console.completer.Completer;"
+                #^"[Lorg.jline.reader.Completer;"
                 (into-array
                   Completer
                   [(StringsCompleter. #^java.util.Collection (conj (mapv name (cmd-aliases k)) (name k)))
@@ -173,7 +174,7 @@
       (keys cmds))))
 
 (defn set-up-alternate-scrolling
-  [height width alternate-height alternate-scroll-separator prompt-string #^ConsoleReader in-rdr]
+  [height width alternate-height alternate-scroll-separator prompt-string #^NonBlockingReader in-rdr]
   (let [prompt-width (count prompt-string)
         adjusted-prompt-string (str "\u001B[" (- height alternate-height) ";0H"
                                     "\u001B[2K"
@@ -193,14 +194,16 @@
   (let [cmds (opts :cmds)
         err-fn (opts :print-err)
         prompt-string (opts :prompt-string)
-        in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
-                 (.addCompleter (StringsCompleter.
-                                  #^java.util.Collection
-                                  (remove
-                                    #(.startsWith #^java.lang.String % "_")
-                                    (map name (keys cmds)))))
-                 (.setPrompt prompt-string))
-        file-history (if (opts :persist-history)
+        term (-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
+        in-rdr (-> (LineReaderBuilder/builder) (.terminal term) (.build))
+              ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
+              ;   (.addCompleter (StringsCompleter.
+              ;                    #^java.util.Collection
+              ;                    (remove
+              ;                      #(.startsWith #^java.lang.String % "_")
+              ;                      (map name (keys cmds)))))
+              ;   (.setPrompt prompt-string))
+        file-history (if false ;(opts :persist-history)
                        (let [history-file-name (if (contains? opts :history-file-name)
                                                  (opts :history-file-name)
                                                  (str
@@ -209,20 +212,19 @@
                                                    (opts :calling-ns)
                                                    ".history"))
                              history-file (jio/file history-file-name)]
-                         (FileHistory. history-file))
+                         nil) ;(FileHistory. history-file))
                        nil)
         _ (if (not (nil? file-history))
             (.setHistory in-rdr file-history))
         arg-hint-completers (create-arg-hint-completers cmds)
-        _ (doseq [compl arg-hint-completers]
-            (.addCompleter in-rdr compl))
+        ;_ (doseq [compl arg-hint-completers]
+        ;    (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn opts)
 
         alternate-scrolling (opts :alternate-scrolling)
         alternate-height (opts :alternate-height)
         alternate-scroll-separator (opts :alternate-scroll-separator)
-        term (TerminalFactory/create)
-        ansi-support (.isAnsiSupported term)
+        ansi-support false ;(.isAnsiSupported term)
         last-height (atom (.getHeight term))
         last-width (atom (.getWidth term))]
     (when (and alternate-scrolling ansi-support)
@@ -272,7 +274,7 @@
   (let [cmds (:cmds opts)
         allow-eval (:allow-eval opts)
         err-fn (:print-err opts)
-        term (TerminalFactory/create)
+        term (-> (TerminalBuilder/builder) (.build))
         alternate-scrolling (:alternate-scrolling opts)
         alternate-height (:alternate-height opts)]
     (fn [arg]
@@ -422,7 +424,7 @@
   (let [alternate-height (options :alternate-height)
         stdout *out*
         new-line (atom true)
-        term (TerminalFactory/create)
+        term (-> (TerminalBuilder/builder) (.build))
         x (atom 1)
         y (atom 1)
         wrtr (proxy [java.io.StringWriter] []
@@ -469,8 +471,9 @@
 
 (defn windows-workaround
   []
-  (when (utils/is-os? "windows")
-    (TerminalFactory/registerFlavor TerminalFactory$Flavor/WINDOWS UnsupportedTerminal)))
+  )
+  ;(when (utils/is-os? "windows")
+  ;  (TerminalFactory/registerFlavor TerminalFactory$Flavor/WINDOWS UnsupportedTerminal)))
 
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.

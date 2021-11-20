@@ -9,7 +9,8 @@
   :dependencies [[org.clojure/clojure "1.10.3"]
                  [clj-assorted-utils "1.18.8"]
                  [org.clojure/core.async "1.4.627"]
-                 [jline/jline "2.14.6"]]
+                 [org.jline/jline "3.21.0"]
+                 [org.fusesource.jansi/jansi "1.18"]]
   :global-vars {*warn-on-reflection* true}
   :html5-docs-docs-dir "docs/doc"
   :html5-docs-ns-includes #"^cli4clj.*"
