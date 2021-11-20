@@ -185,7 +185,8 @@
                                     "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
     (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
     (flush)
-    (.setPrompt in-rdr adjusted-prompt-string)))
+    ;(.setPrompt in-rdr adjusted-prompt-string)
+  ))
 
 (defn create-jline-read-fn
   "This function creates a read function that leverages jline2 for handling input.
@@ -196,6 +197,10 @@
         err-fn (opts :print-err)
         prompt-string (opts :prompt-string)
         term (-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
+        ;_ (doto term
+        ;    (.enterRawMode)
+        ;    (.puts org.jline.utils.InfoCmp$Capability/enter_ca_mode (object-array 0))
+        ;    (.puts org.jline.utils.InfoCmp$Capability/keypad_xmit (object-array 0)))
         history (DefaultHistory.)
         in-rdr (-> (LineReaderBuilder/builder) (.history history) (.terminal term) (.build))
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
@@ -495,7 +500,7 @@
            :prompt (@~'__options :prompt-fn)
            :read (*read-factory* @~'__options)))
        (when (@~'__options :alternate-scrolling)
-         (print (str "\u001b[r\u001b[" (-> (TerminalFactory/create) (.getHeight)) ";0H"))))))
+         (print (str "\u001b[r\u001b[" (-> (TerminalBuilder/terminal) (.getHeight)) ";0H"))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
