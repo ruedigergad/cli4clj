@@ -209,7 +209,7 @@
         history-file-path (-> (jio/file history-file-name) (.toPath))
 
         _ (println "jline debug enabled:" (Log/isDebugEnabled))
-        ;_ (AnsiConsole/systemInstall)
+        _ (AnsiConsole/systemInstall)
         term (->
                (TerminalBuilder/builder)
                ;(.streams *jline-input-stream* *jline-output-stream*)
@@ -499,6 +499,15 @@
   )
   ;(when (utils/is-os? "windows")
   ;  (TerminalFactory/registerFlavor TerminalFactory$Flavor/WINDOWS UnsupportedTerminal)))
+
+(defn start-cli-fn
+  [user-options]
+  (let [options (get-cli-opts user-options)]
+    (main/repl
+      :eval ((options :eval-factory) options)
+      :print (options :print)
+      :prompt (options :prompt-fn)
+      :read (*read-factory* options))))
 
 (defmacro start-cli
   "This is the primary entry point for starting and configuring cli4clj.
