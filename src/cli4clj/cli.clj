@@ -26,7 +26,7 @@
     (org.jline.reader.impl DefaultParser)
     (org.jline.reader.impl.completer AggregateCompleter ArgumentCompleter StringsCompleter)
     (org.jline.reader.impl.history DefaultHistory)
-    (org.jline.utils NonBlockingReader)
+    (org.jline.utils Log NonBlockingReader)
     (org.jline.widget AutosuggestionWidgets)
     ))
 
@@ -208,6 +208,7 @@
                               ".history"))
         history-file-path (-> (jio/file history-file-name) (.toPath))
 
+        _ (println "jline debug enabled:" (Log/isDebugEnabled))
         ;_ (AnsiConsole/systemInstall)
         term (->
                (TerminalBuilder/builder)
