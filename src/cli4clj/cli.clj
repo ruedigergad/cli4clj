@@ -32,8 +32,8 @@
 
 (def ^:dynamic *comment-begin-string* ";")
 
-(def ^:dynamic *jline-input-stream* System/in)
-(def ^:dynamic *jline-output-stream* System/out)
+(def ^:dynamic *jline-input-stream* nil)
+(def ^:dynamic *jline-output-stream* nil)
 
 (def ^:dynamic *line-sep* (System/getProperty "line.separator"))
 
@@ -208,13 +208,16 @@
 
         ;_ (println "jline debug enabled:" (Log/isDebugEnabled))
         ;_ (AnsiConsole/systemInstall)
-        term (->
-               (TerminalBuilder/builder)
+        term (as-> (TerminalBuilder/builder) tb
+               (if
+                 (and *jline-input-stream* *jline-output-stream*)
+                 (.streams tb *jline-input-stream* *jline-output-stream*)
+                 tb)
                ;(.streams *jline-input-stream* *jline-output-stream*)
                ;(.system true)
                ;(.dumb false)
-               (.jansi true)
-               (.build))
+               (.jansi tb true)
+               (.build tb))
         ;_ (doto term
         ;    (.enterRawMode)
         ;    (.puts org.jline.utils.InfoCmp$Capability/enter_ca_mode (object-array 0))

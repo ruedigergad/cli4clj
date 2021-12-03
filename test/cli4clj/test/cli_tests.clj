@@ -161,13 +161,13 @@
 
 
 
-(test/deftest simple-jline-input-stream-mock-test
-  (let [in-string (str "a 1" cli/*line-sep* "b 2 3" cli/*line-sep* "q" cli/*line-sep*)
-        out (binding [cli/*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
-              (with-out-str
-                (cli/start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
-                                   :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
-    (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*line-sep*)]) out))))
+;(test/deftest simple-jline-input-stream-mock-test
+;  (let [in-string (str "a 1" cli/*line-sep* "b 2 3" cli/*line-sep* "q" cli/*line-sep*)
+;        out (binding [cli/*jline-input-stream* (ByteArrayInputStream. (.getBytes in-string))]
+;              (with-out-str
+;                (cli/start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
+;                                   :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
+;    (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*line-sep*)]) out))))
 
 
 
