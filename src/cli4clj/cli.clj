@@ -187,9 +187,7 @@
                                     "\u001B[1;" (- height alternate-height 2) "r"
                                     "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
     (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
-    (flush)
-    ;(.setPrompt in-rdr adjusted-prompt-string)
-  ))
+    (flush)))
 
 (defn create-jline-read-fn
   "This function creates a read function that leverages jline2 for handling input.
@@ -208,8 +206,8 @@
                               ".history"))
         history-file-path (-> (jio/file history-file-name) (.toPath))
 
-        _ (println "jline debug enabled:" (Log/isDebugEnabled))
-        _ (AnsiConsole/systemInstall)
+        ;_ (println "jline debug enabled:" (Log/isDebugEnabled))
+        ;_ (AnsiConsole/systemInstall)
         term (->
                (TerminalBuilder/builder)
                ;(.streams *jline-input-stream* *jline-output-stream*)
@@ -246,7 +244,6 @@
         ;    (.addCompleter in-rdr compl))
         rdr-fn (create-repl-read-fn opts)
 
-        history nil; (DefaultHistory.)
         alternate-scrolling (opts :alternate-scrolling)
         alternate-height (opts :alternate-height)
         alternate-scroll-separator (opts :alternate-scroll-separator)
@@ -270,8 +267,6 @@
           (print (str "\u001B[" (- current-height alternate-height 3) ";1H> " line))
           (print "\u001B[u")
           (flush))
-        (if (not (nil? history))
-          (.write history history-file-path false))
         (cond
           (and (not (nil? line))
                (not (.isEmpty line))
