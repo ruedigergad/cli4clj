@@ -216,6 +216,7 @@
                (.system true)
                (.dumb false)
                (.jansi true)
+               (.name "fooo")
                (.build))
         ;_ (doto term
         ;    (.enterRawMode)
@@ -230,7 +231,7 @@
                  (.parser (DefaultParser.))
                  (.variable LineReader/HISTORY_FILE history-file-path)
                  (.build))
-        _ (.unsetOpt in-rdr org.jline.reader.LineReader$Option/INSERT_TAB)
+        ;_ (.unsetOpt in-rdr org.jline.reader.LineReader$Option/INSERT_TAB)
         auto-suggestion-widgets (AutosuggestionWidgets. in-rdr)
         _ (.enable auto-suggestion-widgets)
               ; (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
@@ -255,7 +256,7 @@
     (when (and alternate-scrolling ansi-support)
       (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
     (fn [request-prompt request-exit]
-      (let [line (.readLine in-rdr)
+      (let [line (.readLine in-rdr prompt-string)
             current-height (.getHeight term)
             current-width (.getWidth term)]
         (when (and
