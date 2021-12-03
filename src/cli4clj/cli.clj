@@ -211,10 +211,9 @@
         term (->
                (TerminalBuilder/builder)
                ;(.streams *jline-input-stream* *jline-output-stream*)
-               (.system true)
-               (.dumb false)
+               ;(.system true)
+               ;(.dumb false)
                (.jansi true)
-               (.name "fooo")
                (.build))
         ;_ (doto term
         ;    (.enterRawMode)
