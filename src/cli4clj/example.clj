@@ -87,7 +87,7 @@
 ;;;                      Below is a test command to mimic asynchronous text output.
 ;;;                      Such asynchronous output could occur, e.g., during network interaction with sockets or a middleware.
                          :print-repeat {:fn (fn [text interval]
-                                              (utils/run-repeat (utils/executor) (fn [] (println text))) interval)
+                                              (utils/run-repeat (utils/executor) (fn [] (println text)) interval))
                                         :short-info "Repeatedly print text with the given interval in milliseconds."}}
                   :allow-eval true
                   :prompt-string "cli# "
