@@ -304,8 +304,8 @@
         alternate-scrolling (:alternate-scrolling opts)
         alternate-height (:alternate-height opts)]
     (fn [arg]
-      (when alternate-scrolling
-        (-> System/out (.print (str "\u001B[" (- (.getHeight term) alternate-height -1) ";0H" "\u001B[0J"))))
+      ;(when alternate-scrolling
+      ;  (-> System/out (.print (str "\u001B[" (- (.getHeight term) alternate-height -1) ";0H" "\u001B[0J"))))
       (try
         (cond
           (and (vector? arg) (contains? cmds (keyword (first arg))))
