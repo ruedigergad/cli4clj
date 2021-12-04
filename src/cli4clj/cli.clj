@@ -21,7 +21,7 @@
   (:import
     (java.io PushbackReader StringReader)
     (org.fusesource.jansi AnsiConsole)
-    (org.jline.terminal TerminalBuilder)
+    (org.jline.terminal Terminal TerminalBuilder)
     (org.jline.reader Candidate Completer LineReader LineReaderBuilder)
     (org.jline.reader.impl DefaultParser)
     (org.jline.reader.impl.completer AggregateCompleter ArgumentCompleter StringsCompleter)
@@ -189,13 +189,28 @@
     (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
     (flush)))
 
+(defn create-terminal
+  [opts]
+  (let [term (as-> (TerminalBuilder/builder) tb
+               (if
+                 (and *jline-input-stream* *jline-output-stream*)
+                 (.streams tb *jline-input-stream* *jline-output-stream*)
+                 tb)
+               ;(.streams *jline-input-stream* *jline-output-stream*)
+               ;(.system true)
+               ;(.dumb false)
+               (.jansi tb true)
+               (.build tb))
+        ]
+    term))
+
 (defn create-jline-read-fn
   "This function creates a read function that leverages jline2 for handling input.
    Thanks to the functionality provided by jline2, this allows, e.g., command history, command editing, or tab-completion.
    The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn."
   [opts]
-  (let [cmds (opts :cmds)
-        err-fn (opts :print-err)
+  (let [term (opts :term)
+        cmds (opts :cmds)
         prompt-string (opts :prompt-string)
         history-file-name (if (contains? opts :history-file-name)
                             (opts :history-file-name)
@@ -208,16 +223,6 @@
 
         ;_ (println "jline debug enabled:" (Log/isDebugEnabled))
         ;_ (AnsiConsole/systemInstall)
-        term (as-> (TerminalBuilder/builder) tb
-               (if
-                 (and *jline-input-stream* *jline-output-stream*)
-                 (.streams tb *jline-input-stream* *jline-output-stream*)
-                 tb)
-               ;(.streams *jline-input-stream* *jline-output-stream*)
-               ;(.system true)
-               ;(.dumb false)
-               (.jansi tb true)
-               (.build tb))
         ;_ (doto term
         ;    (.enterRawMode)
         ;    (.puts org.jline.utils.InfoCmp$Capability/enter_ca_mode (object-array 0))
@@ -249,18 +254,16 @@
         alternate-scrolling (opts :alternate-scrolling)
         alternate-height (opts :alternate-height)
         alternate-scroll-separator (opts :alternate-scroll-separator)
-        ansi-support false ;(.isAnsiSupported term)
+        is-dumb-term (= Terminal/TYPE_DUMB (.getType term))
         last-height (atom (.getHeight term))
         last-width (atom (.getWidth term))]
-    (when (and alternate-scrolling ansi-support)
+    (when (and alternate-scrolling (not is-dumb-term))
       (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr prompt-string)
             current-height (.getHeight term)
             current-width (.getWidth term)]
-        (when (and
-                alternate-scrolling
-                ansi-support)
+        (when (and alternate-scrolling (not is-dumb-term))
           (when (or (not= @last-height current-height) (not= @last-width current-width))
             (reset! last-height current-height)
             (reset! last-width current-width)
@@ -297,7 +300,7 @@
   (let [cmds (:cmds opts)
         allow-eval (:allow-eval opts)
         err-fn (:print-err opts)
-        term nil
+        term (:term opts)
         alternate-scrolling (:alternate-scrolling opts)
         alternate-height (:alternate-height opts)]
     (fn [arg]
@@ -447,7 +450,7 @@
   (let [alternate-height (options :alternate-height)
         stdout *out*
         new-line (atom true)
-        term nil ;(-> (TerminalBuilder/builder) (.streams *jline-input-stream* *jline-output-stream*) (.build))
+        term (options :term)
         x (atom 1)
         y (atom 1)
         wrtr (proxy [java.io.StringWriter] []
@@ -519,6 +522,7 @@
        (reset! ~'__options (assoc
                              (get-cli-opts (add-args-info-m ~user-options))
                              :calling-ns ~*ns*))
+       (reset! ~'__options (assoc @~'__options :term (create-terminal ~'__options)))
        (reset! ~'__alt-scroll-wrtr (alt-scroll-writer @~'__options))
        (wrap-alt-scroll-writer
          ~'__alt-scroll-wrtr
@@ -529,7 +533,7 @@
            :prompt (@~'__options :prompt-fn)
            :read (*read-factory* @~'__options)))
        (when (@~'__options :alternate-scrolling)
-         (print (str "\u001b[r\u001b[" (-> (TerminalBuilder/terminal) (.getHeight)) ";0H"))))))
+         (print (str "\u001b[r\u001b[" (-> (@~'__options :term) (.getHeight)) ";0H"))))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
