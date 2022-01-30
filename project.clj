@@ -21,7 +21,7 @@
   :main cli4clj.example
   :aot :all
   :plugins [[lein-cloverage "1.0.9"] [test2junit "1.4.2"] [lein-html5-docs "3.0.3"]]
-  :profiles  {:repl  {:dependencies  [[jonase/eastwood "1.0.0" :exclusions  [org.clojure/clojure]]]}
+  :profiles  {:repl  {:dependencies  [[jonase/eastwood "1.2.2" :exclusions  [org.clojure/clojure]]]}
               :run {:jvm-opts ["-Djava.util.logging.config.file=logging.properties"]}
               }
   :jvm-opts ["-Djava.util.logging.config.file=logging.properties"]
