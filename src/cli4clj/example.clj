@@ -95,4 +95,8 @@
 ;;;               By default the "old" scrolling is used.
 ;;;               The new scrolling mode can be enabled by setting :alternate-scrolling to "true" or by specifying a corresponding "predicate function".
                   :alternate-scrolling (some #(= % "alt") args)
-                  :alternate-height 3}))
+                  :alternate-height 3
+                  :entry-message (str "This is the example of cli4clj!" "\n"
+                                      "\n"
+                                      "To see a list of available commands, type <Tab>." "\n"
+                                      "To exit this interactive cli tool, type \"q\".")}))

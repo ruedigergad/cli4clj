@@ -173,7 +173,7 @@
       (keys cmds))))
 
 (defn set-up-alternate-scrolling
-  [height width alternate-height alternate-scroll-separator prompt-string #^ConsoleReader in-rdr]
+  [height width alternate-height alternate-scroll-separator prompt-string #^ConsoleReader in-rdr & [entry-message]]
   (let [prompt-width (count prompt-string)
         adjusted-prompt-string (str "\u001B[" (- height alternate-height) ";0H"
                                     "\u001B[2K"
@@ -183,7 +183,9 @@
                                     "\u001B[" (- height alternate-height) ";" (+ prompt-width 1) "H")]
     (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
     (flush)
-    (.setPrompt in-rdr adjusted-prompt-string)))
+    (.setPrompt in-rdr adjusted-prompt-string)
+    (if entry-message
+      (print entry-message))))
 
 (defn create-jline-read-fn
   "This function creates a read function that leverages jline2 for handling input.
@@ -192,6 +194,7 @@
   [opts]
   (let [cmds (opts :cmds)
         err-fn (opts :print-err)
+        entry-message (opts :entry-message)
         prompt-string (opts :prompt-string)
         in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
                  (.addCompleter (StringsCompleter.
@@ -225,8 +228,9 @@
         ansi-support (.isAnsiSupported term)
         last-height (atom (.getHeight term))
         last-width (atom (.getWidth term))]
-    (when (and alternate-scrolling ansi-support)
-      (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
+    (if (and alternate-scrolling ansi-support)
+      (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr entry-message)
+      (print (str entry-message "\n")))
     (fn [request-prompt request-exit]
       (let [line (.readLine in-rdr)
             current-height (.getHeight term)
@@ -237,7 +241,7 @@
           (when (or (not= @last-height current-height) (not= @last-width current-width))
             (reset! last-height current-height)
             (reset! last-width current-width)
-            (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr))
+            (set-up-alternate-scrolling @last-height @last-width alternate-height alternate-scroll-separator prompt-string in-rdr entry-message))
           (print "\u001B[s")
           (print (str "\u001B[" (- current-height alternate-height 3) ";1H> " line))
           (print "\u001B[u")
