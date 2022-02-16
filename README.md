@@ -131,7 +131,7 @@ Detailed unit test results are avilable at: http://ruedigergad.github.io/cli4clj
 
 ## License
 
-Copyright © 2015-2021 Ruediger Gad
+Copyright © 2015-2021 cli4clj Contributors
 
 Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
 
