@@ -167,7 +167,7 @@
               (with-out-str
                 (cli/start-cli {:cmds {:a {:fn (fn [arg] (inc arg))}
                                    :b {:fn (fn [summand1 summand2] (+ summand1 summand2))}}})))]
-    (test/is (= (cli-tests/expected-string ["2" (str "5" cli/*line-sep*)]) out))))
+    (test/is (= (cli-tests/expected-string ["" "2" (str "5" cli/*line-sep*)]) out))))
 
 
 
