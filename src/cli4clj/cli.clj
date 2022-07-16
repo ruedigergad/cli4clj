@@ -35,7 +35,7 @@
 (defn cli-repl-print
   "The default repl print function of cli4clj only prints non-nil values."
   [arg]
-  (if (not (nil? arg))
+  (when (not (nil? arg))
     (prn arg)))
 
 (defn get-cmd-aliases
@@ -161,11 +161,11 @@
                   [(StringsCompleter. #^java.util.Collection (conj (mapv name (cmd-aliases k)) (name k)))
                    (proxy [Completer] []
                      (complete [buffer cursor #^java.util.List candidates]
-                       (if (not (nil? fn-args))
+                       (when (not (nil? fn-args))
                          (.add candidates (str "Arguments: " fn-args)))
-                       (if (not (nil? completion-hint))
+                       (when (not (nil? completion-hint))
                          (.add candidates (str completion-hint)))
-                       (if (not (and (not (nil? fn-args)) (not (nil? completion-hint))))
+                       (when (not (and (not (nil? fn-args)) (not (nil? completion-hint))))
                          (.add candidates ""))
                        0))])))
             v)))
@@ -184,7 +184,7 @@
     (print (str "\u001B[2J\u001B[1;" (- height alternate-height 2) "r"))
     (flush)
     (.setPrompt in-rdr adjusted-prompt-string)
-    (if entry-message
+    (when entry-message
       (print entry-message))))
 
 (defn create-jline-read-fn
@@ -193,7 +193,6 @@
    The input that is read is then forwarded to a repl read function that was created with create-repl-read-fn."
   [opts]
   (let [cmds (opts :cmds)
-        err-fn (opts :print-err)
         entry-message (opts :entry-message)
         prompt-string (opts :prompt-string)
         in-rdr (doto (ConsoleReader. nil *jline-input-stream* *jline-output-stream* nil)
@@ -214,7 +213,7 @@
                              history-file (jio/file history-file-name)]
                          (FileHistory. history-file))
                        nil)
-        _ (if (not (nil? file-history))
+        _ (when (not (nil? file-history))
             (.setHistory in-rdr file-history))
         arg-hint-completers (create-arg-hint-completers cmds)
         _ (doseq [compl arg-hint-completers]
@@ -246,7 +245,7 @@
           (print (str "\u001B[" (- current-height alternate-height 3) ";1H> " line))
           (print "\u001B[u")
           (flush))
-        (if (not (nil? file-history))
+        (when (not (nil? file-history))
           (.flush file-history))
         (cond
           (and (not (nil? line))
@@ -257,7 +256,7 @@
 
           (nil? line) request-exit
 
-          :default request-prompt)))))
+          :else request-prompt)))))
 
 (defn resolve-cmd-alias
   "This function is used to resolve the full command definition for a given command alias.
@@ -290,7 +289,7 @@
                 (get-in cmds [cmd :fn])
                 (rest arg)))
           (and allow-eval (list? arg)) (eval arg)
-          :default (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts))
+          :else (err-fn (str "Invalid command: \"" arg "\". Please type \"help\" to get an overview of commands.") opts))
         (catch Exception e
           (err-fn e opts))))))
 
@@ -355,7 +354,7 @@
       (instance? Exception arg)
       ((:print-exception-trace opts))) (strace/print-cause-trace arg)
     (instance? Exception arg) (utils/println-err (.getMessage #^Exception arg))
-    :default (utils/println-err (str arg))))
+    :else (utils/println-err (str arg))))
 
 (def cli-default-options
   {:allow-eval false
@@ -406,7 +405,7 @@
                    (symbol? f) (utils/map-quote-vec (utils/get-defn-arglists (eval `(var ~f))))
                    (and (list? f)
                         (= 'fn (first f))) (:args (utils/get-fn-arglists f))
-                   :default nil)]
+                   :else nil)]
         (if (and
               (not (nil? args))
               (nil? (get-in m [:cmds k :fn-args])))
@@ -481,24 +480,23 @@
    Please note that the configuration options can also be defined in a global or local var.
    However, in order to lookup arguments defined in anonymous functions, the configuration options have to be defined directly in the macro call."
   [user-options]
-  (let []
-    `(let [~'__options (atom nil)
-           ~'__alt-scroll-wrtr (atom nil)]
-       (windows-workaround)
-       (reset! ~'__options (assoc
-                             (get-cli-opts (add-args-info-m ~user-options))
-                             :calling-ns ~*ns*))
-       (reset! ~'__alt-scroll-wrtr (alt-scroll-writer @~'__options))
-       (wrap-alt-scroll-writer
-         ~'__alt-scroll-wrtr
-         ~'__options
-         (main/repl
-           :eval ((@~'__options :eval-factory) @~'__options)
-           :print (@~'__options :print)
-           :prompt (@~'__options :prompt-fn)
-           :read (*read-factory* @~'__options)))
-       (when (@~'__options :alternate-scrolling)
-         (print (str "\u001b[r\u001b[" (-> (TerminalFactory/create) (.getHeight)) ";0H"))))))
+  `(let [~'__options (atom nil)
+         ~'__alt-scroll-wrtr (atom nil)]
+     (windows-workaround)
+     (reset! ~'__options (assoc
+                          (get-cli-opts (add-args-info-m ~user-options))
+                          :calling-ns ~*ns*))
+     (reset! ~'__alt-scroll-wrtr (alt-scroll-writer @~'__options))
+     (wrap-alt-scroll-writer
+      ~'__alt-scroll-wrtr
+      ~'__options
+      (main/repl
+       :eval ((@~'__options :eval-factory) @~'__options)
+       :print (@~'__options :print)
+       :prompt (@~'__options :prompt-fn)
+       :read (*read-factory* @~'__options)))
+     (when (@~'__options :alternate-scrolling)
+       (print (str "\u001b[r\u001b[" (-> (TerminalFactory/create) (.getHeight)) ";0H")))))
 
 (defn create-embedded-read-fn
   "This creates a read fn intended for use in the embedded CLI."
