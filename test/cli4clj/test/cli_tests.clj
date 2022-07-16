@@ -15,9 +15,10 @@
       [cli :as cli]
       [cli-tests :as cli-tests])
     (clj-assorted-utils [util :as utils])
-    (clojure [test :as test]))
-  (:import (java.io ByteArrayInputStream)
-           (java.util ArrayList)))
+    (clojure
+      [main :as main]
+      [test :as test]))
+  (:import (java.io ByteArrayInputStream)))
 
 
 
@@ -173,42 +174,42 @@
 
 (test/deftest clojure-repl-stdout-no-op-test
   (let [in-cmds [""]
-        out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
+        out (cli-tests/test-cli-stdout main/repl in-cmds)]
     (test/is (= (str *ns* "=> " *ns* "=>") out))))
 
 (test/deftest clojure-repl-stderr-no-op-test
   (let [in-cmds [""]
-        out (cli-tests/test-cli-stderr clojure.main/repl in-cmds)]
+        out (cli-tests/test-cli-stderr main/repl in-cmds)]
     (test/is (= "" out))))
 
 (test/deftest clojure-repl-stdout-inc-test
   (let [in-cmds ["(inc 1)"]
-        out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
+        out (cli-tests/test-cli-stdout main/repl in-cmds)]
     (test/is (= (cli-tests/expected-string [(str *ns* "=> 2") (str *ns* "=>")]) out))))
 
 (test/deftest clojure-repl-stdout-def-inc-println-test
   (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
-        out (cli-tests/test-cli-stdout clojure.main/repl in-cmds)]
+        out (cli-tests/test-cli-stdout main/repl in-cmds)]
     (test/is (= (cli-tests/expected-string [(str *ns*"=> #'" *ns* "/x") (str *ns* "=> 22") (str *ns* "=> 21") "nil" (str *ns* "=>")]) out))))
 
 (test/deftest clojure-repl-stderr-div-zero-test
   (let [in-cmds ["(/ 1 0)"]
-        out (cli-tests/test-cli-stderr clojure.main/repl in-cmds)]
+        out (cli-tests/test-cli-stderr main/repl in-cmds)]
     (test/is (.startsWith out "Execution error (ArithmeticException)"))))
 
 (test/deftest clojure-repl-stdout-no-op-no-prompt-test
   (let [in-cmds [""]
-        out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds)]
+        out (cli-tests/test-cli-stdout #(main/repl :prompt str) in-cmds)]
     (test/is (= "" out))))
 
 (test/deftest clojure-repl-stdout-inc-no-prompt-test
   (let [in-cmds ["(inc 1)"]
-        out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds)]
+        out (cli-tests/test-cli-stdout #(main/repl :prompt str) in-cmds)]
     (test/is (= "2" out))))
 
 (test/deftest clojure-repl-stdout-def-inc-println-no-prompt-test
   (let [in-cmds ["(def x 21)" "(inc x)" "(println x)"]
-        out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds)]
+        out (cli-tests/test-cli-stdout #(main/repl :prompt str) in-cmds)]
     (test/is (= (cli-tests/expected-string [(str "#'" *ns* "/x") "22" "21" "nil"]) out))))
 
 (test/deftest clojure-repl-stdout-def-inc-println-no-prompt-string-latch-test
@@ -220,7 +221,7 @@
                                     ["22" #(reset! val-1 %)]
                                     ["21" #(reset! val-2 %)]
                                     "nil"])
-        out (cli-tests/test-cli-stdout #(clojure.main/repl :prompt str) in-cmds sl)]
+        out (cli-tests/test-cli-stdout #(main/repl :prompt str) in-cmds sl)]
     (test/is (= [(str "#'" *ns* "/x")] @val-0))
     (test/is (= [(str "#'" *ns* "/x") cli/*line-sep* "22"] @val-1))
     (test/is (= [(str "#'" *ns* "/x") cli/*line-sep* "22" cli/*line-sep* "21"] @val-2))

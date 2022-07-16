@@ -17,7 +17,7 @@
     (clj-assorted-utils [util :as utils])
     (clojure [test :as test])
     (clojure.java [io :as jio]))
-  (:import (java.io ByteArrayInputStream PipedInputStream PipedOutputStream)
+  (:import (java.io PipedInputStream PipedOutputStream)
            (java.util ArrayList)))
 
 (test/deftest simple-options-merging-test

@@ -14,10 +14,8 @@
     (clojure
       [test :as test])
     (cli4clj
-      [cli :as cli]
       [cli-tests :as cli-tests]
-      [example :as example])
-    (clj-assorted-utils [util :as utils])))
+      [example :as example])))
 
 (test/deftest simple-main-method-example-test
   (let [test-cmd-input ["t"]
