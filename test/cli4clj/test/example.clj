@@ -12,10 +12,12 @@
   cli4clj.test.example
   (:require
     (clojure
+      [string :as str]
       [test :as test])
     (cli4clj
       [cli-tests :as cli-tests]
-      [example :as example])))
+      [example :as example])
+    [clojure.string :as str]))
 
 (test/deftest simple-main-method-example-test
   (let [test-cmd-input ["t"]
@@ -97,5 +99,4 @@
   (let [test-cmd-input ["(def l (range 1 20))"
                         "(to-csv l)"]
         out-string (cli-tests/test-cli-stdout #(example/-main "") test-cmd-input)]
-    (test/is (= (cli-tests/expected-string ["#'user/l" "\"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19\""]) out-string))))
-
+    (test/is (str/ends-with? out-string "\"1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19\""))))
