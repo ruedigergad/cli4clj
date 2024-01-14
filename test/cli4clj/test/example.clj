@@ -16,8 +16,7 @@
       [test :as test])
     (cli4clj
       [cli-tests :as cli-tests]
-      [example :as example])
-    [clojure.string :as str]))
+      [example :as example])))
 
 (test/deftest simple-main-method-example-test
   (let [test-cmd-input ["t"]
